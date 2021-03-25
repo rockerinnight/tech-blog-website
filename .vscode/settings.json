@@ -3,5 +3,6 @@
         "activityBar.background": "#5C100D",
         "titleBar.activeBackground": "#801712",
         "titleBar.activeForeground": "#FEFBFB"
-    }
+    },
+    "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${appName} ${separator} [Branch: linhdv5]"
 }
