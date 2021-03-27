@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class ButtonComponent implements OnInit {
   // fixed: have never click it before
   isActivated: boolean = false;
-  @Input('childContent') childContent: string = null;
+  @Input('btnContent') btnContent: string = null;
 
   constructor() {}
 
