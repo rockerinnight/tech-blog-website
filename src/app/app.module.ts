@@ -9,7 +9,7 @@ import { ProfileComponent } from './components/screens/profile/profile.component
 import { ArticleComponent } from './components/screens/article/article.component';
 import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
 import { LoginComponent } from './components/screens/login/login.component';
-import { ButtonsComponent } from './components/commons/buttons/buttons.component';
+import { ButtonComponent } from './components/commons/button/button.component';
 import { NavBarComponent } from './components/commons/nav-bar/nav-bar.component';
 import { NavComponent } from './components/commons/nav/nav.component';
 import { InputComponent } from './components/commons/input/input.component';
@@ -26,19 +26,16 @@ import { FooterComponent } from './components/commons/footer/footer.component';
     ArticleComponent,
     SignUpComponent,
     LoginComponent,
-    ButtonsComponent,
+    ButtonComponent,
     NavBarComponent,
     NavComponent,
     InputComponent,
     TagComponent,
     PaginationComponent,
-    FooterComponent
+    FooterComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
