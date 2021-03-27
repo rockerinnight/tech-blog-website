@@ -1,0 +1,13 @@
+.conduit {
+  color: #5cb85c;
+  font-size: 24px;
+}
+.navUserItems {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: none;
+}
+.Users:hover .navUserItems {
+  display: block;
+}
