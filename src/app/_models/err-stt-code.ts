@@ -1,5 +1,3 @@
 export interface ErrorStatusCode {
-  errors: {
-    body: string[];
-  };
+  body: string[];
 }
