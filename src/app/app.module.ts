@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,12 @@ import { InputComponent } from './components/commons/input/input.component';
 import { TagComponent } from './components/commons/tag/tag.component';
 import { PaginationComponent } from './components/commons/pagination/pagination.component';
 import { FooterComponent } from './components/commons/footer/footer.component';
+import { NotFoundComponent } from './components/screens/not-found/not-found.component';
+
+import { HttpClientModule } from '@angular/common/http';
+import { ButtonLikeComponent } from './components/commons/button-like/button-like.component';
+import { ButtonFollowComponent } from './components/commons/button-follow/button-follow.component';
+import { ButtonTagComponent } from './components/commons/button-tag/button-tag.component';
 
 @NgModule({
   declarations: [
@@ -33,8 +40,18 @@ import { FooterComponent } from './components/commons/footer/footer.component';
     TagComponent,
     PaginationComponent,
     FooterComponent,
+    NotFoundComponent,
+    ButtonLikeComponent,
+    ButtonFollowComponent,
+    ButtonTagComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
