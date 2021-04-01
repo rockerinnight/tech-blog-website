@@ -8,9 +8,8 @@ describe('ButtonLikeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ButtonLikeComponent ]
-    })
-    .compileComponents();
+      declarations: [ButtonLikeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
