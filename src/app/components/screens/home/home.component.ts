@@ -32,15 +32,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ngOnChanges(): void {
-    this.clickedArticle.favorited = !this.clickedArticle.favorited;
-  }
-
   getDataFromChild(dataFromChild): void {
     // update data to clickedArticle
     this.clickedArticle.favorited = dataFromChild.favorited;
     this.clickedArticle.favoritesCount = dataFromChild.favoritesCount;
     console.log(this.clickedArticle);
     // POST dataFromChild back to Server
+    
   }
 }

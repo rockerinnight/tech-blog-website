@@ -1,3 +1,5 @@
+import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
+import { AuthGuard } from './_helpers/auth.guard';
 import { SettingComponent } from './components/screens/setting/setting.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 import { HomeComponent } from './components/screens/home/home.component';
@@ -17,6 +19,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    // canActivate: [AuthGuard],
+  },
+  {
+    path: 'signup',
+    component: SignUpComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'settings',

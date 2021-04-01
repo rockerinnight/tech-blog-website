@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ButtonComponent implements OnInit {
   @Input('btnContent') btnContent: string;
+  @Input('invalidForm') invalidForm: boolean;
 
   constructor() {}
 
