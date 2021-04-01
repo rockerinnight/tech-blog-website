@@ -13,17 +13,18 @@ import { SignUpComponent } from './components/screens/sign-up/sign-up.component'
 import { LoginComponent } from './components/screens/login/login.component';
 import { ButtonComponent } from './components/commons/button/button.component';
 import { NavBarComponent } from './components/commons/nav-bar/nav-bar.component';
-import { NavComponent } from './components/commons/nav/nav.component';
-import { InputComponent } from './components/commons/input/input.component';
 import { TagComponent } from './components/commons/tag/tag.component';
 import { PaginationComponent } from './components/commons/pagination/pagination.component';
 import { FooterComponent } from './components/commons/footer/footer.component';
+import { CommentCardComponent } from './components/commons/comment-card/comment-card.component';
+import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ButtonLikeComponent } from './components/commons/button-like/button-like.component';
 import { ButtonFollowComponent } from './components/commons/button-follow/button-follow.component';
 import { ButtonTagComponent } from './components/commons/button-tag/button-tag.component';
+
 
 @NgModule({
   declarations: [
@@ -36,11 +37,12 @@ import { ButtonTagComponent } from './components/commons/button-tag/button-tag.c
     LoginComponent,
     ButtonComponent,
     NavBarComponent,
-    NavComponent,
-    InputComponent,
+
     TagComponent,
     PaginationComponent,
     FooterComponent,
+    CommentCardComponent,
+    NewAriticleComponent,
     NotFoundComponent,
     ButtonLikeComponent,
     ButtonFollowComponent,

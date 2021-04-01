@@ -6,6 +6,9 @@ import { HomeComponent } from './components/screens/home/home.component';
 import { LoginComponent } from './components/screens/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
+import { SettingComponent } from './components/screens/setting/setting.component';
+import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
 
 const routes: Routes = [
   {
@@ -29,6 +32,10 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingComponent,
+  },
+  {
+    path: 'newArticle',
+    component: NewAriticleComponent,
   },
   {
     path: '**',
