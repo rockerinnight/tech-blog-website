@@ -2,13 +2,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/screens/home/home.component';
 import { SettingComponent } from './components/screens/setting/setting.component';
 import { ProfileComponent } from './components/screens/profile/profile.component';
-import { ArticleComponent } from './components/screens/article/article.component';
 import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
 import { LoginComponent } from './components/screens/login/login.component';
 import { ButtonComponent } from './components/commons/button/button.component';
@@ -20,11 +20,16 @@ import { CommentCardComponent } from './components/commons/comment-card/comment-
 import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ButtonLikeComponent } from './components/commons/button-like/button-like.component';
 import { ButtonFollowComponent } from './components/commons/button-follow/button-follow.component';
 import { ButtonTagComponent } from './components/commons/button-tag/button-tag.component';
 
+import { ArticleDetailComponent } from './components/screens/article-detail/article-detail.component';
+import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
+import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
+import { ArticleService } from './services/article.service';
+import { AuthInterceptor } from './auth.interceptor';
+import { ArticleCardComponent } from './components/commons/article-card/article-card.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +37,6 @@ import { ButtonTagComponent } from './components/commons/button-tag/button-tag.c
     HomeComponent,
     SettingComponent,
     ProfileComponent,
-    ArticleComponent,
     SignUpComponent,
     LoginComponent,
     ButtonComponent,
@@ -47,6 +51,10 @@ import { ButtonTagComponent } from './components/commons/button-tag/button-tag.c
     ButtonLikeComponent,
     ButtonFollowComponent,
     ButtonTagComponent,
+    ArticleDetailComponent,
+    MyFeedComponent,
+    GlobalFeedComponent,
+    ArticleCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,11 +64,12 @@ import { ButtonTagComponent } from './components/commons/button-tag/button-tag.c
     HttpClientModule,
   ],
   providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: TokenInterceptor,
-    //   multi: true,
-    // },
+    ArticleService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

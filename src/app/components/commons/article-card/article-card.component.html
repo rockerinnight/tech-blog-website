@@ -6,16 +6,15 @@
           class="rounded-circle"
           width="40px"
           height="40px"
-          src="https://scr.vn/wp-content/uploads/2020/07/avt-cute.jpg"
+          [src]="data.author.image"
           alt=""
         />
       </div>
       <div class="ml-2">
-        <p class="mb-0">Name</p>
-        <small>March 26, 2021</small>
+        <p class="mb-0">{{ data.author?.username }}</p>
+        <small>{{ data.createdAt | date }}</small>
       </div>
     </div>
-
     <div class="heart-button d-flex align-content-center">
       <span class="my-auto"
         ><svg
@@ -50,7 +49,7 @@
       >
     </div>
   </div>
-  <h4>test</h4>
-  <p>test test</p>
+  <h4>{{ data.title }}</h4>
+  <p>{{ data.description }}</p>
   <a href="">Read more...</a>
 </div>
