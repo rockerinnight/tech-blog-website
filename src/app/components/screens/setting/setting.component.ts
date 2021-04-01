@@ -1,6 +1,5 @@
 import { Profile } from './../../../_models/profile';
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user';
 import { SettingService } from 'src/app/setting.service';
 
 @Component({
@@ -8,7 +7,7 @@ import { SettingService } from 'src/app/setting.service';
   templateUrl: './setting.component.html',
   styleUrls: ['./setting.component.scss'],
 })
-export class SettingComponent implements OnInit {(): void {}
+export class SettingComponent implements OnInit {
   public profileData: Profile = null;
   constructor() {}
 
