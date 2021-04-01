@@ -1,6 +1,6 @@
+import { MultiArticle } from './../_models/multi-article';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MultiArticle } from '../models/multi-article';
 import { Observable } from 'rxjs';
 
 @Injectable({
