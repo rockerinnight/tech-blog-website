@@ -1,3 +1,4 @@
+// import { TokenInterceptor } from './_helpers/token.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +20,7 @@ import { PaginationComponent } from './components/commons/pagination/pagination.
 import { FooterComponent } from './components/commons/footer/footer.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ButtonLikeComponent } from './components/commons/button-like/button-like.component';
 import { ButtonFollowComponent } from './components/commons/button-follow/button-follow.component';
 import { ButtonTagComponent } from './components/commons/button-tag/button-tag.component';
@@ -52,7 +53,13 @@ import { ButtonTagComponent } from './components/commons/button-tag/button-tag.c
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: TokenInterceptor,
+    //   multi: true,
+    // },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

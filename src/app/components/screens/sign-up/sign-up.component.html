@@ -1,1 +1,58 @@
-<p>sign-up works!</p>
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-3"></div>
+    <div class="col-6 d-flex flex-column text-center">
+      <div class="h2 mb-3">Sign Up</div>
+      <form [formGroup]="signupForm">
+        <div class="form-group input-group input-group-lg">
+          <input
+            class="form-control"
+            placeholder="Email"
+            type="username"
+            formControlName="username"
+          />
+          <div *ngIf="invalidCreditError" class="invalid-feedback">
+            <div *ngIf="signupForm.controls.username.error">
+              Username is required
+            </div>
+          </div>
+        </div>
+        <div class="form-group input-group input-group-lg">
+          <input
+            class="form-control"
+            placeholder="Email"
+            type="email"
+            formControlName="email"
+          />
+          <div *ngIf="invalidCreditError" class="invalid-feedback">
+            <div *ngIf="signupForm.controls.email.error">Email is required</div>
+          </div>
+        </div>
+        <div class="form-group input-group input-group-lg">
+          <input
+            class="form-control"
+            placeholder="Password"
+            type="password"
+            formControlName="password"
+          />
+          <div *ngIf="invalidCreditError" class="invalid-feedback">
+            <div *ngIf="signupForm.controls.password.error">
+              Password is required
+            </div>
+          </div>
+        </div>
+        <a class="d-block mb-3" routerLink="/register"
+          >Already have an account?</a
+        >
+        <div class="d-flex justify-content-center">
+          <app-button [btnContent]="'Sign Up'" (click)="signUp()"></app-button>
+        </div>
+
+        <div *ngIf="" class="alert alert-danger mt-3 mb-0">
+          {{ error }}
+        </div>
+      </form>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>
