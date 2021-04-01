@@ -1,3 +1,4 @@
+
 <div class="settings-page">
   <div class="container page">
     <div class="row">
@@ -37,7 +38,10 @@
               />
             </fieldset>
             <div class="text-right">
-              <button class="btn btn-sm btn-primary">Update Settings</button>
+              <app-button
+  [btnContent]="'Update Settings'"
+  (click)="updateSettings()"
+></app-button>
               <hr />
             </div>
           </fieldset>

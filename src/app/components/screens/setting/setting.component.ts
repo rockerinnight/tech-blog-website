@@ -1,3 +1,4 @@
+import { Profile } from './../../../_models/profile';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { SettingService } from 'src/app/setting.service';
@@ -7,9 +8,21 @@ import { SettingService } from 'src/app/setting.service';
   templateUrl: './setting.component.html',
   styleUrls: ['./setting.component.scss'],
 })
-export class SettingComponent implements OnInit {
-  mySetting: any = [];
-  constructor(private settingService: SettingService) {}
+export class SettingComponent implements OnInit {(): void {}
+  public profileData: Profile = null;
+  constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // GET data from Server
+    this.profileData = {
+      username: 'jake',
+      bio: 'I work at statefarm',
+      image: 'https://static.productionready.io/images/smiley-cyrus.jpg',
+      following: false,
+    };
+  }
+
+  updateSettings(): void {
+    // update new Settings to Server
+  }
 }
