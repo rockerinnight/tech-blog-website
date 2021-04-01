@@ -1,44 +1,43 @@
-<div class="settings-page">
+<div class="editor-page mt-5 container">
   <div class="container page">
     <div class="row">
-      <div class="col-md-6 offset-md-3 col-xs-12">
-        <h1 class="text-center">Your Settings</h1>
+      <div class="col-md-10 offset-md-1 col-xs-12">
+        <h1 class="text-center mb-3">New Article</h1>
         <form>
           <fieldset>
             <fieldset class="form-group">
               <input
-                class="form-control"
                 type="text"
-                placeholder="URL of profile picture"
+                class="form-control form-control-lg"
+                placeholder="Post title"
               />
             </fieldset>
             <fieldset class="form-group">
               <input
-                class="form-control form-control-lg"
                 type="text"
-                placeholder="Your Name"
+                class="form-control"
+                placeholder="What's this post about?"
               />
             </fieldset>
+
             <fieldset class="form-group">
               <textarea
                 class="form-control"
                 rows="8"
-                placeholder="Short bio about you"
+                placeholder="Write your post (in markdown)"
               ></textarea>
             </fieldset>
             <fieldset class="form-group">
-              <input class="form-control" type="text" placeholder="Email" />
-            </fieldset>
-            <fieldset class="form-group">
               <input
-                class="form-control"
-                type="password"
-                placeholder="Password"
+                type="text"
+                class="form-control mb-2"
+                placeholder="Enter tags"
               />
             </fieldset>
             <div class="text-right">
-              <button class="btn btn-sm btn-primary">Update Settings</button>
-              <hr />
+              <button type="button" class="btn btn-sm btn-primary">
+                Publish Article
+              </button>
             </div>
           </fieldset>
         </form>

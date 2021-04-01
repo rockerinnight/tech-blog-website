@@ -11,11 +11,11 @@ import { SignUpComponent } from './components/screens/sign-up/sign-up.component'
 import { LoginComponent } from './components/screens/login/login.component';
 import { ButtonsComponent } from './components/commons/buttons/buttons.component';
 import { NavBarComponent } from './components/commons/nav-bar/nav-bar.component';
-import { NavComponent } from './components/commons/nav/nav.component';
-import { InputComponent } from './components/commons/input/input.component';
 import { TagComponent } from './components/commons/tag/tag.component';
 import { PaginationComponent } from './components/commons/pagination/pagination.component';
 import { FooterComponent } from './components/commons/footer/footer.component';
+import { CommentCardComponent } from './components/commons/comment-card/comment-card.component';
+import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 
 @NgModule({
   declarations: [
@@ -28,17 +28,15 @@ import { FooterComponent } from './components/commons/footer/footer.component';
     LoginComponent,
     ButtonsComponent,
     NavBarComponent,
-    NavComponent,
-    InputComponent,
+
     TagComponent,
     PaginationComponent,
-    FooterComponent
+    FooterComponent,
+    CommentCardComponent,
+    NewAriticleComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
