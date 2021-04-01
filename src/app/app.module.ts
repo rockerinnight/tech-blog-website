@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/screens/home/home.component';
 import { SettingComponent } from './components/screens/setting/setting.component';
 import { ProfileComponent } from './components/screens/profile/profile.component';
-import { ArticleComponent } from './components/screens/article/article.component';
 import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
 import { LoginComponent } from './components/screens/login/login.component';
 import { ButtonsComponent } from './components/commons/buttons/buttons.component';
@@ -16,6 +16,12 @@ import { InputComponent } from './components/commons/input/input.component';
 import { TagComponent } from './components/commons/tag/tag.component';
 import { PaginationComponent } from './components/commons/pagination/pagination.component';
 import { FooterComponent } from './components/commons/footer/footer.component';
+import { ArticleDetailComponent } from './components/screens/article-detail/article-detail.component';
+import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
+import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
+import { ArticleService } from './services/article.service';
+import { AuthInterceptor } from './auth.interceptor';
+import { ArticleCardComponent } from './components/commons/article-card/article-card.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +29,6 @@ import { FooterComponent } from './components/commons/footer/footer.component';
     HomeComponent,
     SettingComponent,
     ProfileComponent,
-    ArticleComponent,
     SignUpComponent,
     LoginComponent,
     ButtonsComponent,
@@ -32,13 +37,21 @@ import { FooterComponent } from './components/commons/footer/footer.component';
     InputComponent,
     TagComponent,
     PaginationComponent,
-    FooterComponent
+    FooterComponent,
+    ArticleDetailComponent,
+    MyFeedComponent,
+    GlobalFeedComponent,
+    ArticleCardComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  providers: [
+    ArticleService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
