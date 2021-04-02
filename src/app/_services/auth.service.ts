@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Profile } from './../_models/profile';
 import { config } from './../config';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -8,17 +8,17 @@ import { User } from '../_models/user';
   providedIn: 'root',
 })
 export class AuthService {
-  private _loggedIn: boolean = null;
-
+  user: User = null;
   constructor(private http: HttpClient) {}
 
   isAuthenticated(): boolean {
-    // this._loggedIn = true;
-    return this._loggedIn;
-  }
-
-  hasRError(): boolean {
-    return (this._loggedIn = false);
+    if (this.user === null) {
+      let localUser = localStorage.getItem('user');
+      if (localUser) {
+        this.user = JSON.parse(localUser);
+      }
+    }
+    return !!this.user;
   }
 
   saveToLS(user): void {
@@ -26,29 +26,23 @@ export class AuthService {
   }
 
   signup(user) {
-    this._loggedIn = true;
-    let currentUser = {
-      user: {
-        ...user,
-      },
-    };
-    return this.http.post(config.apiUrl + '/users', currentUser);
+    return this.http.post(config.apiUrl + '/users', { user: user });
   }
 
-  login(username: string, password: string): boolean {
-    // let mockUser: any = this.http.post(config.apiUrl + '/api/users/login', {username, password});
-    // mockUser = mockUser ? JSON.parse(mockUser) : null;
+  logUserIn(user): void {
+    this.user = user;
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
-    // if (mockUser) {
-    //   if (
-    //     user.email === mockUser.email &&
-    //     user.password === mockUser.password
-    //   ) {
-    //     this._loggedIn = true;
-    //     return true;
-    //   }
-    // }
-    return false;
+  login(user) {
+    return new Promise<void>((resolve, reject) => {
+      this.http
+        .post(config.apiUrl + '/users/login', { user: user })
+        .subscribe((res: any) => {
+          this.logUserIn(res.user);
+          resolve();
+        });
+    });
   }
 
   // logout() {

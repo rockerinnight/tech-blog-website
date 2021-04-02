@@ -1,55 +1,57 @@
 <div class="container">
   <div class="row mt-5">
     <div class="col-3"></div>
-    <div class="col-6 d-flex flex-column text-center">
-      <div class="h2 mb-3">Sign Up</div>
+    <div class="col-6 d-flex flex-column">
+      <div class="h2 mb-3 text-center">Sign Up</div>
       <form [formGroup]="signupForm">
-        <div class="form-group input-group input-group-lg">
+        <div class="form-group">
           <input
             class="form-control"
-            placeholder="Email"
+            placeholder="Username"
             type="username"
             formControlName="username"
           />
-          <div *ngIf="invalidCreditError" class="invalid-feedback">
-            <div *ngIf="signupForm.controls.username.error">
-              Username is required
-            </div>
-          </div>
+          <small
+            *ngIf="signupForm.controls.username.invalid"
+            class="text-danger"
+          >
+            Username is required
+          </small>
         </div>
-        <div class="form-group input-group input-group-lg">
+        <div class="form-group">
           <input
             class="form-control"
             placeholder="Email"
             type="email"
             formControlName="email"
           />
-          <div *ngIf="invalidCreditError" class="invalid-feedback">
-            <div *ngIf="signupForm.controls.email.error">Email is required</div>
-          </div>
+          <small *ngIf="signupForm.controls.email.invalid" class="text-danger">
+            Email is required
+          </small>
         </div>
-        <div class="form-group input-group input-group-lg">
+        <div class="form-group">
           <input
             class="form-control"
             placeholder="Password"
             type="password"
             formControlName="password"
           />
-          <div *ngIf="invalidCreditError" class="invalid-feedback">
-            <div *ngIf="signupForm.controls.password.error">
-              Password is required
-            </div>
-          </div>
+          <small
+            *ngIf="signupForm.controls.password.invalid"
+            class="text-danger"
+          >
+            Password is required
+          </small>
         </div>
-        <a class="d-block mb-3" routerLink="/register"
+        <a class="d-block mb-3 text-center" routerLink="/login"
           >Already have an account?</a
         >
         <div class="d-flex justify-content-center">
           <app-button [btnContent]="'Sign Up'" (click)="signUp()"></app-button>
         </div>
 
-        <div *ngIf="" class="alert alert-danger mt-3 mb-0">
-          {{ error }}
+        <div *ngIf="invalidInput" class="alert alert-danger mt-3 mb-0">
+          Email or Username has already been taken
         </div>
       </form>
     </div>

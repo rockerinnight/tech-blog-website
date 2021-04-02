@@ -10,9 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
   signupForm: FormGroup;
-  invalidCreditError: boolean = false;
-  errorEmail: string = null;
-  errorUsername: string = null;
+  invalidInput: boolean = null;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -33,19 +31,12 @@ export class SignUpComponent implements OnInit {
   signUp(): void {
     this.authService.signup(this.signupForm.value).subscribe(
       (res) => {
-        this.invalidCreditError = false;
-        // this.authService.isAuthenticated();
+        this.invalidInput = false;
         this.authService.saveToLS(res);
         this.router.navigateByUrl('/home');
       },
       (error: any) => {
-        this.invalidCreditError = true;
-        if (error.errors.hasOwnProperty('username')) {
-          this.errorUsername = 'This username ' + error.errors.username[0];
-        }
-        if (error.errors.hasOwnProperty('email')) {
-          this.errorEmail = 'This email ' + error.errors.email[0];
-        }
+        this.invalidInput = true;
       }
     );
   }

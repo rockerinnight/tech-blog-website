@@ -1,12 +1,4 @@
-import { SingleArticle } from './../../../_models/single-article';
-import {
-  Component,
-  Input,
-  OnInit,
-  Output,
-  EventEmitter,
-  SimpleChange,
-} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-button-like',
@@ -22,8 +14,6 @@ export class ButtonLikeComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  ngOnChanges(): void {}
 
   clickHandler(): void {
     if (this.isFavorited) {
