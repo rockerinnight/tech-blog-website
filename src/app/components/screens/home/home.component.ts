@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  mode: string = 'myfeed';
   // data from api
   clickedArticle: SingleArticle = {
     slug: 'how-to-train-your-dragon',
@@ -38,6 +39,5 @@ export class HomeComponent implements OnInit {
     this.clickedArticle.favoritesCount = dataFromChild.favoritesCount;
     console.log(this.clickedArticle);
     // POST dataFromChild back to Server
-    
   }
 }

@@ -1,6 +1,6 @@
 <div class="container-fluid bg-dark">
   <div class="container text-white py-4">
-    <h2 class="mb-4">Lets automate this</h2>
+    <h2 class="mb-4">{{ articleDetail.article.title }}</h2>
     <div class="d-flex">
       <div class="avatar d-flex mr-4">
         <div>
@@ -13,49 +13,20 @@
           />
         </div>
         <div class="ml-2">
-          <p class="mb-0">Name</p>
-          <small>March 26, 2021</small>
+          <p class="mb-0">{{ articleDetail.article.author.username }}</p>
+          <small>{{ articleDetail.article.createdAt | date }}</small>
         </div>
       </div>
       <div>
-        <div class="btn py-0 text-white bg-secondary mr-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-plus"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-            />
-          </svg>
-          <span> Unfollow serenada</span>
-        </div>
-        <div class="btn btn-success py-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-heart-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-            />
-          </svg>
-          <span> Unfavorite Article (2)</span>
-        </div>
+        <app-button-follow></app-button-follow>
+        <app-button-like [btnContent]="'Favorite Article'"></app-button-like>
       </div>
     </div>
   </div>
 </div>
 <div class="container">
   <div class="bio border-bottom pt-4 pb-5">
-    <p>hello, this is automatic and ajsdkwpd</p>
+    <p>{{ articleDetail.article.body }}</p>
   </div>
 </div>
 <div class="container">
@@ -73,8 +44,8 @@
             />
           </div>
           <div class="ml-2">
-            <p class="mb-0">Name</p>
-            <small>March 26, 2021</small>
+            <p class="mb-0">{{ articleDetail.article.author.username }}</p>
+            <small>{{ articleDetail.article.createdAt | date }}</small>
           </div>
         </div>
         <div>
@@ -91,7 +62,7 @@
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
               />
             </svg>
-            <span> Unfollow serenada</span>
+            <span> Unfollow {{ articleDetail.article.author.username }}</span>
           </div>
           <div class="btn btn-success py-0">
             <svg
