@@ -2,6 +2,7 @@ import { MultiArticle } from './../_models/multi-article';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SingleArticle } from '../_models/single-article';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class ArticleService {
   myFeedUrl = 'https://conduit.productionready.io/api/articles/feed';
   globalFeedUrl = 'https://conduit.productionready.io/api/articles';
-  articleDetailUrl = '';
+  articleDetailUrl = 'https://conduit.productionready.io/api/articles/';
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +22,7 @@ export class ArticleService {
       },
     }) as Observable<MultiArticle>;
   }
+
   getGlobalFeed() {
     return this.http.get(this.globalFeedUrl, {
       headers: {
@@ -29,5 +31,10 @@ export class ArticleService {
       },
     }) as Observable<MultiArticle>;
   }
-  getArticleDetail() {}
+
+  getArticleDetail(slug) {
+    return this.http.get(
+      this.articleDetailUrl + slug
+    ) as Observable<SingleArticle>;
+  }
 }

@@ -1,3 +1,4 @@
+import { SingleArticle } from './../../../_models/single-article';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -7,6 +8,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class ButtonLikeComponent implements OnInit {
   // data from parent
+  @Input('btnContent') btnContent: string;
   @Input('isFavorited') isFavorited: boolean;
   @Input('favoritesCount') favoritesCount: number;
   @Output('dataFromChild') dataFromChild = new EventEmitter();

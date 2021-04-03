@@ -1,15 +1,14 @@
 import { LoginGuard } from './_helpers/login.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AuthGuard } from './_helpers/auth.guard';
-
 import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
-import { LoginComponent } from './components/screens/login/login.component';
 import { SettingComponent } from './components/screens/setting/setting.component';
-import { HomeComponent } from './components/screens/home/home.component';
-import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
+import { HomeComponent } from './components/screens/home/home.component';
+import { LoginComponent } from './components/screens/login/login.component';
+import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
+import { ArticleDetailComponent } from './components/screens/article-detail/article-detail.component';
 
 const routes: Routes = [
   {
@@ -19,6 +18,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'articles/:id',
+    component: ArticleDetailComponent,
   },
   {
     path: 'login',
