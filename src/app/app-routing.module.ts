@@ -14,7 +14,8 @@ import { NotFoundComponent } from './components/screens/not-found/not-found.comp
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
   {
     path: 'home',

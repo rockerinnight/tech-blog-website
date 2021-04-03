@@ -23,7 +23,15 @@ export class AuthService {
   }
 
   signup(user) {
-    return this.http.post(config.apiUrl + '/users', { user: user });
+    this.http.post(config.apiUrl + '/users', { user: user }).subscribe(
+      (res: any) => {
+        this.logUserIn(res.user);
+        this.router.navigateByUrl('/home');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   logUserIn(user): void {
