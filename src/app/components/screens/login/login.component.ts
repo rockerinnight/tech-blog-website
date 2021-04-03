@@ -36,6 +36,6 @@ export class LoginComponent implements OnInit {
     //   this.invalidCreditError = true;
     //   return;
     // }
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 }
