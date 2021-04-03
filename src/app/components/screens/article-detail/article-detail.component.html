@@ -1,6 +1,6 @@
 <div class="container-fluid bg-dark">
   <div class="container text-white py-4">
-    <h2 class="mb-4">{{ articleDetail.article.title }}</h2>
+    <h2 class="mb-4">{{ articleDetail.article?.title }}</h2>
     <div class="d-flex">
       <div class="avatar d-flex mr-4">
         <div>
@@ -8,13 +8,13 @@
             class="rounded-circle"
             width="40px"
             height="40px"
-            src="https://scr.vn/wp-content/uploads/2020/07/avt-cute.jpg"
+            [src]="articleDetail.article?.author.image"
             alt=""
           />
         </div>
         <div class="ml-2">
-          <p class="mb-0">{{ articleDetail.article.author.username }}</p>
-          <small>{{ articleDetail.article.createdAt | date }}</small>
+          <p class="mb-0">{{ articleDetail.article?.author.username }}</p>
+          <small>{{ articleDetail.article?.createdAt | date }}</small>
         </div>
       </div>
       <div>
@@ -26,7 +26,7 @@
 </div>
 <div class="container">
   <div class="bio border-bottom pt-4 pb-5">
-    <p>{{ articleDetail.article.body }}</p>
+    <p>{{ articleDetail.article?.body }}</p>
   </div>
 </div>
 <div class="container">
@@ -44,8 +44,8 @@
             />
           </div>
           <div class="ml-2">
-            <p class="mb-0">{{ articleDetail.article.author.username }}</p>
-            <small>{{ articleDetail.article.createdAt | date }}</small>
+            <p class="mb-0">{{ articleDetail.article?.author.username }}</p>
+            <small>{{ articleDetail.article?.createdAt | date }}</small>
           </div>
         </div>
         <div>
@@ -62,7 +62,7 @@
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
               />
             </svg>
-            <span> Unfollow {{ articleDetail.article.author.username }}</span>
+            <span> Unfollow {{ articleDetail.article?.author.username }}</span>
           </div>
           <div class="btn btn-success py-0">
             <svg
