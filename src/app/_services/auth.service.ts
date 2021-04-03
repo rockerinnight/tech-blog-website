@@ -3,13 +3,14 @@ import { config } from './../config';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../_models/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   user: User = null;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   isAuthenticated(): boolean {
     if (this.user === null) {
@@ -19,10 +20,6 @@ export class AuthService {
       }
     }
     return !!this.user;
-  }
-
-  saveToLS(user): void {
-    localStorage.setItem('user', JSON.stringify(user));
   }
 
   signup(user) {
@@ -35,14 +32,23 @@ export class AuthService {
   }
 
   login(user) {
-    return new Promise<void>((resolve, reject) => {
-      this.http
-        .post(config.apiUrl + '/users/login', { user: user })
-        .subscribe((res: any) => {
-          this.logUserIn(res.user);
-          resolve();
-        });
-    });
+    this.http.post(config.apiUrl + '/users/login', { user: user }).subscribe(
+      (res: any) => {
+        this.logUserIn(res.user);
+        this.router.navigateByUrl('/home');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    // return new Promise<void>((resolve, reject) => {
+    //   this.http
+    //     .post(config.apiUrl + '/users/login', { user: user })
+    //     .subscribe((res: any) => {
+    //       this.logUserIn(res.user);
+    //       resolve();
+    //     });
+    // });
   }
 
   // logout() {

@@ -29,15 +29,15 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp(): void {
-    this.authService.signup(this.signupForm.value).subscribe(
-      (res) => {
-        this.invalidInput = false;
-        this.authService.saveToLS(res);
-        this.router.navigateByUrl('/home');
-      },
-      (error: any) => {
-        this.invalidInput = true;
-      }
-    );
+    // this.authService.signup(this.signupForm.value).subscribe(
+    //   (res) => {
+    //     this.invalidInput = false;
+    //     this.authService.saveToLS(res);
+    //     this.router.navigateByUrl('/home');
+    //   },
+    //   (error: any) => {
+    //     this.invalidInput = true;
+    //   }
+    // );
   }
 }

@@ -2,11 +2,8 @@
 <div class="container">
   <div class="row">
     <div class="col d-flex justify-content-center align-items-center">
-      <app-button-like
-        [isFavorited]="isFavorited"
-        [favoritesCount]="favoritesCount"
-        (dataFromChild)="getDataFromChild($event)"
-      ></app-button-like>
+      <app-button-like [btnName]="'Favorite Article'" [isFavorited]="isFavorited" [favoritesCount]="favoritesCount"
+        (dataFromChild)="getDataFromChild($event)"></app-button-like>
     </div>
   </div>
 </div>

@@ -23,12 +23,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [LoginGuard],
+    // canActivate: [LoginGuard],
   },
   {
     path: 'signup',
     component: SignUpComponent,
-    canActivate: [LoginGuard],
+    // canActivate: [LoginGuard],
   },
   {
     path: 'settings',
