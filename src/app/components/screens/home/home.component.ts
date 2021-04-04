@@ -1,3 +1,4 @@
+import { ArticleService } from './../../../services/article.service';
 import { SingleArticle } from './../../../_models/single-article';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   mode: string = 'myfeed';
+  listTags: any[];
   // data from api
   clickedArticle: SingleArticle = {
     slug: 'how-to-train-your-dragon',
@@ -29,9 +31,16 @@ export class HomeComponent implements OnInit {
   favoritesCount = this.clickedArticle.favoritesCount;
   isFavorited = this.clickedArticle.favorited;
 
-  constructor() {}
+  constructor(private articleService: ArticleService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.articleService.getTag().subscribe((res) => {
+      this.listTags = res.tags.filter((ele) => {
+        return !(ele === '');
+      });
+      // console.log(this.listTags);
+    });
+  }
 
   getDataFromChild(dataFromChild): void {
     // update data to clickedArticle
@@ -39,5 +48,11 @@ export class HomeComponent implements OnInit {
     this.clickedArticle.favoritesCount = dataFromChild.favoritesCount;
     console.log(this.clickedArticle);
     // POST dataFromChild back to Server
+  }
+  myFeedMode() {
+    this.mode = 'myFeedMode';
+  }
+  myGlobalMode() {
+    this.mode = 'myGlobalMode';
   }
 }

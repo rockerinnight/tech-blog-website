@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SingleArticle } from '../_models/single-article';
+import { Tag } from '../_models/tag';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class ArticleService {
   myFeedUrl = 'https://conduit.productionready.io/api/articles/feed';
   globalFeedUrl = 'https://conduit.productionready.io/api/articles';
   articleDetailUrl = 'https://conduit.productionready.io/api/articles/';
+  tagUrl = 'https://conduit.productionready.io/api/tags';
 
   constructor(private http: HttpClient) {}
 
@@ -36,5 +38,9 @@ export class ArticleService {
     return this.http.get(
       this.articleDetailUrl + slug
     ) as Observable<SingleArticle>;
+  }
+
+  getTag() {
+    return this.http.get(this.tagUrl) as Observable<Tag>;
   }
 }
