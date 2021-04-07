@@ -1,3 +1,5 @@
+import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
+import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
 import { LoginGuard } from './_helpers/login.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -13,7 +15,8 @@ import { ArticleDetailComponent } from './components/screens/article-detail/arti
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
   {
     path: 'home',
@@ -22,6 +25,14 @@ const routes: Routes = [
   {
     path: 'articles/:id',
     component: ArticleDetailComponent,
+  },
+  {
+    path: 'myfeed',
+    component: MyFeedComponent,
+  },
+  {
+    path: 'globalfeed',
+    component: GlobalFeedComponent,
   },
   {
     path: 'login',

@@ -14,10 +14,12 @@ export class SettingComponent implements OnInit {
   ngOnInit(): void {
     // GET data from Server
     this.profileData = {
-      username: 'jake',
-      bio: 'I work at statefarm',
-      image: 'https://static.productionready.io/images/smiley-cyrus.jpg',
-      following: false,
+      profile: {
+        username: 'jake',
+        bio: 'I work at statefarm',
+        image: 'https://static.productionready.io/images/smiley-cyrus.jpg',
+        following: false,
+      },
     };
   }
 
