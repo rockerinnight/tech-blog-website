@@ -15,7 +15,8 @@ import { ArticleDetailComponent } from './components/screens/article-detail/arti
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
   {
     path: 'home',
