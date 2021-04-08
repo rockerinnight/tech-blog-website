@@ -5,7 +5,7 @@
     </div>
     <div class="nav navbar-nav pull-xs-right align-baseline">
       <ul class="navbar-nav">
-        <li class="nav-item" (click)="newAriticle()">
+        <li class="nav-item" routerLink="/newArticle">
           <a class="nav-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus"
               viewBox="0 0 16 16">
@@ -28,10 +28,16 @@
           </button>
           <a class="nav-link position-absolute">
             <ul class="navUserItems p-0 list-unstyled position-relative">
-              <li class="border-bottom" routerLinkActive="active" (click)="showProfile()">
+              <li
+                class="border-bottom"
+                routerLinkActive="active"
+                routerLink="/settings"
+              >
                 Profile
               </li>
-              <li class="border-bottom" (click)="showSignUp()">SignUp</li>
+              <li class="border-bottom">
+                <a routerLink="/signup"> SignUp </a>
+              </li>
             </ul>
           </a>
         </li>
