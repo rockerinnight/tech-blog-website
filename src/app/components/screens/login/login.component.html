@@ -19,9 +19,9 @@ git
           <app-button [btnContent]="'Login'" (click)="login()"></app-button>
         </div>
 
-        <!-- <div *ngIf="invalidInput" class="alert alert-danger mt-3 mb-0">
+        <div *ngIf="isInvalidInput" class="alert alert-danger mt-3 mb-0">
           Wrong Email or Password
-        </div> -->
+        </div>
       </form>
     </div>
     <div class="col-3"></div>

@@ -41,7 +41,6 @@ export class HomeComponent implements OnInit {
       // console.log(this.listTags);
     });
   }
-
   // getDataFromChild(dataFromChild): void {
   //   // update data to clickedArticle
   //   this.clickedArticle.favorited = dataFromChild.favorited;

@@ -22,21 +22,11 @@ export class ArticleService {
   constructor(private http: HttpClient) {}
 
   getMyFeed(): Observable<MultiArticle> {
-    return this.http.get(this.myFeedUrl, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<MultiArticle>;
+    return this.http.get(this.myFeedUrl) as Observable<MultiArticle>;
   }
 
   getGlobalFeed() {
-    return this.http.get(this.globalFeedUrl, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<MultiArticle>;
+    return this.http.get(this.globalFeedUrl) as Observable<MultiArticle>;
   }
 
   getArticleDetail(slug) {

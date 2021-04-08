@@ -1,15 +1,18 @@
-import { Profile } from './../_models/profile';
+import { Observable } from 'rxjs';
+import { Profile } from './../models/profile';
 import { config } from './../config';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../_models/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user: User = null;
-  constructor(private http: HttpClient) {}
+  private user: User = null;
+
+  constructor(private http: HttpClient, private router: Router) {}
 
   isAuthenticated(): boolean {
     if (this.user === null) {
@@ -21,12 +24,26 @@ export class AuthService {
     return !!this.user;
   }
 
-  saveToLS(user): void {
-    localStorage.setItem('user', JSON.stringify(user));
+  getUser(): User {
+    return this.user;
+  }
+
+  getProfile(username: string): Observable<Profile> {
+    return this.http.get(
+      config.apiUrl + `/profiles/${username}`
+    ) as Observable<Profile>;
   }
 
   signup(user) {
-    return this.http.post(config.apiUrl + '/users', { user: user });
+    this.http.post(config.apiUrl + '/users', { user: user }).subscribe(
+      (res: any) => {
+        this.logUserIn(res.user);
+        this.router.navigate(['..']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   logUserIn(user): void {
@@ -43,20 +60,19 @@ export class AuthService {
           resolve();
         });
     });
+    // this.http.post(config.apiUrl + '/users/login', { user: user }).subscribe(
+    //   (res: any) => {
+    //     this.logUserIn(res.user);
+    //     this.router.navigate(['..']));
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //   }
+    // );
   }
 
-  // logout() {
-  //   return this.http
-  //     .post<any>(`${config.apiUrl}/logout`, {
-  //       refreshToken: this.getRefreshToken(),
-  //     })
-  //     .pipe(
-  //       tap(() => this.doLogoutUser()),
-  //       mapTo(true),
-  //       catchError((error) => {
-  //         alert(error.error);
-  //         return of(false);
-  //       })
-  //     );
-  // }
+  logout() {
+    localStorage.removeItem('user');
+    this.router.navigate(['..']);
+  }
 }

@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  invalidInput: boolean = null;
+  isInvalidInput: boolean = null;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -28,14 +28,13 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.value);
-    // console.log('logged in!');
-    // let result = this.authService.login(this.loginForm.value);
-    // console.log(result);
-
-    // if (!result) {
-    //   this.invalidCreditError = true;
-    //   return;
+    this.authService
+      .login(this.loginForm.value)
+      .then(() => this.router.navigate(['..']));
+    // this.authService.login(this.loginForm.value);
+    // if (this.authService.isAuthenticated()) {
+    //   this.isInvalidInput = true;
     // }
+    // this.isInvalidInput = false;
   }
 }
