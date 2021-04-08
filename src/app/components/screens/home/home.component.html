@@ -1,13 +1,42 @@
-<app-nav-bar></app-nav-bar>
-<app-global-feed></app-global-feed>
-<div class="container mt-5">
+
+<div class="container">
   <div class="row">
-    <div class="col d-flex justify-content-center align-items-center">
-      <app-button-like
-        [isFavorited]="isFavorited"
-        [favoritesCount]="favoritesCount"
-        (dataFromChild)="getDataFromChild($event)"
-      ></app-button-like>
+    <div class="col-9">
+      <nav>
+        <div class="nav nav-tabs">
+          <span
+            class="nav-link"
+            [class.active]="mode === 'myFeedMode'"
+            (click)="myFeedMode()"
+            >My Feed</span
+          >
+          <span
+            class="nav-link"
+            [class.active]="mode === 'myGlobalMode'"
+            (click)="myGlobalMode()"
+            >Global Feed</span
+          >
+        </div>
+      </nav>
+      <div class="tab-content">
+        <div class="tab-pane fade show active">
+          <app-my-feed *ngIf="mode === 'myFeedMode'"></app-my-feed>
+          <app-global-feed *ngIf="mode === 'myGlobalMode'"></app-global-feed>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="popular-tags bg-light p-2">
+        <p class="pl-1">Popular Tags</p>
+        <div class="listtags d-flex flex-wrap">
+          <a
+            class="btn btn-secondary m-1 py-0 rounded-pill"
+            href=""
+            *ngFor="let tag of listTags"
+            >{{ tag }}</a
+          >
+        </div>
+      </div>
     </div>
   </div>
 </div>

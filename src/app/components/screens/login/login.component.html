@@ -2,38 +2,25 @@ git
 <div class="container">
   <div class="row mt-5">
     <div class="col-3"></div>
-    <div class="col-6 d-flex flex-column text-center">
-      <div class="h2 mb-3">Sign in</div>
+    <div class="col-6 d-flex flex-column">
+      <div class="h2 mb-3 text-center">Login</div>
       <form [formGroup]="loginForm">
-        <div class="form-group input-group input-group-lg">
-          <input
-            class="form-control"
-            placeholder="Email"
-            type="email"
-            formControlName="email"
-          />
-          <!-- <div *ngIf="" class="invalid-feedback">
-            <div *ngIf="">Username is required</div>
-          </div> -->
+        <div class="form-group">
+          <input class="form-control" placeholder="Email" type="email" formControlName="email" />
+          <small *ngIf="loginForm.controls.email.invalid" class="text-danger">
+            Email is required</small>
         </div>
-        <div class="form-group input-group input-group-lg">
-          <input
-            class="form-control"
-            placeholder="Password"
-            type="password"
-            formControlName="password"
-          />
-          <!-- <div *ngIf="" class="invalid-feedback">
-            <div *ngIf="">Password is required</div>
-          </div> -->
+        <div class="form-group">
+          <input class="form-control" placeholder="Password" type="password" formControlName="password" />
+          <small *ngIf="loginForm.controls.password.invalid" class="text-danger">Password is required</small>
         </div>
-        <a class="d-block mb-3" routerLink="/signup">Need an account?</a>
+        <a class="d-block mb-3 text-center" routerLink="/signup">Already have an account?</a>
         <div class="d-flex justify-content-center">
           <app-button [btnContent]="'Login'" (click)="login()"></app-button>
         </div>
 
-        <!-- <div *ngIf="" class="alert alert-danger mt-3 mb-0">
-          {{ error }}
+        <!-- <div *ngIf="invalidInput" class="alert alert-danger mt-3 mb-0">
+          Wrong Email or Password
         </div> -->
       </form>
     </div>

@@ -1,3 +1,4 @@
+import { CommentCardComponent } from './components/commons/comment-card/comment-card.component';
 // import { TokenInterceptor } from './_helpers/token.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -20,14 +21,13 @@ import { ArticleDetailComponent } from './components/screens/article-detail/arti
 import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
 import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
 import { ArticleService } from './services/article.service';
-import { AuthInterceptor } from './auth.interceptor';
+// import { AuthInterceptor } from './auth.interceptor';
 import { ArticleCardComponent } from './components/commons/article-card/article-card.component';
-import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { ButtonLikeComponent } from './components/commons/button-like/button-like.component';
 import { ButtonTagComponent } from './components/commons/button-tag/button-tag.component';
 import { ButtonFollowComponent } from './components/commons/button-follow/button-follow.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
-import { CommentCardComponent } from './components/commons/comment-card/comment-card.component';
+import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 
 @NgModule({
   declarations: [
@@ -64,11 +64,11 @@ import { CommentCardComponent } from './components/commons/comment-card/comment-
   ],
   providers: [
     ArticleService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true,
+    // },
   ],
   bootstrap: [AppComponent],
 })
