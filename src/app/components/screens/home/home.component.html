@@ -5,5 +5,6 @@
       <app-button-like [btnName]="'Favorite Article'" [isFavorited]="isFavorited" [favoritesCount]="favoritesCount"
         (dataFromChild)="getDataFromChild($event)"></app-button-like>
     </div>
+    <a routerLink="/profile/{{clickedArticle?.author.username}}">Go to Profile</a>
   </div>
 </div>

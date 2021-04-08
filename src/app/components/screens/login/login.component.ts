@@ -28,13 +28,13 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.loginForm.value);
-    if (this.authService.isAuthenticated()) {
-      this.isInvalidInput = true;
-    }
-    this.isInvalidInput = false;
-    // this.authService
-    //   .login(this.loginForm.value)
-    //   .then(() => this.router.navigateByUrl('home'));
+    this.authService
+      .login(this.loginForm.value)
+      .then(() => this.router.navigate(['..']));
+    // this.authService.login(this.loginForm.value);
+    // if (this.authService.isAuthenticated()) {
+    //   this.isInvalidInput = true;
+    // }
+    // this.isInvalidInput = false;
   }
 }

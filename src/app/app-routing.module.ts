@@ -1,3 +1,4 @@
+import { ProfileComponent } from './components/screens/profile/profile.component';
 import { LoginGuard } from './_helpers/login.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -24,7 +25,7 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    // canActivate: [LoginGuard],
+    canActivate: [LoginGuard],
   },
   {
     path: 'signup',
@@ -32,7 +33,12 @@ const routes: Routes = [
     // canActivate: [LoginGuard],
   },
   {
-    path: 'settings',
+    path: 'profile/:id',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'setting',
     component: SettingComponent,
     canActivate: [AuthGuard],
   },

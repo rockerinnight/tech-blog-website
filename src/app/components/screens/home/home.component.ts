@@ -9,26 +9,24 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   // data from api
   clickedArticle: SingleArticle = {
-    article: {
-      slug: 'how-to-train-your-dragon',
-      title: 'How to train your dragon',
-      description: 'Ever wonder how?',
-      body: 'It takes a Jacobian',
-      tagList: ['dragons', 'training'],
-      createdAt: '2016-02-18T03:22:56.637Z',
-      updatedAt: '2016-02-18T03:48:35.824Z',
-      favorited: false,
-      favoritesCount: 0,
-      author: {
-        username: 'jake',
-        bio: 'I work at statefarm',
-        image: 'https://i.stack.imgur.com/xHWG8.jpg',
-        following: false,
-      },
+    slug: 'how-to-train-your-dragon',
+    title: 'How to train your dragon',
+    description: 'Ever wonder how?',
+    body: 'It takes a Jacobian',
+    tagList: ['dragons', 'training'],
+    createdAt: '2016-02-18T03:22:56.637Z',
+    updatedAt: '2016-02-18T03:48:35.824Z',
+    favorited: false,
+    favoritesCount: 0,
+    author: {
+      username: 'jake',
+      bio: 'I work at statefarm',
+      image: 'https://i.stack.imgur.com/xHWG8.jpg',
+      following: false,
     },
   };
-  favoritesCount = this.clickedArticle.article.favoritesCount;
-  isFavorited = this.clickedArticle.article.favorited;
+  favoritesCount = this.clickedArticle.favoritesCount;
+  isFavorited = this.clickedArticle.favorited;
 
   constructor() {}
 
@@ -39,8 +37,8 @@ export class HomeComponent implements OnInit {
     favoritesCount: number;
   }): void {
     // update data to clickedArticle
-    this.clickedArticle.article.favorited = dataFromChild.favorited;
-    this.clickedArticle.article.favoritesCount = dataFromChild.favoritesCount;
+    this.clickedArticle.favorited = dataFromChild.favorited;
+    this.clickedArticle.favoritesCount = dataFromChild.favoritesCount;
     console.log(this.clickedArticle);
     // POST dataFromChild back to Server
   }

@@ -29,6 +29,7 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp(): void {
+    const currURL = this.router.url;
     this.authService.signup(this.signupForm.value);
     if (this.authService.isAuthenticated()) {
       this.isInvalidInput = true;

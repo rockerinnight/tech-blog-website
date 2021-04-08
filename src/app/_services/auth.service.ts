@@ -1,4 +1,5 @@
-import { Profile } from './../_models/profile';
+import { Observable } from 'rxjs';
+import { Profile } from './../models/profile';
 import { config } from './../config';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -9,7 +10,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  user: User = null;
+  private user: User = null;
+
   constructor(private http: HttpClient, private router: Router) {}
 
   isAuthenticated(): boolean {
@@ -22,11 +24,21 @@ export class AuthService {
     return !!this.user;
   }
 
+  getUser(): User {
+    return this.user;
+  }
+
+  getProfile(username: string): Observable<Profile> {
+    return this.http.get(
+      config.apiUrl + `/profiles/${username}`
+    ) as Observable<Profile>;
+  }
+
   signup(user) {
     this.http.post(config.apiUrl + '/users', { user: user }).subscribe(
       (res: any) => {
         this.logUserIn(res.user);
-        this.router.navigateByUrl('/home');
+        this.router.navigate(['..']);
       },
       (error) => {
         console.log(error);
@@ -40,37 +52,27 @@ export class AuthService {
   }
 
   login(user) {
-    this.http.post(config.apiUrl + '/users/login', { user: user }).subscribe(
-      (res: any) => {
-        this.logUserIn(res.user);
-        this.router.navigateByUrl('/home');
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-    // return new Promise<void>((resolve, reject) => {
-    //   this.http
-    //     .post(config.apiUrl + '/users/login', { user: user })
-    //     .subscribe((res: any) => {
-    //       this.logUserIn(res.user);
-    //       resolve();
-    //     });
-    // });
+    return new Promise<void>((resolve, reject) => {
+      this.http
+        .post(config.apiUrl + '/users/login', { user: user })
+        .subscribe((res: any) => {
+          this.logUserIn(res.user);
+          resolve();
+        });
+    });
+    // this.http.post(config.apiUrl + '/users/login', { user: user }).subscribe(
+    //   (res: any) => {
+    //     this.logUserIn(res.user);
+    //     this.router.navigate(['..']));
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //   }
+    // );
   }
 
-  // logout() {
-  //   return this.http
-  //     .post<any>(`${config.apiUrl}/logout`, {
-  //       refreshToken: this.getRefreshToken(),
-  //     })
-  //     .pipe(
-  //       tap(() => this.doLogoutUser()),
-  //       mapTo(true),
-  //       catchError((error) => {
-  //         alert(error.error);
-  //         return of(false);
-  //       })
-  //     );
-  // }
+  logout() {
+    localStorage.removeItem('user');
+    this.router.navigate(['..']);
+  }
 }

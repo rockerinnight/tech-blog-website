@@ -1,9 +1,9 @@
 import { CommentCardComponent } from './components/commons/comment-card/comment-card.component';
-// import { TokenInterceptor } from './_helpers/token.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,8 +20,6 @@ import { FooterComponent } from './components/commons/footer/footer.component';
 import { ArticleDetailComponent } from './components/screens/article-detail/article-detail.component';
 import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
 import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
-import { ArticleService } from './services/article.service';
-// import { AuthInterceptor } from './auth.interceptor';
 import { ArticleCardComponent } from './components/commons/article-card/article-card.component';
 import { ButtonLikeComponent } from './components/commons/button-like/button-like.component';
 import { ButtonTagComponent } from './components/commons/button-tag/button-tag.component';
@@ -63,12 +61,11 @@ import { NewAriticleComponent } from './components/commons/new-ariticle/new-arit
     HttpClientModule,
   ],
   providers: [
-    ArticleService,
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptor,
-    //   multi: true,
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
