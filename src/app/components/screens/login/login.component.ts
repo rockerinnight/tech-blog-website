@@ -10,7 +10,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  isInvalidInput: boolean = null;
 
   constructor(private router: Router, private authService: AuthService) {}
 

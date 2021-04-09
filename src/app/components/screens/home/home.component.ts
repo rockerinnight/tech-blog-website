@@ -1,6 +1,7 @@
 import { ArticleService } from './../../../services/article.service';
 import { SingleArticle } from './../../../_models/single-article';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  mode: string = 'myFeedMode';
+  mode: string = this.authService.isAuthenticated()
+    ? 'myFeedMode'
+    : 'myGlobalMode';
   listTags: any[];
 
-  constructor(private articleService: ArticleService) {}
+  constructor(
+    private articleService: ArticleService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.articleService.getTag().subscribe((res) => {

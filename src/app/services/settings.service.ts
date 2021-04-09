@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class SettingsService {
-  baseUrl = 'https://conduit.productionready.io/api/profiles/:DaDV2';
+  baseUrl = 'https://conduit.productionready.io/api/profiles/DaDV2';
 
   constructor(private http: HttpClient) {}
   getSettings() {

@@ -1,27 +1,15 @@
 <div class="container">
   <nav class="navbar navbar-expand-lg d-flex justify-content-between align-baseline">
     <div>
-      <a class="navbar-brand conduit" routerLink="/"
-        ><b class="text-white">conduit</b></a
-      >
+      <a class="navbar-brand conduit" routerLink="/"><b class="text-white">conduit</b></a>
     </div>
-    <div
-      class="nav navbar-nav pull-xs-right align-baseline d-flex align-items-center"
-    >
+    <div class="nav navbar-nav pull-xs-right align-baseline d-flex align-items-center">
       <ul class="navbar-nav">
-        <li class="nav-item" (click)="newAriticle()">
-          <a
-            class="nav-link text-white font-weight-bolder"
-            routerLink="/new-article"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-              fill="currentColor"
-              class="bi bi-plus"
-              viewBox="0 0 16 16"
-            >
+        <li class="nav-item">
+          <a class="nav-link text-white font-weight-bolder" routerLink="/new-article">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus"
+              viewBox="0 0 16 16">
+
               <path
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
             </svg>
@@ -29,26 +17,12 @@
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link text-white font-weight-bolder"
-            routerLink="/my-article"
-          >
-            My Article
-          </a>
+          <a class="nav-link text-white font-weight-bolder" routerLink="/profile/{{username}}"> My Article </a>
         </li>
         <li class="nav-item Users">
-          <button
-            class="btn pt-0 mt-0 dropdown-toggle text-white"
-            data-toggle="dropdown"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-              fill="currentColor"
-              class="bi bi-person-circle"
-              viewBox="0 0 16 16"
-            >
+          <button class="btn pt-0 mt-0 dropdown-toggle text-white" data-toggle="dropdown">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+              class="bi bi-person-circle" viewBox="0 0 16 16">
               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
               <path fill-rule="evenodd"
                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
@@ -56,15 +30,14 @@
           </button>
           <a class="nav-link position-absolute">
             <ul class="navUserItems p-0 list-unstyled position-relative">
-              <li
-                class="border-bottom"
-                routerLinkActive="active"
-                routerLink="/settings"
-              >
-                Profile
+              <li class="border-bottom">
+                <a routerLinkActive="active" routerLink="/settings" *ngIf="authService?.isAuthenticated()">Profile</a>
               </li>
               <li class="border-bottom">
-                <a routerLink="/signup"> SignUp </a>
+                <a routerLink="/login" *ngIf="!authService?.isAuthenticated()">Login</a>
+              </li>
+              <li class="border-bottom">
+                <div class="nav-link" (click)="logout()" *ngIf="authService?.isAuthenticated()">Logout</div>
               </li>
             </ul>
           </a>

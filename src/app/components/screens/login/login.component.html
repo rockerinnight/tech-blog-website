@@ -1,4 +1,3 @@
-git
 <div class="container">
   <div class="row mt-5">
     <div class="col-3"></div>
@@ -8,18 +7,18 @@ git
         <div class="form-group">
           <input class="form-control" placeholder="Email" type="email" formControlName="email" />
           <small *ngIf="loginForm.controls.email.invalid" class="text-danger">
-            Email is required</small>
+            * Email is required</small>
         </div>
         <div class="form-group">
           <input class="form-control" placeholder="Password" type="password" formControlName="password" />
-          <small *ngIf="loginForm.controls.password.invalid" class="text-danger">Password is required</small>
+          <small *ngIf="loginForm.controls.password.invalid" class="text-danger">* Password is required</small>
         </div>
         <a class="d-block mb-3 text-center" routerLink="/signup">Already have an account?</a>
         <div class="d-flex justify-content-center">
           <app-button [btnContent]="'Login'" (click)="login()"></app-button>
         </div>
 
-        <div *ngIf="isInvalidInput" class="alert alert-danger mt-3 mb-0">
+        <div *ngIf="loginForm.invalid" class="alert alert-danger mt-3 mb-0">
           Wrong Email or Password
         </div>
       </form>
