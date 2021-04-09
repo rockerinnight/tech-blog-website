@@ -1,3 +1,4 @@
+import { AuthService } from './_services/auth.service';
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -10,17 +11,14 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    let user = localStorage.getItem('user') || null;
-
-    if (user) {
-      let token = user['user']['token'];
-
+    if (this.authService.isAuthenticated()) {
+      let token = this.authService.getUser()['token'];
       let authRequest = request.clone({
         headers: new HttpHeaders({
           Authorization: 'Token ' + token,
@@ -28,6 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
       });
       return next.handle(authRequest);
     }
+
     return next.handle(request);
   }
 }

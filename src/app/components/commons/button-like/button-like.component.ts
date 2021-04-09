@@ -11,7 +11,11 @@ export class ButtonLikeComponent implements OnInit {
   @Input('btnContent') btnContent: string;
   @Input('isFavorited') isFavorited: boolean;
   @Input('favoritesCount') favoritesCount: number;
-  @Output('dataFromChild') dataFromChild = new EventEmitter();
+  @Input('btnName') btnName: string;
+  @Output('dataFromChild') dataFromChild = new EventEmitter<{
+    favorited: boolean;
+    favoritesCount: number;
+  }>();
 
   constructor() {}
 

@@ -1,6 +1,7 @@
 import { Profile } from './../../../_models/profile';
 import { Component, OnInit } from '@angular/core';
-import { SettingService } from 'src/app/setting.service';
+import { SettingsService } from 'src/app/services/settings.service';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-setting',
@@ -8,8 +9,12 @@ import { SettingService } from 'src/app/setting.service';
   styleUrls: ['./setting.component.scss'],
 })
 export class SettingComponent implements OnInit {
-  public profileData: Profile = null;
-  constructor() {}
+  // public profileData: Profile = null;
+  CurrentUser;
+  constructor(
+    private settingsService: SettingsService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     // GET data from Server
@@ -21,7 +26,6 @@ export class SettingComponent implements OnInit {
         following: false,
       },
     };
-  }
 
   updateSettings(): void {
     // update new Settings to Server

@@ -68,7 +68,7 @@ export class ArticleDetailComponent implements OnInit {
     });
   }
 
-  addComments() {
+addComments() {
     this.articleService;
   }
 }

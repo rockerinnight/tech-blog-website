@@ -20,7 +20,6 @@ export class HomeComponent implements OnInit {
       });
     });
   }
-
   myFeedMode() {
     this.mode = 'myFeedMode';
   }
