@@ -10,6 +10,7 @@ import { ArticleService } from './../../../services/article.service';
 })
 export class ArticleDetailComponent implements OnInit {
   articleDetail: any = {};
+  tagLists: any[];
   follow: boolean;
   favorite: boolean;
   favoritesCount: number;
@@ -23,6 +24,7 @@ export class ArticleDetailComponent implements OnInit {
     this.router.params.subscribe((res) => {
       this.articleService.getArticleDetail(res.id).subscribe((article) => {
         this.articleDetail = article;
+        this.tagLists = this.articleDetail.article.tagList;
         this.follow = this.articleDetail.article.author.following;
         this.favorite = this.articleDetail.article.favorited;
         this.favoritesCount = this.articleDetail.article.favoritesCount;
@@ -64,5 +66,9 @@ export class ArticleDetailComponent implements OnInit {
     this.articleService.favoriteArticle(slug).subscribe((res) => {
       // console.log(res);
     });
+  }
+
+  addComments() {
+    this.articleService;
   }
 }

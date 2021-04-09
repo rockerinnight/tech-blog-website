@@ -1,15 +1,21 @@
-
 <div class="container">
   <nav
     class="navbar navbar-expand-lg d-flex justify-content-between align-baseline"
   >
     <div>
-      <a class="navbar-brand conduit" routerLink="/"><b>conduit</b></a>
+      <a class="navbar-brand conduit" routerLink="/"
+        ><b class="text-white">conduit</b></a
+      >
     </div>
-    <div class="nav navbar-nav pull-xs-right align-baseline">
+    <div
+      class="nav navbar-nav pull-xs-right align-baseline d-flex align-items-center"
+    >
       <ul class="navbar-nav">
         <li class="nav-item" (click)="newAriticle()">
-          <a class="nav-link">
+          <a
+            class="nav-link text-white font-weight-bolder"
+            routerLink="/new-article"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -22,13 +28,22 @@
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
               />
             </svg>
+            <span>New Article</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/"> My Article </a>
+          <a
+            class="nav-link text-white font-weight-bolder"
+            routerLink="/my-article"
+          >
+            My Article
+          </a>
         </li>
         <li class="nav-item Users">
-          <button class="btn pt-0 mt-0 dropdown-toggle" data-toggle="dropdown">
+          <button
+            class="btn pt-0 mt-0 dropdown-toggle text-white"
+            data-toggle="dropdown"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"

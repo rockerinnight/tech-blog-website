@@ -1,7 +1,6 @@
-<button
-  type="button"
-  class="btn btn-outline-success btn-lg d-flex align-items-center mr-2"
-  [class.active]="isFavorited"
+<span
+  class="btn btn-outline-p-dark btn-sm d-flex align-items-center mr-2"
+  [class.active2]="isFavorited"
   (click)="clickHandler()"
 >
   <svg
@@ -18,4 +17,4 @@
     />
   </svg>
   <span>{{ btnContent }} {{ favoritesCount }}</span>
-</button>
+</span>

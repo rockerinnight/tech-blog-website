@@ -1,5 +1,6 @@
+import { Component, Input, OnInit } from '@angular/core';
 import { SingleArticle } from './../../../models/single-article';
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { ArticleService } from 'src/app/services/article.service';
 
 @Component({
   selector: 'app-article-card',
@@ -8,6 +9,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 })
 export class ArticleCardComponent implements OnInit {
   @Input('data') data: SingleArticle;
+  tagLists: any[];
 
   clickedArticle: SingleArticle = {
     slug: 'how-to-train-your-dragon',
@@ -31,7 +33,10 @@ export class ArticleCardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.data.tagList);
+    this.tagLists = this.data.tagList;
+  }
 
   getDataFromChild(dataFromChild): void {
     // update data to clickedArticle

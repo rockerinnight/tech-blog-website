@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SingleArticle } from '../_models/single-article';
 import { Tag } from '../_models/tag';
 import { Profile } from '../_models/profile';
+import { SingleComment } from '../_models/single-comment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,8 @@ export class ArticleService {
   tagUrl = 'https://conduit.productionready.io/api/tags';
   profileUrl = 'https://conduit.productionready.io/api';
   followUserUrl = 'https://conduit.productionready.io/api/profiles/';
-
   favoriteUrl = 'https://conduit.productionready.io//api/articles/';
+  editArticleUrl = 'https://conduit.productionready.io//api/articles/';
 
   constructor(private http: HttpClient) {}
 
@@ -57,6 +58,7 @@ export class ArticleService {
       },
     }) as Observable<Profile>;
   }
+
   followUser(userName) {
     return this.http.post(this.followUserUrl + `${userName}/follow`, '', {
       headers: {
@@ -91,5 +93,48 @@ export class ArticleService {
           'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
       },
     }) as Observable<SingleArticle>;
+  }
+
+  editArticle(slug) {
+    return this.http.put(
+      this.editArticleUrl + `${slug}`,
+      {
+        article: {
+          title: 'Did you train your dragon?',
+        },
+      },
+      {
+        headers: {
+          Authorization:
+            'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
+        },
+      }
+    ) as Observable<SingleArticle>;
+  }
+
+  deteleArticle(slug) {
+    return this.http.delete(this.editArticleUrl + `${slug}`, {
+      headers: {
+        Authorization:
+          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
+      },
+    }) as Observable<SingleArticle>;
+  }
+
+  addComments(slug) {
+    return this.http.post(
+      this.editArticleUrl + `${slug}/comments`,
+      {
+        comment: {
+          body: 'His name was my name too.',
+        },
+      },
+      {
+        headers: {
+          Authorization:
+            'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
+        },
+      }
+    ) as Observable<SingleComment>;
   }
 }
