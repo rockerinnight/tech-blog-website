@@ -18,16 +18,14 @@ export class SettingComponent implements OnInit {
 
   ngOnInit(): void {
     // GET data from Server
-    // this.profileData = {
-    //   username: 'jake',
-    //   bio: 'I work at statefarm',
-    //   image: 'https://static.productionready.io/images/smiley-cyrus.jpg',
-    //   following: false,
-    // };
-    this.settingsService.getSettings().subscribe((res) => {
-      console.log(res);
-    });
-  }
+    this.profileData = {
+      profile: {
+        username: 'jake',
+        bio: 'I work at statefarm',
+        image: 'https://static.productionready.io/images/smiley-cyrus.jpg',
+        following: false,
+      },
+    };
 
   updateSettings(): void {
     // update new Settings to Server

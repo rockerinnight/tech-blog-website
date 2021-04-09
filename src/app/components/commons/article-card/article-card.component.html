@@ -1,12 +1,14 @@
-<div class="article-card py-3">
+<div class="article-card py-3 border-bottom">
   <div class="d-flex justify-content-between align-content-center">
     <div class="avatar d-flex">
       <div>
         <img class="rounded-circle" width="40px" height="40px" [src]="data.author.image" alt="" />
       </div>
       <div class="ml-2">
-        <a class="mb-0">{{ data.author?.username }}</a>
-        <small>{{ data.createdAt | date }}</small>
+        <a class="mb-0 font-weight-bold text-decoration-none text-p-dark">{{
+          data.author?.username
+        }}</a>
+        <p>{{ data.createdAt | date }}</p>
       </div>
     </div>
     <div class="heart-button d-flex align-content-center">
@@ -17,9 +19,19 @@
       ></app-button-like>
     </div>
   </div>
-  <h4>
-    <a routerLink="/articles/{{ data.slug }}">{{ data.title }}</a>
+  <h4 class="">
+    <a
+      class="text-decoration-none text-p-dark"
+      routerLink="/articles/{{ data.slug }}"
+      >{{ data.title }}</a
+    >
   </h4>
   <p>{{ data.description }}</p>
-  <a href="">Read more...</a>
+  <span *ngFor="let tag of tagLists">
+    <a
+      class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"
+      routerLink="/articles/{{ data.slug }}"
+      >#{{ tag }}</a
+    >
+  </span>
 </div>
