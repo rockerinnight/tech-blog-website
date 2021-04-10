@@ -6,8 +6,7 @@
     <div class="container">
       <div class="row">
         <div class="col d-flex justify-content-end">
-          <button class="btn btn-outline-success">Edit Profile Settings</button>
-          <button class="btn btn-outline-success" (click)="logout()">Log out for Test</button>
+          <button class="btn btn-outline-p-dark">Edit Profile Settings</button>
         </div>
       </div>
     </div>
@@ -16,15 +15,16 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-tabs text-p-dark">
         <li class="nav-item">
-          <a class="nav-link btn text-success" [class.active]="onSelected" (click)="switchTab('my-articles')">My
-            Articles</a>
+          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="onSelected"
+            (click)="switchTab('my-articles')">My
+            Articles</span>
         </li>
         <li class="nav-item">
-          <a class="nav-link btn text-success" [class.active]="!onSelected"
+          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="!onSelected"
             (click)="switchTab('favorite-articles')">Favorites
-            Articles</a>
+            Articles</span>
         </li>
       </ul>
     </div>

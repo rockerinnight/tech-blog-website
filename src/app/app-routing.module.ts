@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
-import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
 import { ProfileComponent } from './components/screens/profile/profile.component';
 import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
 import { SettingComponent } from './components/screens/setting/setting.component';
@@ -28,14 +26,14 @@ const routes: Routes = [
     path: 'articles/:id',
     component: ArticleDetailComponent,
   },
-  {
-    path: 'myfeed',
-    component: MyFeedComponent,
-  },
-  {
-    path: 'globalfeed',
-    component: GlobalFeedComponent,
-  },
+  // {
+  //   path: 'myfeed',
+  //   component: MyFeedComponent,
+  // },
+  // {
+  //   path: 'globalfeed',
+  //   component: GlobalFeedComponent,
+  // },
   {
     path: 'login',
     component: LoginComponent,
@@ -44,7 +42,7 @@ const routes: Routes = [
   {
     path: 'signup',
     component: SignUpComponent,
-    // canActivate: [LoginGuard],
+    canActivate: [LoginGuard],
   },
   {
     path: 'profile/:id',

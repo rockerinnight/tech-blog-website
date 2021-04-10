@@ -31,8 +31,14 @@ export class ProfileComponent implements OnInit {
     this.authService.getProfile(username).subscribe(
       // valid user -> route to that user's profile
       (res: any) => {
+        console.log(res);
         this.myProfile = res.profile;
-        console.log(this.myProfile);
+        if (this.myProfile.image === '') {
+          console.log(this.myProfile);
+          this.myProfile.image =
+            'https://static.productionready.io/images/smiley-cyrus.jpg';
+          console.log(this.myProfile);
+        }
       },
       // if error - user not in DB -> route to not-found-page
       (error) => {

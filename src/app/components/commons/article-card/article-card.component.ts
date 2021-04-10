@@ -34,7 +34,7 @@ export class ArticleCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.data.tagList);
+    // console.log(this.data.tagList);
     this.tagLists = this.data.tagList;
   }
 

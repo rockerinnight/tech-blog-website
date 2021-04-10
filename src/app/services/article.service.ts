@@ -6,13 +6,12 @@ import { SingleArticle } from '../_models/single-article';
 import { Tag } from '../_models/tag';
 import { Profile } from '../_models/profile';
 import { SingleComment } from '../_models/single-comment';
+import { config } from '../config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticleService {
-  myFeedUrl = 'https://conduit.productionready.io/api/articles/feed';
-  globalFeedUrl = 'https://conduit.productionready.io/api/articles';
   articleDetailUrl = 'https://conduit.productionready.io/api/articles/';
   tagUrl = 'https://conduit.productionready.io/api/tags';
   profileUrl = 'https://conduit.productionready.io/api';
@@ -20,160 +19,74 @@ export class ArticleService {
   favoriteUrl = 'https://conduit.productionready.io//api/articles/';
   editArticleUrl = 'https://conduit.productionready.io//api/articles/';
 
-
   constructor(private http: HttpClient) {}
 
   getMyFeed(): Observable<MultiArticle> {
-    return this.http.get(this.myFeedUrl) as Observable<MultiArticle>;
-  }
-
-  getGlobalFeed() {
-    return this.http.get(this.globalFeedUrl) as Observable<MultiArticle>;
-  }
-
-  getArticleDetail(slug) {
     return this.http.get(
-      this.articleDetailUrl + slug
-    ) as Observable<SingleArticle>;
+      config.apiUrl + '/articles/feed'
+    ) as Observable<MultiArticle>;
   }
 
-  getTag() {
-    return this.http.get(this.tagUrl) as Observable<Tag>;
+  getGlobalFeed(): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl + '/articles'
+    ) as Observable<MultiArticle>;
   }
 
-  getProfile(userName) {
-    return this.http.get(this.profileUrl + `${userName}`, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<Profile>;
-  }
-  followUser(userName) {
-    return this.http.post(this.followUserUrl + `${userName}/follow`, '', {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<Profile>;
+  getArticleDetail(slug: string): Observable<SingleArticle> {
+    return this.http.get(config.apiUrl + slug) as Observable<SingleArticle>;
   }
 
-  unFollowUser(userName) {
-    return this.http.delete(this.followUserUrl + `${userName}/follow`, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
+  getTag(): Observable<Tag> {
+    return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
+  }
+
+  followUser(userName): Observable<Profile> {
+    return this.http.post(config.apiUrl + `/profiles/${userName}/follow`, {
+      user: {},
     }) as Observable<Profile>;
   }
 
-  favoriteArticle(slug) {
-    return this.http.post(this.favoriteUrl + `${slug}/favorite`, '', {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<SingleArticle>;
+  unFollowUser(userName): Observable<Profile> {
+    return this.http.delete(
+      config.apiUrl + `/profiles/${userName}/follow`
+    ) as Observable<Profile>;
   }
 
-  unFavoriteArticle(slug) {
-    return this.http.delete(this.favoriteUrl + `${slug}/favorite`, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<SingleArticle>;
-  }
-
-  getTag() {
-    return this.http.get(this.tagUrl) as Observable<Tag>;
-  }
-
-  getProfile(userName) {
-    return this.http.get(this.profileUrl + `${userName}`, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<Profile>;
-  }
-
-  followUser(userName) {
-    return this.http.post(this.followUserUrl + `${userName}/follow`, '', {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<Profile>;
-  }
-
-  unFollowUser(userName) {
-    return this.http.delete(this.followUserUrl + `${userName}/follow`, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<Profile>;
-  }
-
-  favoriteArticle(slug) {
-    return this.http.post(this.favoriteUrl + `${slug}/favorite`, '', {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<SingleArticle>;
-  }
-
-  unFavoriteArticle(slug) {
-    return this.http.delete(this.favoriteUrl + `${slug}/favorite`, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<SingleArticle>;
-  }
-
-  editArticle(slug) {
-    return this.http.put(
-      this.editArticleUrl + `${slug}`,
-      {
-        article: {
-          title: 'Did you train your dragon?',
-        },
-      },
-      {
-        headers: {
-          Authorization:
-            'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-        },
-      }
-    ) as Observable<SingleArticle>;
-  }
-
-  deteleArticle(slug) {
-    return this.http.delete(this.editArticleUrl + `${slug}`, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-      },
-    }) as Observable<SingleArticle>;
-  }
-
-  addComments(slug) {
+  favoriteArticle(slug): Observable<SingleArticle> {
     return this.http.post(
-      this.editArticleUrl + `${slug}/comments`,
-      {
-        comment: {
-          body: 'His name was my name too.',
-        },
+      config.apiUrl + `/articles/${slug}/favorite`,
+      ''
+    ) as Observable<SingleArticle>;
+  }
+
+  unFavoriteArticle(slug): Observable<SingleArticle> {
+    return this.http.delete(
+      config.apiUrl + `/articles/${slug}/favorite`
+    ) as Observable<SingleArticle>;
+  }
+
+  editArticle(updatedArticle: SingleArticle): Observable<any> {
+    const slug = updatedArticle.slug;
+    return this.http.put(config.apiUrl + `/articles/${slug}`, {
+      article: {
+        ...updatedArticle,
       },
-      {
-        headers: {
-          Authorization:
-            'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUyNzM3LCJ1c2VybmFtZSI6IkRpZW5OTTIiLCJleHAiOjE2MjE4NTk1NTh9.2lU3H8ikbcpfNMz8RrBGLlIy4mLqDgbgd547gAjugaE',
-        },
-      }
-    ) as Observable<SingleComment>;
+    }) as Observable<any>;
+  }
+
+  deteleArticle(slug): Observable<SingleArticle> {
+    return this.http.delete(
+      config.apiUrl + `/articles/${slug}`
+    ) as Observable<SingleArticle>;
+  }
+
+  addComments(
+    newComment: SingleComment,
+    slug: string
+  ): Observable<SingleComment> {
+    return this.http.post(config.apiUrl + `/articles/${slug}/comments`, {
+      ...newComment,
+    }) as Observable<SingleComment>;
   }
 }

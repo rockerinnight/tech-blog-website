@@ -3,9 +3,10 @@
     <div class="col-9 shadow-lg">
       <nav>
         <div class="nav nav-tabs text-p-dark">
-          <span class="nav-link font-weight-bold" [class.active]="mode === 'myFeedMode'" (click)="myFeedMode()">My
+          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="mode === 'myFeedMode'"
+            (click)="myFeedMode()" *ngIf="authService.isAuthenticated()">My
             Feed</span>
-          <span class="nav-link font-weight-bold" [class.active]="mode === 'myGlobalMode'"
+          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="mode === 'myGlobalMode'"
             (click)="myGlobalMode()">Global Feed</span>
         </div>
       </nav>

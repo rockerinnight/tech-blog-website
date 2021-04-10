@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/_services/auth.service';
   styleUrls: ['./setting.component.scss'],
 })
 export class SettingComponent implements OnInit {
-  // public profileData: Profile = null;
+  public profileData: Profile = null;
   CurrentUser;
   constructor(
     private settingsService: SettingsService,
@@ -26,6 +26,7 @@ export class SettingComponent implements OnInit {
         following: false,
       },
     };
+  }
 
   updateSettings(): void {
     // update new Settings to Server

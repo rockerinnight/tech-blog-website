@@ -5,15 +5,42 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.cursor-default {
+  cursor: default !important;
+}
+
 .text-p-light {
   color: #c3fdff;
 }
+
 .bg-p-light {
   background-color: #c3fdff;
 }
+
 .text-p-dark {
   color: #5d99c6;
 }
+
 .bg-p-dark {
   background-color: #5d99c6;
+}
+
+.btn-outline-p-dark {
+  border-color: #5d99c6;
+  color: #5d99c6;
+}
+
+.btn-outline-p-dark:hover {
+  background-color: #5d99c6;
+  color: white;
+}
+
+.active2 {
+  background-color: #5d99c6;
+  color: white;
+}
+
+.tag-item:hover {
+  background-color: #003c8f;
 }
