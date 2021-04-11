@@ -26,14 +26,6 @@ const routes: Routes = [
     path: 'articles/:id',
     component: ArticleDetailComponent,
   },
-  // {
-  //   path: 'myfeed',
-  //   component: MyFeedComponent,
-  // },
-  // {
-  //   path: 'globalfeed',
-  //   component: GlobalFeedComponent,
-  // },
   {
     path: 'login',
     component: LoginComponent,

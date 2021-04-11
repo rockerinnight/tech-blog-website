@@ -1,13 +1,21 @@
 <div class="container">
   <div class="row">
-    <div class="col-9 shadow-lg">
-      <nav>
+    <div class="col-9">
+      <nav class="bg-white">
         <div class="nav nav-tabs text-p-dark">
-          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="mode === 'myFeedMode'"
-            (click)="myFeedMode()" *ngIf="authService.isAuthenticated()">My
-            Feed</span>
-          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="mode === 'myGlobalMode'"
-            (click)="myGlobalMode()">Global Feed</span>
+          <span
+            class="nav-link font-weight-bold cursor-pointer"
+            [class.active]="mode === 'myFeedMode'"
+            (click)="myFeedMode()"
+            *ngIf="authService.isAuthenticated()"
+            >My Feed</span
+          >
+          <span
+            class="nav-link font-weight-bold cursor-pointer"
+            [class.active]="mode === 'myGlobalMode'"
+            (click)="myGlobalMode()"
+            >Global Feed</span
+          >
         </div>
       </nav>
       <div class="tab-content">
@@ -18,11 +26,15 @@
       </div>
     </div>
     <div class="col-3">
-      <div class="popular-tags bg-light p-2 shadow-lg">
-        <p class="pl-1">Popular Tags</p>
+      <div class="popular-tags bg-light p-1 pb-2 shadow bg-white">
+        <p class="pl-1 pt-1 pb-2 border-bottom mb-1-5">Popular Tags:</p>
         <div class="listtags d-flex flex-wrap">
-          <a class="tag-item btn bg-p-dark text-white m-1 py-0 rounded-pill" href=""
-            *ngFor="let tag of listTags">{{ tag }}</a>
+          <a
+            class="tag-item btn bg-p-dark text-white m-1 py-0 rounded-pill"
+            href=""
+            *ngFor="let tag of listTags"
+            >#{{ tag }}</a
+          >
         </div>
       </div>
     </div>

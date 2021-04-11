@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ButtonFollowComponent } from './button-follow.component';
+import { ParticleComponent } from './particle.component';
 
-describe('ButtonFollowComponent', () => {
-  let component: ButtonFollowComponent;
-  let fixture: ComponentFixture<ButtonFollowComponent>;
+describe('ParticleComponent', () => {
+  let component: ParticleComponent;
+  let fixture: ComponentFixture<ParticleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ButtonFollowComponent ]
+      declarations: [ ParticleComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ButtonFollowComponent);
+    fixture = TestBed.createComponent(ParticleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

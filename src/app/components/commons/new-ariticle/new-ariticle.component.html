@@ -1,8 +1,8 @@
-<div class="editor-page mt-5 container">
+<div class="editor-page container">
   <div class="container page">
     <div class="row">
       <div class="col-md-10 offset-md-1 col-xs-12">
-        <h1 class="text-center mb-3">New Article</h1>
+        <h1 class="text-center my-2 text-p-dark my-4">New Article</h1>
         <form>
           <fieldset>
             <fieldset class="form-group">
@@ -35,9 +35,10 @@
               />
             </fieldset>
             <div class="text-right">
-              <button type="button" class="btn btn-sm btn-primary">
-                Publish Article
-              </button>
+              <app-button
+                [btnContent]="'Publish Article'"
+                (click)="addNewArticle()"
+              ></app-button>
             </div>
           </fieldset>
         </form>

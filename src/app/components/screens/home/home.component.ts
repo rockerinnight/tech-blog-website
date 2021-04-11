@@ -21,8 +21,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.articleService.getTag().subscribe((res) => {
-      this.listTags = res.tags.filter((ele) => {
-        return !(ele === '');
+      this.listTags = res.tags.filter((el) => {
+        let str = JSON.stringify(el).replace(/\W/g, '');
+        return !!str;
       });
     });
   }

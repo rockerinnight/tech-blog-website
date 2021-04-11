@@ -1,0 +1,12 @@
+li {
+  cursor: pointer;
+}
+
+li.disabled {
+  cursor: not-allowed;
+}
+.page-item.active .page-link {
+  background-color: #5d99c6 !important;
+  border-color: #dee2e6 !important;
+  color: white !important;
+}

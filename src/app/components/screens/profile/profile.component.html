@@ -1,12 +1,22 @@
 <app-nav-bar></app-nav-bar>
-<div class="row bg-light py-4">
-  <div class="col d-flex align-items-center justify-content-center flex-column">
-    <img class="rounded-circle" [src]="myProfile?.image" [alt]="'{{myProfile?.username}}profile picture'" />
-    <div class="h3 mt-2">{{myProfile?.username}}</div>
-    <div class="container">
-      <div class="row">
-        <div class="col d-flex justify-content-end">
-          <button class="btn btn-outline-p-dark">Edit Profile Settings</button>
+<div class="container">
+  <div class="row py-4">
+    <div
+      class="col d-flex align-items-center justify-content-center flex-column"
+    >
+      <img
+        class="rounded-circle"
+        [src]="myProfile?.image"
+        [alt]="'{{myProfile?.username}}profile picture'"
+      />
+      <div class="h3 mt-2">{{ myProfile?.username }}</div>
+      <div class="container">
+        <div class="row">
+          <div class="col d-flex justify-content-end">
+            <button class="btn btn-outline-p-dark">
+              Edit Profile Settings
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -15,16 +25,22 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <ul class="nav nav-tabs text-p-dark">
+      <ul class="nav nav-tabs text-p-dark bg-white">
         <li class="nav-item">
-          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="onSelected"
-            (click)="switchTab('my-articles')">My
-            Articles</span>
+          <span
+            class="nav-link font-weight-bold cursor-pointer"
+            [class.active]="onSelected"
+            (click)="switchTab('my-articles')"
+            >My Articles</span
+          >
         </li>
         <li class="nav-item">
-          <span class="nav-link font-weight-bold cursor-pointer" [class.active]="!onSelected"
-            (click)="switchTab('favorite-articles')">Favorites
-            Articles</span>
+          <span
+            class="nav-link font-weight-bold cursor-pointer"
+            [class.active]="!onSelected"
+            (click)="switchTab('favorite-articles')"
+            >Favorites Articles</span
+          >
         </li>
       </ul>
     </div>

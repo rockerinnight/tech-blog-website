@@ -12,24 +12,17 @@ import { config } from '../config';
   providedIn: 'root',
 })
 export class ArticleService {
-  articleDetailUrl = 'https://conduit.productionready.io/api/articles/';
-  tagUrl = 'https://conduit.productionready.io/api/tags';
-  profileUrl = 'https://conduit.productionready.io/api';
-  followUserUrl = 'https://conduit.productionready.io/api/profiles/';
-  favoriteUrl = 'https://conduit.productionready.io//api/articles/';
-  editArticleUrl = 'https://conduit.productionready.io//api/articles/';
-
   constructor(private http: HttpClient) {}
 
-  getMyFeed(): Observable<MultiArticle> {
+  getMyFeed(skip: number, top: number): Observable<MultiArticle> {
     return this.http.get(
-      config.apiUrl + '/articles/feed'
+      config.apiUrl + `/articles/feed?limit=${top}&offset=${skip}`
     ) as Observable<MultiArticle>;
   }
 
-  getGlobalFeed(): Observable<MultiArticle> {
+  getGlobalFeed(skip: number, top: number): Observable<MultiArticle> {
     return this.http.get(
-      config.apiUrl + '/articles'
+      config.apiUrl + `/articles?limit=${top}&offset=${skip}`
     ) as Observable<MultiArticle>;
   }
 
