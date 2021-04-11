@@ -1,9 +1,26 @@
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+<nav>
+  <ul class="pagination d-flex justify-content-center">
+    <li
+      class="page-item bg-white shadow"
+      [class.disabled]="disablePreviousButton()"
+      (click)="previous()"
+    >
+      <span class="page-link text-p-dark">Previous</span>
+    </li>
+    <li
+      class="page-item bg-white shadow"
+      *ngFor="let page of pages"
+      [class.active]="page === selectedPage"
+      (click)="goToPage(page)"
+    >
+      <span class="page-link text-p-dark">{{ page + 1 }}</span>
+    </li>
+    <li
+      class="page-item bg-white shadow"
+      [class.disabled]="disableNextButton()"
+      (click)="next()"
+    >
+      <span class="page-link text-p-dark">Next</span>
+    </li>
   </ul>
 </nav>

@@ -1,9 +1,13 @@
+<app-particle></app-particle>
 <div class="container-fluid bg-p-dark">
   <app-nav-bar></app-nav-bar>
 </div>
-<div class="banner container-fluid bg-p-light text-center py-5 text-white">
-  <h1>Conduit</h1>
-  <p>A place to share your knowledge.</p>
+<div
+  class="banner container-fluid bg-p-light text-center py-5 text-white"
+  *ngIf="authService.isAuthenticated() === false"
+>
+  <h1>TechBlog</h1>
+  <p>Bringing out the best in each other!</p>
 </div>
 <router-outlet></router-outlet>
 <app-footer></app-footer>

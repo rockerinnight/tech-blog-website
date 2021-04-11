@@ -1,5 +1,10 @@
-<div class="container pb-5">
+<div class="container pb-5 px-0">
   <div *ngFor="let myFeed of myFeeds">
     <app-article-card [data]="myFeed"></app-article-card>
   </div>
+  <app-pagination
+    [totalItems]="totalItems"
+    [itemPerpage]="itemsPerPage"
+    (onPageChange)="handlePageChange($event)"
+  ></app-pagination>
 </div>

@@ -1,5 +1,10 @@
-<div class="container pb-5">
+<div class="container pb-5 px-0">
   <div *ngFor="let globalFeed of globalFeeds">
     <app-article-card [data]="globalFeed"></app-article-card>
   </div>
+  <app-pagination
+    [totalItems]="totalItems"
+    [itemPerpage]="itemsPerPage"
+    (onPageChange)="handlePageChange($event)"
+  ></app-pagination>
 </div>

@@ -10,20 +10,12 @@
   cursor: default !important;
 }
 
-.text-p-light {
-  color: #c3fdff;
-}
-
-.bg-p-light {
-  background-color: #c3fdff;
-}
-
 .text-p-dark {
   color: #5d99c6;
 }
 
 .bg-p-dark {
-  background-color: #5d99c6;
+  background-color: #5d99c6e6;
 }
 
 .btn-outline-p-dark {
@@ -37,10 +29,14 @@
 }
 
 .active2 {
-  background-color: #5d99c6;
-  color: white;
+  background-color: #5d99c6 !important;
+  color: white !important;
 }
 
 .tag-item:hover {
-  background-color: #003c8f;
+  background-color: #003c8fcc;
+}
+
+.opacity-custom {
+  opacity: 0.5;
 }

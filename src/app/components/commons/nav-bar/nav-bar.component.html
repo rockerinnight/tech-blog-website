@@ -1,67 +1,100 @@
-<div class="container">
-  <nav class="navbar navbar-expand-lg d-flex justify-content-between align-items-center">
-    <a class="navbar-brand conduit" routerLink="/"><b class="text-white">conduit</b></a>
+<div class="container pr-0">
+  <nav
+    class="navbar navbar-expand-lg d-flex justify-content-between align-items-center py-0"
+  >
+    <a class="navbar-brand conduit" routerLink="/"
+      ><b class="text-white">TechBlog</b></a
+    >
     <div class="nav navbar-nav d-flex align-items-center">
       <ul class="navbar-nav">
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn bg-transparent text-white border-0 px-1 d-flex align-items-center"
-            (click)="goToNewArticle()" *ngIf="authService.isAuthenticated()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-              class="bi bi-plus text-white" viewBox="0 0 16 16">
-
+          <label
+            class="btn bg-transparent text-white border-0 px-1 d-flex align-items-center"
+            (click)="goToNewArticle()"
+            *ngIf="authService.isAuthenticated()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              fill="currentColor"
+              class="bi bi-plus text-white"
+              viewBox="0 0 16 16"
+            >
               <path
-                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+              />
             </svg>
+            <span class="font-weight-bold">New Article</span>
           </label>
-          <label class="btn bg-transparent text-white border-0 py-2 px-0 d-flex align-items-center"
-            (click)="goToMyArticles()" *ngIf="authService.isAuthenticated()">
+          <label
+            class="btn bg-transparent text-white border-0 py-2 px-0 ml-3 d-flex align-items-center"
+            (click)="goToMyArticles()"
+            *ngIf="authService.isAuthenticated()"
+          >
             <span class="text-white font-weight-bold">My Articles</span>
           </label>
-          <label class="btn cursor-default bg-transparent text-white border-0 py-2 pl-5">
-            <div class="user-photo cursor-pointer dropdown" [class.show]="showDropdown"
-              (mouseover)="showDropdown = true;" (mouseout)="showDropdown = false;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
-                class="bi bi-person-circle pr-1" viewBox="0 0 16 16">
+          <label
+            class="btn cursor-default bg-transparent text-white border-0 py-2 pl-2 pr-0 ml-3"
+          >
+            <div
+              class="user-photo cursor-pointer dropdown"
+              [class.show]="showDropdown"
+              (mouseover)="showDropdown = true"
+              (mouseout)="showDropdown = false"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="35"
+                height="35"
+                fill="currentColor"
+                class="bi bi-person-circle pr-1"
+                viewBox="0 0 16 16"
+              >
                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                <path fill-rule="evenodd"
-                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-              </svg>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                 <path
-                  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                  fill-rule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
               </svg>
-              <div class="dropdown-menu dropdown-menu-right mt-0" [class.show]="showDropdown">
-                <a class="dropdown-item" routerLink="/login" *ngIf="!authService.isAuthenticated()">Login</a>
-                <a class="dropdown-item" routerLink="/setting" *ngIf="authService.isAuthenticated()">My Profile</a>
-                <a class="dropdown-item" (click)="logout()" *ngIf="authService.isAuthenticated()">Log out</a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-caret-down-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                />
+              </svg>
+              <div
+                class="dropdown-menu dropdown-menu-right mt-0"
+                [class.show]="showDropdown"
+              >
+                <a
+                  class="dropdown-item"
+                  routerLink="/login"
+                  *ngIf="!authService.isAuthenticated()"
+                  >Login</a
+                >
+                <a
+                  class="dropdown-item"
+                  routerLink="/setting"
+                  *ngIf="authService.isAuthenticated()"
+                  >My Profile</a
+                >
+                <a
+                  class="dropdown-item"
+                  (click)="logout()"
+                  *ngIf="authService.isAuthenticated()"
+                  >Log out</a
+                >
               </div>
             </div>
           </label>
         </div>
-        <!-- <li class="nav-item Users">
-          <button class="btn pt-0 mt-0 dropdown-toggle text-white" data-toggle="dropdown">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-              class="bi bi-person-circle" viewBox="0 0 16 16">
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-              <path fill-rule="evenodd"
-                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-            </svg>
-          </button>
-          <a class="nav-link position-absolute">
-            <ul class="navUserItems p-0 list-unstyled position-relative">
-              <li class="border-bottom">
-                <a routerLinkActive="active" routerLink="/settings" *ngIf="authService?.isAuthenticated()">Profile</a>
-              </li>
-              <li class="border-bottom">
-                <a routerLink="/login" *ngIf="!authService?.isAuthenticated()">Login</a>
-              </li>
-              <li class="border-bottom">
-                <div class="nav-link" (click)="logout()" *ngIf="authService?.isAuthenticated()">Logout</div>
-              </li>
-            </ul>
-          </a>
-        </li> -->
       </ul>
     </div>
   </nav>
