@@ -26,12 +26,18 @@ export class ArticleService {
     ) as Observable<MultiArticle>;
   }
 
-  getArticleDetail(slug: string): Observable<SingleArticle> {
-    return this.http.get(config.apiUrl + slug) as Observable<SingleArticle>;
-  }
-
   getTag(): Observable<Tag> {
     return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
+  }
+
+  getTagFeed(tag: string, skip: number, top: number): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl + '/articles?tag=' + tag + `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
+  }
+
+  getArticleDetail(slug: string): Observable<SingleArticle> {
+    return this.http.get(config.apiUrl + slug) as Observable<SingleArticle>;
   }
 
   followUser(userName): Observable<Profile> {
