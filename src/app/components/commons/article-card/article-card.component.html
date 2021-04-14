@@ -6,14 +6,18 @@
           class="rounded-circle"
           width="40px"
           height="40px"
-          [src]="data.author.image"
-          alt=""
+          [src]="
+            data.author.image !== ''
+              ? data.author.image
+              : 'https://static.productionready.io/images/smiley-cyrus.jpg'
+          "
+          alt="user's picture"
         />
       </div>
       <div class="ml-2">
         <a
-          routerLink="profile/{{ data.author?.username }}"
           class="mb-0 font-weight-bold text-decoration-none text-p-dark"
+          routerLink="/profile/{{ data.author?.username }}"
           >{{ data.author?.username }}</a
         >
         <p class="date">{{ data.createdAt | date }}</p>

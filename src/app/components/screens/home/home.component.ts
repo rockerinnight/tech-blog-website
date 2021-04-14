@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
     ? 'myFeedMode'
     : 'myGlobalMode';
   listTags: any[];
+  selectedTag: string = '';
 
   constructor(
     private articleService: ArticleService,
@@ -27,10 +28,21 @@ export class HomeComponent implements OnInit {
       });
     });
   }
+
   myFeedMode() {
     this.mode = 'myFeedMode';
   }
+
   myGlobalMode() {
     this.mode = 'myGlobalMode';
+  }
+
+  tagMode() {
+    this.mode = 'tagMode';
+  }
+
+  openTagFeed(tag: string): void {
+    this.mode = 'tagMode';
+    this.selectedTag = tag;
   }
 }

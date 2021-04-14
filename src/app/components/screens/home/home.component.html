@@ -16,12 +16,23 @@
             (click)="myGlobalMode()"
             >Global Feed</span
           >
+          <span
+            class="nav-link font-weight-bold cursor-pointer"
+            [class.active]="mode === 'tagMode'"
+            (click)="tagMode()"
+            *ngIf="selectedTag !== ''"
+            >#{{ selectedTag }}</span
+          >
         </div>
       </nav>
       <div class="tab-content">
         <div class="tab-pane fade show active">
           <app-my-feed *ngIf="mode === 'myFeedMode'"></app-my-feed>
           <app-global-feed *ngIf="mode === 'myGlobalMode'"></app-global-feed>
+          <app-tag-feed
+            *ngIf="mode === 'tagMode'"
+            [selectedTag]="selectedTag"
+          ></app-tag-feed>
         </div>
       </div>
     </div>
@@ -31,8 +42,8 @@
         <div class="listtags d-flex flex-wrap">
           <a
             class="tag-item btn bg-p-dark text-white m-1 py-0 rounded-pill"
-            href=""
             *ngFor="let tag of listTags"
+            (click)="openTagFeed(tag)"
             >#{{ tag }}</a
           >
         </div>

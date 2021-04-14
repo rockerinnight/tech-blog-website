@@ -24,6 +24,9 @@ import { ButtonLikeComponent } from './components/commons/button-like/button-lik
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { ParticleComponent } from './components/commons/particle/particle.component';
+import { TagFeedComponent } from './components/screens/home/tag-feed/tag-feed.component';
+import { MyArticlesComponent } from './components/screens/profile/my-articles/my-articles.component';
+import { FavoriteArticlesComponent } from './components/screens/profile/favorite-articles/favorite-articles.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,9 @@ import { ParticleComponent } from './components/commons/particle/particle.compon
     GlobalFeedComponent,
     ArticleCardComponent,
     ParticleComponent,
+    TagFeedComponent,
+    MyArticlesComponent,
+    FavoriteArticlesComponent,
   ],
 
   imports: [

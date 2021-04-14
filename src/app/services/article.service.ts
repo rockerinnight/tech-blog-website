@@ -32,9 +32,18 @@ export class ArticleService {
       config.apiUrl + `/articles/` + slug
     ) as Observable<SingleArticle>;
   }
-
   getTag(): Observable<Tag> {
     return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
+  }
+
+  getTagFeed(tag: string, skip: number, top: number): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl + '/articles?tag=' + tag + `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
+  }
+
+  getArticleDetail(slug: string): Observable<SingleArticle> {
+    return this.http.get(config.apiUrl + slug) as Observable<SingleArticle>;
   }
 
   followUser(userName): Observable<Profile> {
@@ -94,5 +103,29 @@ export class ArticleService {
     return this.http.delete(
       config.apiUrl + `/articles/${slug}/comments/${id}`
     ) as Observable<SingleComment>;
+  }
+
+  getMyArticles(
+    username: string,
+    skip: number,
+    top: number
+  ): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl +
+        `/articles?author=${username}` +
+        `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
+  }
+
+  getFavoriteArticles(
+    username: string,
+    skip: number,
+    top: number
+  ): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl +
+        `/articles?favorited=${username}` +
+        `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
   }
 }
