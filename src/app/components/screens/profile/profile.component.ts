@@ -15,9 +15,6 @@ export class ProfileComponent implements OnInit {
   totalItems: number = 0;
   itemsPerPage: number = 6;
 
-  totalItems: number = 0;
-  itemsPerPage: number = 6;
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,

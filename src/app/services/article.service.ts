@@ -42,10 +42,6 @@ export class ArticleService {
     ) as Observable<MultiArticle>;
   }
 
-  getArticleDetail(slug: string): Observable<SingleArticle> {
-    return this.http.get(config.apiUrl + slug) as Observable<SingleArticle>;
-  }
-
   followUser(userName): Observable<Profile> {
     return this.http.post(config.apiUrl + `/profiles/${userName}/follow`, {
       user: {},
