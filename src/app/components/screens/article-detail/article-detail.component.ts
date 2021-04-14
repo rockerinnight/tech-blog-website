@@ -24,8 +24,8 @@ export class ArticleDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let localUser = JSON.parse(localStorage.getItem('user'));
-    this.userName = localUser.username;
+    // let localUser = JSON.parse(localStorage.getItem('user'));
+    // this.userName = localUser.username;
 
     this.router.params.subscribe((res) => {
       this.articleService.getArticleDetail(res.id).subscribe((article) => {

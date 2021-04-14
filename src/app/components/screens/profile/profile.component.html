@@ -4,16 +4,12 @@
     <div
       class="col d-flex align-items-center justify-content-center flex-column"
     >
-      <img
-        class="rounded-circle"
-        [src]="myProfile?.profile?.image"
-        alt="profile picture"
-      />
+      <img class="rounded-circle" [src]="myProfile?.profile?.image" alt="" />
       <div class="h2 mt-2 text-p-dark">{{ myProfile?.profile?.username }}</div>
       <div class="container">
         <div class="row">
           <div class="col d-flex justify-content-end">
-            <a routerLink="/setting">
+            <a routerLink="/setting" class="text-decoration-none">
               <span class="btn btn-outline-p-dark d-flex align-items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

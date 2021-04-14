@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class SettingComponent implements OnInit {
   public profileData: Profile = null;
-  CurrentUser;
+
   constructor(
     private settingsService: SettingsService,
     private auth: AuthService
