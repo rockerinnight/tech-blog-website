@@ -8,7 +8,11 @@
               class="rounded-circle"
               width="100px"
               height="100px"
-              [src]="articleDetail.article?.author.image"
+              [src]="
+                articleDetail.article?.author.image !== ''
+                  ? articleDetail.article?.author.image
+                  : 'https://static.productionready.io/images/smiley-cyrus.jpg'
+              "
               alt=""
             />
           </div>
@@ -188,7 +192,7 @@
               comment.updatedAt | date
             }}</small>
             <span
-              class="d-inline-block ml-auto cursor-pointer"
+              class="d-inline-block ml-auto cursor-pointer text-danger"
               title="Delete"
               *ngIf="comment.author?.username === userName"
               ><svg

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Profile } from 'src/app/_models/profile';
 import { AuthService } from './../../../_services/auth.service';
 
@@ -15,11 +15,7 @@ export class ProfileComponent implements OnInit {
   totalItems: number = 0;
   itemsPerPage: number = 6;
 
-  totalItems: number = 0;
-  itemsPerPage: number = 6;
-
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService
   ) {}
