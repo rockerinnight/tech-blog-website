@@ -11,9 +11,11 @@
         />
       </div>
       <div class="ml-2">
-        <a class="mb-0 font-weight-bold text-decoration-none text-p-dark">{{
-          data.author?.username
-        }}</a>
+        <a
+          routerLink="profile/{{ data.author?.username }}"
+          class="mb-0 font-weight-bold text-decoration-none text-p-dark"
+          >{{ data.author?.username }}</a
+        >
         <p class="date">{{ data.createdAt | date }}</p>
       </div>
     </div>

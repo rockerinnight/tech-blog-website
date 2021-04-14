@@ -1,8 +1,8 @@
 <div class="container">
-  <div class="row mt-5">
+  <div class="row mt-4">
     <div class="col-3"></div>
     <div class="col-6 d-flex flex-column">
-      <div class="h2 mb-3 text-center">Login</div>
+      <div class="h2 mb-4 text-center text-p-dark">Log in</div>
       <form [formGroup]="loginForm">
         <div class="form-group">
           <input
@@ -30,7 +30,7 @@
           >Already have an account?</a
         >
         <div class="d-flex justify-content-center">
-          <app-button [btnContent]="'Login'" (click)="login()"></app-button>
+          <app-button [btnContent]="'Log in'" (click)="login()"></app-button>
         </div>
 
         <div *ngIf="loginForm.invalid" class="alert alert-danger mt-3 mb-0">

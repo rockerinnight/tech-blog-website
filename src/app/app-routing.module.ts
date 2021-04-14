@@ -25,6 +25,7 @@ const routes: Routes = [
   {
     path: 'articles/:id',
     component: ArticleDetailComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'login',

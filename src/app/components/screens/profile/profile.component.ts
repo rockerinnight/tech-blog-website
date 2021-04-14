@@ -14,6 +14,8 @@ export class ProfileComponent implements OnInit {
   onSelected: boolean = true;
   myArticles: MultiArticle = null;
   myProfile: Profile;
+  totalItems: number = 0;
+  itemsPerPage: number = 6;
 
   constructor(
     private router: Router,
@@ -26,12 +28,10 @@ export class ProfileComponent implements OnInit {
     // console.log(username);
     this.profileService.getMyArticles(username).subscribe((res: any) => {
       this.myArticles = res;
-      console.log(this.myArticles);
     });
     this.authService.getProfile(username).subscribe(
       // valid user -> route to that user's profile
       (res: any) => {
-        console.log(res);
         this.myProfile = res.profile;
         if (this.myProfile.image === '') {
           console.log(this.myProfile);

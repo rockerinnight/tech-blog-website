@@ -2,7 +2,7 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
-        <h1 class="text-center text-p-dark my-2">Your Settings</h1>
+        <h1 class="text-center text-p-dark my-3">Your Settings</h1>
         <form>
           <fieldset>
             <fieldset class="form-group">
@@ -13,11 +13,7 @@
               />
             </fieldset>
             <fieldset class="form-group">
-              <input
-                class="form-control form-control-lg"
-                type="text"
-                placeholder="Your Name"
-              />
+              <input class="form-control" type="text" placeholder="Your Name" />
             </fieldset>
             <fieldset class="form-group">
               <textarea
@@ -36,12 +32,11 @@
                 placeholder="Password"
               />
             </fieldset>
-            <div class="text-right">
+            <div class="text-center">
               <app-button
                 [btnContent]="'Update Settings'"
                 (click)="updateSettings()"
               ></app-button>
-              <hr />
             </div>
           </fieldset>
         </form>

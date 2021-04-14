@@ -7,3 +7,9 @@
 .Users:hover .navUserItems {
   display: block;
 }
+.dropdown-item-active:active {
+  background-color: #5d99c6e6;
+}
+.label-hover:hover {
+  text-shadow: 0 0 2px;
+}
