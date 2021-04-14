@@ -12,6 +12,8 @@ export class ProfileComponent implements OnInit {
   onSelected: boolean = this.authService.isAuthenticated() ? true : false;
   selectedUser: string = '';
   myProfile: Profile;
+  totalItems: number = 0;
+  itemsPerPage: number = 6;
 
   totalItems: number = 0;
   itemsPerPage: number = 6;

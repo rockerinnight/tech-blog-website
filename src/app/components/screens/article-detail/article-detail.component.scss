@@ -5,5 +5,23 @@
   width: 220px;
 }
 .tag-item {
+  background-color: #5d99c6e6;
   cursor: text !important;
+}
+.date {
+  font-size: small;
+  color: #0000004d;
+}
+.arrow-left {
+  position: relative;
+}
+.arrow-left::before {
+  content: "";
+  border-width: 30px 30px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+  position: absolute;
+  left: -45px;
+  top: 1px;
+  transform: rotate(-90deg);
 }
