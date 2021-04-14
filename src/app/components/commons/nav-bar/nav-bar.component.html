@@ -30,6 +30,7 @@
           <label
             class="btn bg-transparent text-white border-0 py-2 px-0 ml-3 d-flex align-items-center"
             *ngIf="authService.isAuthenticated()"
+            (click)="goToMyArticles()"
           >
             <span
               class="text-white font-weight-bold label-hover"
