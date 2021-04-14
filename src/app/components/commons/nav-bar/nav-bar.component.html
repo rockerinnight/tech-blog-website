@@ -29,10 +29,13 @@
           </label>
           <label
             class="btn bg-transparent text-white border-0 py-2 px-0 ml-3 d-flex align-items-center"
-            (click)="goToMyArticles()"
             *ngIf="authService.isAuthenticated()"
           >
-            <span class="text-white font-weight-bold">My Articles</span>
+            <a
+              class="text-white font-weight-bold"
+              routerLink="/profile/{{ authService.getUser().username }}"
+              >My Articles</a
+            >
           </label>
           <label
             class="btn cursor-default bg-transparent text-white border-0 py-2 pl-2 pr-0 ml-3"

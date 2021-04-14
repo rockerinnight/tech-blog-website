@@ -88,4 +88,28 @@ export class ArticleService {
       ...newComment,
     }) as Observable<SingleComment>;
   }
+
+  getMyArticles(
+    username: string,
+    skip: number,
+    top: number
+  ): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl +
+        `/articles?author=${username}` +
+        `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
+  }
+
+  getFavoriteArticles(
+    username: string,
+    skip: number,
+    top: number
+  ): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl +
+        `/articles?favorited=${username}` +
+        `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
+  }
 }

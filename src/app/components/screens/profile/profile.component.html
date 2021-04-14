@@ -6,10 +6,10 @@
     >
       <img
         class="rounded-circle"
-        [src]="myProfile?.image"
-        [alt]="'{{myProfile?.username}}profile picture'"
+        [src]="myProfile?.profile?.image"
+        alt="profile picture"
       />
-      <div class="h3 mt-2">{{ myProfile?.username }}</div>
+      <div class="h3 mt-2">{{ myProfile?.profile?.username }}</div>
       <div class="container">
         <div class="row">
           <div class="col d-flex justify-content-end">
@@ -30,7 +30,7 @@
           <span
             class="nav-link font-weight-bold cursor-pointer"
             [class.active]="onSelected"
-            (click)="switchTab('my-articles')"
+            (click)="switchTab()"
             >My Articles</span
           >
         </li>
@@ -38,7 +38,7 @@
           <span
             class="nav-link font-weight-bold cursor-pointer"
             [class.active]="!onSelected"
-            (click)="switchTab('favorite-articles')"
+            (click)="switchTab()"
             >Favorites Articles</span
           >
         </li>
@@ -47,14 +47,16 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="cards-wrapper" *ngIf="onSelected">
-        <div *ngFor="let article of myArticles?.articles">
-          <app-article-card [data]="article"></app-article-card>
-        </div>
-      </div>
-      <div class="cards-wrapper" *ngIf="!onSelected">
-        <div *ngFor="let article of myArticles?.articles">
-          <app-article-card [data]="article"></app-article-card>
+      <div class="tab-content">
+        <div class="tab-pane fade show active">
+          <app-my-articles
+            *ngIf="onSelected"
+            [selectedUser]="selectedUser"
+          ></app-my-articles>
+          <app-favorite-articles
+            *ngIf="!onSelected"
+            [selectedUser]="selectedUser"
+          ></app-favorite-articles>
         </div>
       </div>
     </div>

@@ -20,9 +20,7 @@ export class NavBarComponent implements OnInit {
   }
 
   goToMyArticles(): void {
-    this.username = this.authService.isAuthenticated()
-      ? this.authService.getUser()?.username
-      : '';
+    this.username = this.authService.getUser().username;
     this.router.navigateByUrl(`/profile/${this.username}`);
   }
 
