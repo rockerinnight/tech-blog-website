@@ -40,7 +40,7 @@ export class NewAriticleComponent implements OnInit {
   }
 
   onSubmit(form) {
-    console.log(form);
+    // console.log(form);
   }
 
   addNewArticle(): void {
@@ -50,7 +50,7 @@ export class NewAriticleComponent implements OnInit {
     this.ariticle
       .getcreateArticle(this.form.value, token, this.tagList)
       .subscribe((data: SingleArticle) => {
-        console.log(data);
+        // console.log(data);
         // routerLink="/articles/{{ data.slug }}
         // this.router.navigate(['/', 'article', 'detail', data.article.slug]);
       });

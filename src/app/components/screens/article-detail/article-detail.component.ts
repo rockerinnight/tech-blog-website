@@ -31,7 +31,7 @@ export class ArticleDetailComponent implements OnInit {
     this.router.params.subscribe((res) => {
       this.articleService.getArticleDetail(res.id).subscribe((article) => {
         this.articleDetail = article;
-        console.log(this.articleDetail);
+        // console.log(this.articleDetail);
 
         this.tagLists = this.articleDetail.article.tagList;
         this.follow = this.articleDetail.article.author.following;
