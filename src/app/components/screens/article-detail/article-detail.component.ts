@@ -37,7 +37,7 @@ export class ArticleDetailComponent implements OnInit {
       });
       this.articleService.getComments(res.id).subscribe((comments) => {
         this.commentLists = comments.comments.reverse();
-        console.log(this.commentLists);
+        // console.log(this.commentLists);
       });
     });
   }

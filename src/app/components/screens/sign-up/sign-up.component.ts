@@ -12,28 +12,31 @@ export class SignUpComponent implements OnInit {
   signupForm: FormGroup;
   isInvalidInput: boolean = null;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, public authService: AuthService) {}
 
   ngOnInit(): void {
     this.signupForm = new FormGroup({
-      username: new FormControl('linhdv5', [Validators.required]),
-      email: new FormControl('linhdv5@test.com', [
+      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [
         Validators.required,
-        Validators.email,
-      ]),
-      password: new FormControl('12345678', [
-        Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(8),
       ]),
     });
   }
 
   signUp(): void {
-    const currURL = this.router.url;
-    this.authService.signup(this.signupForm.value);
-    if (this.authService.isAuthenticated()) {
-      this.isInvalidInput = true;
-    }
-    this.isInvalidInput = false;
+    // const currURL = this.router.url;
+    this.authService
+      .signup(this.signupForm.value)
+      .then(() => {
+        this.isInvalidInput = false;
+        setTimeout(() => {
+          this.router.navigate(['..']);
+        }, 3000);
+      })
+      .catch(() => {
+        this.isInvalidInput = true;
+      });
   }
 }
