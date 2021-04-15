@@ -1,40 +1,62 @@
-<div class="container">
+<div class="container" style="height: 80vh">
   <div class="row mt-4">
     <div class="col-3"></div>
     <div class="col-6 d-flex flex-column">
-      <div class="h2 mb-4 text-center text-p-dark">Log in</div>
+      <div class="h2 mb-4 text-center text-p-dark">Login</div>
       <form [formGroup]="loginForm">
         <div class="form-group">
           <input
-            class="form-control"
-            placeholder="Email"
             type="email"
+            class="form-control"
+            placeholder="Your email address"
             formControlName="email"
+            required
           />
-          <small *ngIf="loginForm.controls.email.invalid" class="text-danger">
-            * Email is required</small
+          <small
+            *ngIf="
+              loginForm.controls.email.invalid &&
+              loginForm.controls.email.touched
+            "
+            class="text-danger"
           >
+            * Email is required
+          </small>
         </div>
         <div class="form-group">
           <input
+            type="password"
             class="form-control"
             placeholder="Password"
-            type="password"
             formControlName="password"
+            required
           />
-          <small *ngIf="loginForm.controls.password.invalid" class="text-danger"
-            >* Password is required</small
+          <small
+            *ngIf="
+              loginForm.controls.email.invalid &&
+              loginForm.controls.password.touched
+            "
+            class="text-danger"
+          >
+            * Password is required
+          </small>
+        </div>
+        <hr />
+        <div class="text-center my-3">
+          Don't an account yet?&nbsp;<a class="text-p-dark" routerLink="/signup"
+            >Sign up one right here</a
           >
         </div>
-        <a class="d-block mb-3 text-center text-p-dark" routerLink="/signup"
-          >Already have an account?</a
-        >
         <div class="d-flex justify-content-center">
           <app-button [btnContent]="'Log in'" (click)="login()"></app-button>
         </div>
-
-        <div *ngIf="loginForm.invalid" class="alert alert-danger mt-3 mb-0">
-          Wrong Email or Password
+        <div *ngIf="isInvalidInput" class="alert alert-danger mt-3 mb-0">
+          Wrong Email address or Password. Please try again.
+        </div>
+        <div
+          *ngIf="authService.isAuthenticated()"
+          class="alert alert-success mt-3 mb-0"
+        >
+          Please wait when we are redirecting you to previous page...
         </div>
       </form>
     </div>

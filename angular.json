@@ -120,6 +120,10 @@
               "devServerTarget": "tech-blog-website:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }

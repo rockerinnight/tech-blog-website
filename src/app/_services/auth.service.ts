@@ -35,15 +35,17 @@ export class AuthService {
   }
 
   signup(user) {
-    this.http.post(config.apiUrl + '/users', { user: user }).subscribe(
-      (res: any) => {
-        this.logUserIn(res.user);
-        this.router.navigate(['..']);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    return new Promise<void>((resolve, reject) => {
+      this.http.post(config.apiUrl + '/users', { user: user }).subscribe(
+        (res: any) => {
+          this.logUserIn(res.user);
+          resolve();
+        },
+        (err: any) => {
+          reject(err);
+        }
+      );
+    });
   }
 
   logUserIn(user): void {
@@ -53,22 +55,16 @@ export class AuthService {
 
   login(user) {
     return new Promise<void>((resolve, reject) => {
-      this.http
-        .post(config.apiUrl + '/users/login', { user: user })
-        .subscribe((res: any) => {
+      this.http.post(config.apiUrl + '/users/login', { user: user }).subscribe(
+        (res: any) => {
           this.logUserIn(res.user);
           resolve();
-        });
+        },
+        (err: any) => {
+          reject(err);
+        }
+      );
     });
-    // this.http.post(config.apiUrl + '/users/login', { user: user }).subscribe(
-    //   (res: any) => {
-    //     this.logUserIn(res.user);
-    //     this.router.navigate(['..']));
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
   }
 
   logout() {

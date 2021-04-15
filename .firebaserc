@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "pad-02-group-03-tech-blog": {
+      "hosting": {
+        "tech-blog-website": [
+          "pad-02-group-03-tech-blog"
+        ]
+      }
+    }
+  }
+}
