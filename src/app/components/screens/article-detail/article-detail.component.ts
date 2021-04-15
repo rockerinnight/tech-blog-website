@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SingleArticle } from 'src/app/_models/single-article';
 import { ArticleService } from './../../../services/article.service';
 
@@ -20,6 +20,7 @@ export class ArticleDetailComponent implements OnInit {
 
   constructor(
     private router: ActivatedRoute,
+    private route: Router,
     private articleService: ArticleService
   ) {}
 
@@ -30,6 +31,8 @@ export class ArticleDetailComponent implements OnInit {
     this.router.params.subscribe((res) => {
       this.articleService.getArticleDetail(res.id).subscribe((article) => {
         this.articleDetail = article;
+        console.log(this.articleDetail);
+
         this.tagLists = this.articleDetail.article.tagList;
         this.follow = this.articleDetail.article.author.following;
         this.favorite = this.articleDetail.article.favorited;
@@ -37,7 +40,6 @@ export class ArticleDetailComponent implements OnInit {
       });
       this.articleService.getComments(res.id).subscribe((comments) => {
         this.commentLists = comments.comments.reverse();
-        console.log(this.commentLists);
       });
     });
   }
@@ -78,6 +80,19 @@ export class ArticleDetailComponent implements OnInit {
     });
   }
 
+  deleteArticle(slug, userName) {
+    let confirmMessage = confirm(
+      'Are you sure you want to delete the article?'
+    );
+    if (confirmMessage) {
+      this.articleService.deteleArticle(slug).subscribe((res) => {
+        this.route.navigate([`profile/${userName}`]);
+      });
+    } else {
+      return;
+    }
+  }
+
   addComment(slug, textComment) {
     let bodyComment = {
       comment: {
@@ -93,10 +108,17 @@ export class ArticleDetailComponent implements OnInit {
   }
 
   deleteComment(slug, id) {
-    this.articleService.deteleComment(slug, id).subscribe((res) => {
-      this.articleService.getComments(slug).subscribe((comments) => {
-        this.commentLists = comments.comments.reverse();
+    let confirmMessage = confirm(
+      'Are you sure you want to delete the comment?'
+    );
+    if (confirmMessage) {
+      this.articleService.deteleComment(slug, id).subscribe((res) => {
+        this.articleService.getComments(slug).subscribe((comments) => {
+          this.commentLists = comments.comments.reverse();
+        });
       });
-    });
+    } else {
+      return;
+    }
   }
 }

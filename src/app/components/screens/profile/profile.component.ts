@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Profile } from 'src/app/_models/profile';
 import { AuthService } from './../../../_services/auth.service';
 
@@ -17,7 +19,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -32,8 +35,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  openSpinner(timeLoad) {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, timeLoad);
+  }
+
   switchTab(): void {
     this.onSelected = !this.onSelected;
+    this.openSpinner(200);
   }
 
   logout(): void {

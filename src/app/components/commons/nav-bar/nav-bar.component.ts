@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -11,9 +13,20 @@ export class NavBarComponent implements OnInit {
   showDropdown: boolean = false;
   username: string = '';
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit(): void {}
+
+  openSpinner(timeLoad) {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, timeLoad);
+  }
 
   goToNewArticle(): void {
     this.router.navigateByUrl('/newArticle');

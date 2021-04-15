@@ -1,6 +1,8 @@
+import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { ArticleService } from './../../../services/article.service';
 import { SingleArticle } from './../../../_models/single-article';
-import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -17,7 +19,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private articleService: ArticleService,
-    public authService: AuthService
+    public authService: AuthService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -29,20 +32,31 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  openSpinner(timeLoad) {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, timeLoad);
+  }
+
   myFeedMode() {
     this.mode = 'myFeedMode';
+    this.openSpinner(300);
   }
 
   myGlobalMode() {
     this.mode = 'myGlobalMode';
+    this.openSpinner(1000);
   }
 
   tagMode() {
     this.mode = 'tagMode';
+    this.openSpinner(900);
   }
 
   openTagFeed(tag: string): void {
     this.mode = 'tagMode';
     this.selectedTag = tag;
+    this.openSpinner(900);
   }
 }

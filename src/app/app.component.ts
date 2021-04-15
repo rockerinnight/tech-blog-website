@@ -8,4 +8,6 @@ import { AuthService } from './_services/auth.service';
 })
 export class AppComponent {
   constructor(public authService: AuthService) {}
+
+  ngOnInit() {}
 }

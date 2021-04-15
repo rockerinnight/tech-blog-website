@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -6,6 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './auth.interceptor';
 import { AppComponent } from './app.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ParticlesModule } from 'angular-particle';
 import { HomeComponent } from './components/screens/home/home.component';
 import { SettingComponent } from './components/screens/setting/setting.component';
@@ -27,6 +29,7 @@ import { ParticleComponent } from './components/commons/particle/particle.compon
 import { TagFeedComponent } from './components/screens/home/tag-feed/tag-feed.component';
 import { MyArticlesComponent } from './components/screens/profile/my-articles/my-articles.component';
 import { FavoriteArticlesComponent } from './components/screens/profile/favorite-articles/favorite-articles.component';
+import { SummaryPipe } from './services/summary.pipe';
 
 @NgModule({
   declarations: [
@@ -51,15 +54,18 @@ import { FavoriteArticlesComponent } from './components/screens/profile/favorite
     TagFeedComponent,
     MyArticlesComponent,
     FavoriteArticlesComponent,
+    SummaryPipe,
   ],
 
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     ParticlesModule,
+    NgxSpinnerModule,
+    AppRoutingModule,
   ],
   providers: [
     {
