@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { ArticleService } from 'src/app/services/article.service';
 import { SingleArticle } from 'src/app/_models/single-article';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-new-ariticle',
@@ -22,19 +23,26 @@ export class NewAriticleComponent implements OnInit {
   slug: string;
   tagList: string[] = [];
   constructor(
-    private fb: FormBuilder,
+    private authService: AuthService,
     private ariticle: ArticleService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      title: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required]),
-      body: new FormControl('', [Validators.required]),
-      tagList: new FormControl('', [Validators.required]),
+      title: new FormControl('', [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      body: new FormControl('', [Validators.required, Validators.minLength(1)]),
+      tagList: new FormControl(''),
     });
   }
+
   get(name) {
     return this.form['controls'][name];
   }
@@ -44,25 +52,10 @@ export class NewAriticleComponent implements OnInit {
   }
 
   addNewArticle(): void {
-    const token = localStorage.getItem('token');
-    // this.isSubmitting = true;
-
-    this.ariticle
-      .getcreateArticle(this.form.value, token, this.tagList)
-      .subscribe((data: SingleArticle) => {
-        // console.log(data);
-        // routerLink="/articles/{{ data.slug }}
-        // this.router.navigate(['/', 'article', 'detail', data.article.slug]);
-      });
-    // if (!this.isEdited) {
-    // } else {
-    //   this.ariticle
-    //     .getUpdateArticle(this.form.value, token, this.slug, this.tagList)
-    //     .subscribe((data: SingleArticle) => {
-    //       console.log(data);
-
-    //       // this.router.navigate(['/', 'article', 'detail', data.article.slug]);
-    //     });
-    // }
+    this.ariticle.getcreateArticle(this.form.value).subscribe((res: any) => {
+      this.router.navigateByUrl(
+        `/profile/${this.authService.getUser().username}`
+      );
+    });
   }
 }

@@ -33,17 +33,15 @@ export class ArticleService {
     ) as Observable<SingleArticle>;
   }
 
-  getcreateArticle(formValue, token: string, tagList): any {
-    if (formValue) {
-      return this.http.post(config.apiUrl + `/articles`, {
-        article: {
-          title: formValue.title,
-          description: formValue.description,
-          body: formValue.body,
-          tagList,
-        },
-      });
-    }
+  getcreateArticle(formValue: any) {
+    return this.http.post(config.apiUrl + `/articles`, {
+      article: {
+        title: formValue.title,
+        description: formValue.description,
+        body: formValue.body,
+        tagList: formValue?.tagList ? formValue.tagList : [],
+      },
+    });
   }
 
   getUpdateArticle(formValue, token: string, slug: string, tagList): any {

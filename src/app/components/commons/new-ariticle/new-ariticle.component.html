@@ -1,7 +1,8 @@
 <div class="editor-page container">
   <div class="container page">
     <div class="row">
-      <div class="col-md-10 offset-md-1 col-xs-12">
+      <div class="col-md-1"></div>
+      <div class="col-md-10 col-xs-12">
         <h1 class="text-center my-2 text-p-dark my-4">New Article</h1>
         <form (ngSubmit)="onSubmit(form)" [formGroup]="form">
           <fieldset>
@@ -11,6 +12,8 @@
                 class="form-control"
                 placeholder="Post title"
                 formControlName="title"
+                required
+                minlength="1"
               />
               <div
                 *ngIf="get('title')?.touched && get('title').invalid"
@@ -28,6 +31,8 @@
                 class="form-control"
                 placeholder="What's this post about?"
                 formControlName="description"
+                required
+                minlength="1"
               />
               <div
                 *ngIf="
@@ -48,6 +53,8 @@
                 rows="8"
                 placeholder="Write your post (in markdown)"
                 formControlName="body"
+                required
+                minlength="1"
               ></textarea>
               <div
                 *ngIf="get('body')?.touched && get('body').invalid"
@@ -81,6 +88,7 @@
           </fieldset>
         </form>
       </div>
+      <div class="col-md-1"></div>
     </div>
   </div>
 </div>
