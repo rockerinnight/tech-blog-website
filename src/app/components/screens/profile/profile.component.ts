@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     let username = this.router.url.split('profile/')[1];
-    // console.log(username);
+    console.log(username);
     this.profileService.getMyArticles(username).subscribe((res: any) => {
       this.myArticles = res;
       console.log(this.myArticles);

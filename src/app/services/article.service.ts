@@ -29,6 +29,37 @@ export class ArticleService {
   getArticleDetail(slug: string): Observable<SingleArticle> {
     return this.http.get(config.apiUrl + slug) as Observable<SingleArticle>;
   }
+  getcreateArticle(formValue, token: string, tagList): any {
+    if (formValue) {
+      return this.http.post(config.apiUrl + `/articles`, {
+        article: {
+          title: formValue.title,
+          description: formValue.description,
+          body: formValue.body,
+          tagList,
+        },
+      });
+    }
+  }
+
+  getUpdateArticle(formValue, token: string, slug: string, tagList): any {
+    return this.http.put(
+      config.apiUrl + `/articles/${slug}`,
+      {
+        article: {
+          title: formValue.title,
+          description: formValue.description,
+          body: formValue.body,
+          tagList,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
+  }
 
   getTag(): Observable<Tag> {
     return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
