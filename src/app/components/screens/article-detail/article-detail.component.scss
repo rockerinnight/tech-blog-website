@@ -25,3 +25,25 @@
   top: 1px;
   transform: rotate(-90deg);
 }
+.btn-delete {
+  border-color: #5d99c6;
+  color: #5d99c6;
+}
+.btn-delete:hover {
+  border-color: red;
+  color: red;
+}
+.icon-delete {
+  position: relative;
+  svg {
+    position: absolute;
+    top: 4px;
+    left: -15px;
+  }
+}
+.icon-d-comment {
+  color: #5d99c6;
+  &:hover {
+    color: red;
+  }
+}
