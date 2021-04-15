@@ -9,31 +9,27 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  isInvalidInput: boolean = null;
   loginForm: FormGroup;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, public authService: AuthService) {}
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl('linhdv5@test.com', [
-        Validators.required,
-        Validators.email,
-      ]),
-      password: new FormControl('12345678', [
-        Validators.required,
-        Validators.minLength(6),
-      ]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required),
     });
   }
 
   login(): void {
     this.authService
       .login(this.loginForm.value)
-      .then(() => this.router.navigate(['..']));
-    // this.authService.login(this.loginForm.value);
-    // if (this.authService.isAuthenticated()) {
-    //   this.isInvalidInput = true;
-    // }
-    // this.isInvalidInput = false;
+      .then(() => {
+        this.isInvalidInput = false;
+        setTimeout(() => {
+          this.router.navigate(['..']);
+        }, 3000);
+      })
+      .catch(() => (this.isInvalidInput = true));
   }
 }
