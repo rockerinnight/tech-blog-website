@@ -59,9 +59,16 @@
         </form>
       </div>
     </div>
-    <div *ngIf="authService.isAuthenticated()" class="h3">
-      Please wait when we are redirecting you to previous page...
-    </div>
     <div class="col-3"></div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-12">
+      <div
+        *ngIf="authService.isAuthenticated()"
+        class="h3 text-center text-p-dark"
+      >
+        Please wait when we are redirecting you to previous page...
+      </div>
+    </div>
   </div>
 </div>
