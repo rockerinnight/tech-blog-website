@@ -30,7 +30,7 @@ export class SettingComponent implements OnInit {
       },
     };
     this.auth.getProfile(username).subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
     });
   }
 

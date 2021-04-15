@@ -48,12 +48,10 @@ export class NewAriticleComponent implements OnInit {
   }
 
   onSubmit(form) {
-    console.log(form);
+    // console.log(form);
   }
 
   addNewArticle(): void {
-    console.log(this.form.value);
-
     this.ariticle.getcreateArticle(this.form.value).subscribe((res: any) => {
       this.router.navigateByUrl(
         `/profile/${this.authService.getUser().username}`
