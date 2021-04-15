@@ -1,0 +1,10 @@
+<div class="container pb-5 px-0">
+  <div *ngFor="let article of favoritedArticles">
+    <app-article-card [data]="article"></app-article-card>
+  </div>
+  <app-pagination
+    [totalItems]="totalItems"
+    [itemPerpage]="itemsPerPage"
+    (onPageChange)="handlePageChange($event)"
+  ></app-pagination>
+</div>

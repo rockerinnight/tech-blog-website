@@ -1,11 +1,10 @@
-import { CommentCardComponent } from './components/commons/comment-card/comment-card.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './auth.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AuthInterceptor } from './auth.interceptor';
 import { AppComponent } from './app.component';
 import { ParticlesModule } from 'angular-particle';
 import { HomeComponent } from './components/screens/home/home.component';
@@ -15,7 +14,6 @@ import { SignUpComponent } from './components/screens/sign-up/sign-up.component'
 import { LoginComponent } from './components/screens/login/login.component';
 import { ButtonComponent } from './components/commons/button/button.component';
 import { NavBarComponent } from './components/commons/nav-bar/nav-bar.component';
-import { TagComponent } from './components/commons/tag/tag.component';
 import { PaginationComponent } from './components/commons/pagination/pagination.component';
 import { FooterComponent } from './components/commons/footer/footer.component';
 import { ArticleDetailComponent } from './components/screens/article-detail/article-detail.component';
@@ -26,6 +24,9 @@ import { ButtonLikeComponent } from './components/commons/button-like/button-lik
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { ParticleComponent } from './components/commons/particle/particle.component';
+import { TagFeedComponent } from './components/screens/home/tag-feed/tag-feed.component';
+import { MyArticlesComponent } from './components/screens/profile/my-articles/my-articles.component';
+import { FavoriteArticlesComponent } from './components/screens/profile/favorite-articles/favorite-articles.component';
 
 @NgModule({
   declarations: [
@@ -37,10 +38,8 @@ import { ParticleComponent } from './components/commons/particle/particle.compon
     LoginComponent,
     ButtonComponent,
     NavBarComponent,
-    TagComponent,
     PaginationComponent,
     FooterComponent,
-    CommentCardComponent,
     NewAriticleComponent,
     NotFoundComponent,
     ButtonLikeComponent,
@@ -49,6 +48,9 @@ import { ParticleComponent } from './components/commons/particle/particle.compon
     GlobalFeedComponent,
     ArticleCardComponent,
     ParticleComponent,
+    TagFeedComponent,
+    MyArticlesComponent,
+    FavoriteArticlesComponent,
   ],
 
   imports: [

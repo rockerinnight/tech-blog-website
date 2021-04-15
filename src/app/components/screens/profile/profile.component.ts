@@ -1,9 +1,7 @@
-import { AuthService } from './../../../_services/auth.service';
-import { Profile } from './../../../models/profile';
-import { MultiArticle } from './../../../_models/multi-article';
-import { ProfileService } from './../../../services/profile.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Profile } from 'src/app/_models/profile';
+import { AuthService } from './../../../_services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -11,43 +9,30 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  onSelected: boolean = true;
-  myArticles: MultiArticle = null;
+  onSelected: boolean = this.authService.isAuthenticated() ? true : false;
+  selectedUser: string = '';
   myProfile: Profile;
+  totalItems: number = 0;
+  itemsPerPage: number = 6;
 
   constructor(
-    private router: Router,
-    private profileService: ProfileService,
+    private route: ActivatedRoute,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    let username = this.router.url.split('profile/')[1];
-    console.log(username);
-    this.profileService.getMyArticles(username).subscribe((res: any) => {
-      this.myArticles = res;
-      console.log(this.myArticles);
+    this.route.params.subscribe((res: any) => {
+      this.selectedUser = res.id;
     });
-    this.authService.getProfile(username).subscribe(
-      // valid user -> route to that user's profile
-      (res: any) => {
-        console.log(res);
-        this.myProfile = res.profile;
-        if (this.myProfile.image === '') {
-          console.log(this.myProfile);
-          this.myProfile.image =
-            'https://static.productionready.io/images/smiley-cyrus.jpg';
-          console.log(this.myProfile);
-        }
-      },
-      // if error - user not in DB -> route to not-found-page
-      (error) => {
-        this.router.navigateByUrl('/page-not-found');
-      }
-    );
+    this.authService.getProfile(this.selectedUser).subscribe((res: any) => {
+      this.myProfile = res;
+      this.myProfile.profile.image = this.myProfile.profile.image
+        ? this.myProfile.profile.image
+        : 'https://static.productionready.io/images/smiley-cyrus.jpg';
+    });
   }
 
-  switchTab(tabName: string): void {
+  switchTab(): void {
     this.onSelected = !this.onSelected;
   }
 

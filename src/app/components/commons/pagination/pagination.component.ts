@@ -51,7 +51,7 @@ export class PaginationComponent implements OnInit {
   next(): void {
     if (!this.disableNextButton()) {
       this.pages = this.pages.map((page) => {
-        return page + 1;
+        return page + 2;
       });
     }
   }
@@ -66,7 +66,7 @@ export class PaginationComponent implements OnInit {
   previous(): void {
     if (this.pages[0] > 0) {
       this.pages = this.pages.map((page) => {
-        return page - 1;
+        return page - 2;
       });
     }
   }

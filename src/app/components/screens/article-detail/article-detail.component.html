@@ -1,14 +1,18 @@
 <div class="container-fluid bg-p-img">
   <div class="container text-p-dark">
     <div class="row">
-      <div class="col-12 d-flex justify-content-center border-bottom py-4">
+      <div class="col-12 d-flex justify-content-center py-4">
         <div class="avatar d-flex align-items-center">
           <div>
             <img
               class="rounded-circle"
               width="100px"
               height="100px"
-              [src]="articleDetail.article?.author.image"
+              [src]="
+                articleDetail.article?.author.image !== ''
+                  ? articleDetail.article?.author.image
+                  : 'https://static.productionready.io/images/smiley-cyrus.jpg'
+              "
               alt=""
             />
           </div>
@@ -74,82 +78,143 @@
   </div>
 </div>
 <div class="container py-3">
-  <div class="d-flex align-items-center pb-3">
-    <h3 class="m-0 text-p-dark">{{ articleDetail.article?.title }}</h3>
-    <div class="ml-3">
-      <div
-        *ngIf="favorite === false"
-        class="btn py-0 btn-width btn-hover bg-p-dark text-white"
-        (click)="favoriteArticle(articleDetail.article?.slug)"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-heart-fill"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-          />
-        </svg>
-        <span
-          >&nbsp;
-          <span>Favorite </span>
-          Article ({{ favoritesCount }})</span
-        >
+  <div class="row">
+    <div class="col-8 mx-auto bg-white border shadow pt-4 pb-2">
+      <div class="d-flex align-items-center pb-3">
+        <h3 class="m-0 text-p-dark">{{ articleDetail.article?.title }}</h3>
+        <div class="ml-3">
+          <div
+            *ngIf="favorite === false"
+            class="btn py-0 btn-width btn-hover bg-p-dark text-white"
+            (click)="favoriteArticle(articleDetail.article?.slug)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-heart-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+              />
+            </svg>
+            <span
+              >&nbsp;
+              <span>Favorite </span>
+              Article ({{ favoritesCount }})</span
+            >
+          </div>
+          <div
+            *ngIf="favorite === true"
+            class="btn py-0 btn-width btn-hover bg-p-dark text-white"
+            (click)="unFavoriteArticle(articleDetail.article?.slug)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-heart-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+              />
+            </svg>
+            <span
+              >&nbsp;
+              <span>Unfavorite </span>
+              Article ({{ favoritesCount }})</span
+            >
+          </div>
+        </div>
       </div>
-      <div
-        *ngIf="favorite === true"
-        class="btn py-0 btn-width btn-hover bg-p-dark text-white"
-        (click)="unFavoriteArticle(articleDetail.article?.slug)"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-heart-fill"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-          />
-        </svg>
-        <span
-          >&nbsp;
-          <span>Unfavorite </span>
-          Article ({{ favoritesCount }})</span
-        >
+      <div class="bio pt-2 pb-3">
+        <p class="mb-4">{{ articleDetail.article?.body }}</p>
+        <span *ngFor="let tag of tagLists">
+          <span class="tag-item btn text-white mr-1 py-0 rounded-pill"
+            >#{{ tag }}</span
+          >
+        </span>
       </div>
     </div>
   </div>
-  <div class="bio border-bottom pt-2 pb-3">
-    <p class="mb-4">{{ articleDetail.article?.body }}</p>
-    <span *ngFor="let tag of tagLists">
-      <span class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"
-        >#{{ tag }}</span
-      >
-    </span>
-  </div>
 </div>
-<div class="container pb-5">
-  <div class="row mb-5">
-    <div class="col-12 mx-auto">
+<div class="container pb-1">
+  <div class="row mb-2">
+    <div class="col-8 mx-auto px-0 shadow">
       <div class="d-flex justify-content-center">
-        <div class="input-group mb-3">
+        <div class="input-group">
           <input
             type="text"
             class="form-control"
             placeholder="Write a comment..."
+            [(ngModel)]="textComment"
           />
           <div class="input-group-append">
-            <button class="btn btn-hover bg-p-dark text-white" type="submit">
+            <button
+              class="btn btn-hover bg-p-dark text-white"
+              (click)="addComment(articleDetail.article?.slug, textComment)"
+            >
               Post Comment
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mb-5">
+  <div class="row" *ngFor="let comment of commentLists">
+    <div class="col-8 mx-auto py-2 px-0">
+      <div class="d-flex align-items-center">
+        <div>
+          <img
+            class="rounded-circle mr-2"
+            width="30px"
+            height="30px"
+            [src]="comment.author?.image"
+            alt=""
+          />
+        </div>
+        <div
+          class="bg-white shadow border px-3 py-2 flex-grow-1 text-wrap arrow-left ml-3"
+        >
+          <div class="d-flex">
+            <span class="mr-2 font-weight-bold text-p-dark d-inline-block">{{
+              comment.author?.username
+            }}</span>
+            <small class="date d-inline-block">{{
+              comment.updatedAt | date
+            }}</small>
+            <span
+              class="d-inline-block ml-auto cursor-pointer text-danger"
+              title="Delete"
+              *ngIf="comment.author?.username === userName"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-trash"
+                viewBox="0 0 16 16"
+                (click)="deleteComment(articleDetail.article?.slug, comment.id)"
+              >
+                <path
+                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                /></svg
+            ></span>
+          </div>
+          <div class="text-break">
+            {{ comment.body }}
           </div>
         </div>
       </div>

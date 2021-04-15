@@ -19,7 +19,6 @@ export class GlobalFeedComponent implements OnInit {
 
   getGlobalFeed(skip: number, top: number) {
     this.articleService.getGlobalFeed(skip, top).subscribe((res) => {
-      console.log(res);
       this.globalFeeds = res.articles;
       this.totalItems = res.articlesCount;
     });

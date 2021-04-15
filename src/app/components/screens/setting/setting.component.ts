@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SettingComponent implements OnInit {
   public profileData: Profile = null;
-  CurrentUser;
+
   constructor(
     private settingsService: SettingsService,
     private auth: AuthService,

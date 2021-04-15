@@ -7,6 +7,7 @@ import { Tag } from '../_models/tag';
 import { Profile } from '../_models/profile';
 import { SingleComment } from '../_models/single-comment';
 import { config } from '../config';
+import { MultiComment } from '../_models/multi-comment';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +28,11 @@ export class ArticleService {
   }
 
   getArticleDetail(slug: string): Observable<SingleArticle> {
-    return this.http.get(config.apiUrl + slug) as Observable<SingleArticle>;
+    return this.http.get(
+      config.apiUrl + `/articles/` + slug
+    ) as Observable<SingleArticle>;
   }
+
   getcreateArticle(formValue, token: string, tagList): any {
     if (formValue) {
       return this.http.post(config.apiUrl + `/articles`, {
@@ -63,6 +67,12 @@ export class ArticleService {
 
   getTag(): Observable<Tag> {
     return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
+  }
+
+  getTagFeed(tag: string, skip: number, top: number): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl + '/articles?tag=' + tag + `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
   }
 
   followUser(userName): Observable<Profile> {
@@ -105,12 +115,46 @@ export class ArticleService {
     ) as Observable<SingleArticle>;
   }
 
-  addComments(
-    newComment: SingleComment,
-    slug: string
-  ): Observable<SingleComment> {
-    return this.http.post(config.apiUrl + `/articles/${slug}/comments`, {
-      ...newComment,
-    }) as Observable<SingleComment>;
+  getComments(slug: string): Observable<MultiComment> {
+    return this.http.get(
+      config.apiUrl + `/articles/${slug}/comments`
+    ) as Observable<MultiComment>;
+  }
+
+  addComments(bodyComment: any, slug: string): Observable<SingleComment> {
+    return this.http.post(
+      config.apiUrl + `/articles/${slug}/comments`,
+      bodyComment
+    ) as Observable<SingleComment>;
+  }
+
+  deteleComment(slug, id) {
+    return this.http.delete(
+      config.apiUrl + `/articles/${slug}/comments/${id}`
+    ) as Observable<SingleComment>;
+  }
+
+  getMyArticles(
+    username: string,
+    skip: number,
+    top: number
+  ): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl +
+        `/articles?author=${username}` +
+        `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
+  }
+
+  getFavoriteArticles(
+    username: string,
+    skip: number,
+    top: number
+  ): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl +
+        `/articles?favorited=${username}` +
+        `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
   }
 }

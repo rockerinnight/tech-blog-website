@@ -25,24 +25,41 @@
                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
               />
             </svg>
-            <span class="font-weight-bold">New Article</span>
+            <span class="font-weight-bold label-hover">New Article</span>
           </label>
           <label
             class="btn bg-transparent text-white border-0 py-2 px-0 ml-3 d-flex align-items-center"
-            (click)="goToMyArticles()"
             *ngIf="authService.isAuthenticated()"
+            (click)="goToMyArticles()"
           >
-            <span class="text-white font-weight-bold">My Articles</span>
+            <span
+              class="text-white font-weight-bold label-hover"
+              (click)="goToMyArticles()"
+              >My Articles</span
+            >
+          </label>
+          <label
+            class="btn bg-transparent text-white border-0 py-2 px-0 ml-3 d-flex align-items-center"
+            (click)="logIn()"
+            *ngIf="!authService.isAuthenticated()"
+          >
+            <span class="text-white font-weight-bold label-hover">Log in</span>
+          </label>
+          <label
+            class="btn bg-transparent text-white border-0 py-2 px-0 ml-3 d-flex align-items-center"
+            (click)="signUp()"
+            *ngIf="!authService.isAuthenticated()"
+          >
+            <span class="text-white font-weight-bold label-hover">Sign up</span>
           </label>
           <label
             class="btn cursor-default bg-transparent text-white border-0 py-2 pl-2 pr-0 ml-3"
+            *ngIf="authService.isAuthenticated()"
+            [class.show]="showDropdown"
+            (mouseover)="showDropdown = true"
+            (mouseout)="showDropdown = false"
           >
-            <div
-              class="user-photo cursor-pointer dropdown"
-              [class.show]="showDropdown"
-              (mouseover)="showDropdown = true"
-              (mouseout)="showDropdown = false"
-            >
+            <div class="user-photo cursor-pointer dropdown">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="35"
@@ -70,23 +87,17 @@
                 />
               </svg>
               <div
-                class="dropdown-menu dropdown-menu-right mt-0"
+                class="dropdown-menu dropdown-menu-right mt-2 p-0 shadow rounded-0"
                 [class.show]="showDropdown"
               >
                 <a
-                  class="dropdown-item"
-                  routerLink="/login"
-                  *ngIf="!authService.isAuthenticated()"
-                  >Login</a
-                >
-                <a
-                  class="dropdown-item"
+                  class="dropdown-item dropdown-item-active py-2"
                   routerLink="/setting"
                   *ngIf="authService.isAuthenticated()"
                   >My Profile</a
                 >
                 <a
-                  class="dropdown-item"
+                  class="dropdown-item dropdown-item-active py-2"
                   (click)="logout()"
                   *ngIf="authService.isAuthenticated()"
                   >Log out</a

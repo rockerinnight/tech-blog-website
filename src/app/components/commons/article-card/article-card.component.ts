@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SingleArticle } from './../../../models/single-article';
-import { ArticleService } from 'src/app/services/article.service';
 
 @Component({
   selector: 'app-article-card',
@@ -13,7 +12,7 @@ export class ArticleCardComponent implements OnInit {
   favoritesCount: number;
   isFavorited: boolean;
 
-  constructor(private articleService: ArticleService) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.tagLists = this.data.tagList;

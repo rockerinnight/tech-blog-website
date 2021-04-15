@@ -10,10 +10,13 @@ import { ArticleService } from './../../../services/article.service';
 })
 export class ArticleDetailComponent implements OnInit {
   articleDetail: any = {};
-  tagLists: any[];
+  tagLists: any[] = [];
   follow: boolean;
   favorite: boolean;
   favoritesCount: number;
+  commentLists: any[] = [];
+  textComment: string = '';
+  userName = '';
 
   constructor(
     private router: ActivatedRoute,
@@ -21,6 +24,9 @@ export class ArticleDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // let localUser = JSON.parse(localStorage.getItem('user'));
+    // this.userName = localUser.username;
+
     this.router.params.subscribe((res) => {
       this.articleService.getArticleDetail(res.id).subscribe((article) => {
         this.articleDetail = article;
@@ -28,6 +34,10 @@ export class ArticleDetailComponent implements OnInit {
         this.follow = this.articleDetail.article.author.following;
         this.favorite = this.articleDetail.article.favorited;
         this.favoritesCount = this.articleDetail.article.favoritesCount;
+      });
+      this.articleService.getComments(res.id).subscribe((comments) => {
+        this.commentLists = comments.comments.reverse();
+        console.log(this.commentLists);
       });
     });
   }
@@ -63,12 +73,30 @@ export class ArticleDetailComponent implements OnInit {
     this.favoritesCount--;
     this.articleDetail.article.favorited = false;
     this.articleDetail.article.favoritesCount--;
-    this.articleService.favoriteArticle(slug).subscribe((res) => {
+    this.articleService.unFavoriteArticle(slug).subscribe((res) => {
       // console.log(res);
     });
   }
 
-addComments() {
-    this.articleService;
+  addComment(slug, textComment) {
+    let bodyComment = {
+      comment: {
+        body: textComment,
+      },
+    };
+    this.articleService.addComments(bodyComment, slug).subscribe((res) => {
+      this.articleService.getComments(slug).subscribe((comments) => {
+        this.commentLists = comments.comments.reverse();
+        this.textComment = '';
+      });
+    });
+  }
+
+  deleteComment(slug, id) {
+    this.articleService.deteleComment(slug, id).subscribe((res) => {
+      this.articleService.getComments(slug).subscribe((comments) => {
+        this.commentLists = comments.comments.reverse();
+      });
+    });
   }
 }
