@@ -48,6 +48,13 @@ export class PaginationComponent implements OnInit {
     }
   }
 
+  goToLastPage() {
+    this.selectedPage = this.totalPages;
+    this.onPagesChange.emit(this.totalPages);
+
+    this.disableNextButton();
+  }
+
   next(): void {
     if (!this.disableNextButton()) {
       this.pages = this.pages.map((page) => {
@@ -59,7 +66,8 @@ export class PaginationComponent implements OnInit {
   disableNextButton(): boolean {
     return (
       this.pages.length === 0 ||
-      this.pages[this.pages.length - 1] >= this.totalPages - 1
+      this.pages[this.pages.length - 1] >= this.totalPages - 1 ||
+      this.selectedPage - this.totalPages === 0
     );
   }
 

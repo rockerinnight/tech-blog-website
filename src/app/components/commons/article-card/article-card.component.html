@@ -23,12 +23,47 @@
         <p class="date">{{ data.createdAt | date }}</p>
       </div>
     </div>
-    <div class="heart-button d-flex align-content-center">
-      <app-button-like
-        [isFavorited]="isFavorited"
-        [favoritesCount]="favoritesCount"
-        (dataFromChild)="getDataFromChild($event)"
-      ></app-button-like>
+    <div class="heart-button">
+      <span
+        class="btn btn-outline-p-dark align-items-center py-1 px-2"
+        *ngIf="isFavorited === false"
+        (click)="favoriteArticle(data.slug)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-heart-fill mr-1"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+          />
+        </svg>
+        <span>{{ favoritesCount }}</span>
+      </span>
+      <span
+        class="btn btn-outline-p-dark d-flex align-items-center py-1 px-2 active2"
+        *ngIf="isFavorited === true"
+        (click)="unFavoriteArticle(data.slug)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-heart-fill mr-1"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+          />
+        </svg>
+        <span>{{ favoritesCount }}</span>
+      </span>
     </div>
   </div>
   <h4 class="">

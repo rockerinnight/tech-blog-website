@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ArticleService } from 'src/app/services/article.service';
 import { SingleArticle } from './../../../models/single-article';
 
 @Component({
@@ -12,18 +13,31 @@ export class ArticleCardComponent implements OnInit {
   favoritesCount: number;
   isFavorited: boolean;
 
-  constructor() {}
+  constructor(private articleService: ArticleService) {}
 
   ngOnInit(): void {
     this.tagLists = this.data.tagList;
-    this.favoritesCount = this.data.favoritesCount;
     this.isFavorited = this.data.favorited;
+    this.favoritesCount = this.data.favoritesCount;
   }
 
-  getDataFromChild(dataFromChild): void {
-    // update data to clickedArticle
-    this.data.favorited = dataFromChild.favorited;
-    this.data.favoritesCount = dataFromChild.favoritesCount;
-    // POST dataFromChild back to Server
+  favoriteArticle(slug) {
+    this.isFavorited = true;
+    this.favoritesCount++;
+    this.data.favorited = true;
+    this.data.favoritesCount++;
+    this.articleService.favoriteArticle(slug).subscribe((res) => {
+      // console.log(res);
+    });
+  }
+
+  unFavoriteArticle(slug) {
+    this.isFavorited = false;
+    this.favoritesCount--;
+    this.data.favorited = false;
+    this.data.favoritesCount--;
+    this.articleService.unFavoriteArticle(slug).subscribe((res) => {
+      // console.log(res);
+    });
   }
 }

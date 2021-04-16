@@ -10,6 +10,7 @@ export class GlobalFeedComponent implements OnInit {
   globalFeeds: any = [];
   totalItems: number = 0;
   itemsPerPage: number = 6;
+  loadDone: boolean = false;
 
   constructor(private articleService: ArticleService) {}
 
@@ -21,6 +22,7 @@ export class GlobalFeedComponent implements OnInit {
     this.articleService.getGlobalFeed(skip, top).subscribe((res) => {
       this.globalFeeds = res.articles;
       this.totalItems = res.articlesCount;
+      this.loadDone = true;
     });
   }
 

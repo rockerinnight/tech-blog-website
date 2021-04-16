@@ -22,7 +22,6 @@ import { ArticleDetailComponent } from './components/screens/article-detail/arti
 import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
 import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
 import { ArticleCardComponent } from './components/commons/article-card/article-card.component';
-import { ButtonLikeComponent } from './components/commons/button-like/button-like.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { ParticleComponent } from './components/commons/particle/particle.component';
@@ -45,7 +44,6 @@ import { SummaryPipe } from './services/summary.pipe';
     FooterComponent,
     NewAriticleComponent,
     NotFoundComponent,
-    ButtonLikeComponent,
     ArticleDetailComponent,
     MyFeedComponent,
     GlobalFeedComponent,
