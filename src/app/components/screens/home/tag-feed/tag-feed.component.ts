@@ -12,6 +12,7 @@ export class TagFeedComponent implements OnInit {
   tagFeeds: any = [];
   totalItems: number = 0;
   itemsPerPage: number = 6;
+  loadDone: boolean = false;
 
   constructor(private articleService: ArticleService) {}
 
@@ -25,6 +26,7 @@ export class TagFeedComponent implements OnInit {
       .subscribe((res: MultiArticle) => {
         this.tagFeeds = res.articles;
         this.totalItems = res.articlesCount;
+        this.loadDone = true;
       });
   }
 

@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class NavBarComponent implements OnInit {
   showDropdown: boolean = false;
-  username: string = '';
+  userName: string = '';
 
   constructor(
     public authService: AuthService,
@@ -19,7 +19,10 @@ export class NavBarComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let localUser = JSON.parse(localStorage.getItem('user'));
+    this.userName = localUser.username;
+  }
 
   openSpinner(timeLoad) {
     this.spinner.show();
@@ -33,8 +36,7 @@ export class NavBarComponent implements OnInit {
   }
 
   goToMyArticles(): void {
-    this.username = this.authService.getUser().username;
-    this.router.navigateByUrl(`/profile/${this.username}`);
+    this.router.navigateByUrl(`/profile/${this.userName}`);
   }
 
   logout(): void {

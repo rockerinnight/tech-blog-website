@@ -3,6 +3,7 @@
     <app-article-card [data]="globalFeed"></app-article-card>
   </div>
   <app-pagination
+    *ngIf="loadDone"
     [totalItems]="totalItems"
     [itemPerpage]="itemsPerPage"
     (onPageChange)="handlePageChange($event)"

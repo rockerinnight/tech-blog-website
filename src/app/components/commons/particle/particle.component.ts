@@ -24,7 +24,7 @@ export class ParticleComponent implements OnInit {
   myParams: object = {
     particles: {
       number: {
-        value: 100,
+        value: 80,
         density: {
           enable: true,
           value_area: 800,

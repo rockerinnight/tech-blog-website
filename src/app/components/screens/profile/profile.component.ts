@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   myProfile: Profile;
   totalItems: number = 0;
   itemsPerPage: number = 6;
+  userName: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +25,9 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    let localUser = JSON.parse(localStorage.getItem('user'));
+    this.userName = localUser.username;
+
     this.route.params.subscribe((res: any) => {
       this.selectedUser = res.id;
     });

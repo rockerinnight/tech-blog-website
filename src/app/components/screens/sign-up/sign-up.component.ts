@@ -33,7 +33,7 @@ export class SignUpComponent implements OnInit {
         this.isInvalidInput = false;
         setTimeout(() => {
           this.router.navigate(['..']);
-        }, 3000);
+        }, 2000);
       })
       .catch(() => {
         this.isInvalidInput = true;
