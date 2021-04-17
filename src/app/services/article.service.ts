@@ -33,7 +33,7 @@ export class ArticleService {
     ) as Observable<SingleArticle>;
   }
 
-  getcreateArticle(formValue: any) {
+  publishArticle(formValue: any) {
     return this.http.post(config.apiUrl + `/articles`, {
       article: {
         title: formValue.title,

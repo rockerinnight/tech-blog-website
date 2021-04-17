@@ -1,20 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { config } from '../config';
+import { AuthService } from '../_services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
-  baseUrl = 'https://conduit.productionready.io/api/profiles/DaDV2';
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  constructor(private http: HttpClient) {}
-  getSettings() {
-    return this.http.get(this.baseUrl, {
-      headers: {
-        Authorization:
-          'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTU1NjQ5LCJ1c2VybmFtZSI6IkRhRFYyIiwiZXhwIjoxNjIyNDcxNTQ3fQ.hEOl7yoaPjB2J-6n4EUT4bSlnmSS1CsA6m9sbwTu8rU',
-      },
+  getSettings(userName: string) {
+    return this.authService.getProfile(userName);
+  }
+
+  updateSettings(settingFormValue: any) {
+    return new Promise<void>((resolve, reject) => {
+      this.http
+        .put(config.apiUrl + '/user', { user: { ...settingFormValue } })
+        .subscribe(
+          (res: any) => {
+            resolve();
+          },
+          (err: any) => {
+            reject(err);
+          }
+        );
     });
   }
 }

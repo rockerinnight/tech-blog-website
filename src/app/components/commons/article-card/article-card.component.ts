@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ArticleService } from 'src/app/services/article.service';
 import { SingleArticle } from './../../../models/single-article';
 
@@ -9,6 +9,7 @@ import { SingleArticle } from './../../../models/single-article';
 })
 export class ArticleCardComponent implements OnInit {
   @Input('data') data: SingleArticle;
+  @Output('tagFromCard') selectedTag = new EventEmitter();
   tagLists: any[];
   favoritesCount: number;
   isFavorited: boolean;
@@ -16,6 +17,7 @@ export class ArticleCardComponent implements OnInit {
   constructor(private articleService: ArticleService) {}
 
   ngOnInit(): void {
+    // console.log(this.data);
     this.tagLists = this.data.tagList;
     this.isFavorited = this.data.favorited;
     this.favoritesCount = this.data.favoritesCount;
@@ -39,5 +41,9 @@ export class ArticleCardComponent implements OnInit {
     this.articleService.unFavoriteArticle(slug).subscribe((res) => {
       // console.log(res);
     });
+  }
+
+  sendTagFromCard(tagName: string) {
+    this.selectedTag.emit(tagName);
   }
 }

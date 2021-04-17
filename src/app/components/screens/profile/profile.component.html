@@ -5,18 +5,21 @@
         <div class="text-center">
           <img
             class="avatar rounded-circle"
-            [src]="myProfile?.profile?.image"
+            [src]="currProfile?.profile?.image"
             alt=""
           />
         </div>
         <div class="h2 mt-2 text-p-dark text-center font-weight-bold">
-          {{ myProfile?.profile?.username }}
+          {{ currProfile?.profile?.username }}
+        </div>
+        <div class="text-p-dark text-center lead">
+          <em>{{ currProfile?.profile?.bio }}</em>
         </div>
         <div class="d-flex justify-content-end">
           <a
             routerLink="/setting"
             class="text-decoration-none"
-            *ngIf="myProfile?.profile?.username === userName"
+            *ngIf="currProfile?.profile?.username === userName"
           >
             <span class="btn btn-outline-p-dark d-flex align-items-center">
               <svg
@@ -37,6 +40,46 @@
               &nbsp;Edit Profile Settings
             </span>
           </a>
+          <div class="ml-3">
+            <div
+              *ngIf="follow === false && currUsername !== userName"
+              class="btn py-0 btn-width btn-outline-p-dark"
+              (click)="followed(currUsername)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                />
+              </svg>
+              <span>&nbsp;Follow</span>
+            </div>
+            <div
+              *ngIf="follow === true && currUsername !== userName"
+              class="btn py-0 btn-width btn-hover bg-p-dark text-white"
+              (click)="unFollowed(currUsername)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-dash"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"
+                />
+              </svg>
+              <span>&nbsp;Unfollow</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -51,9 +94,9 @@
             class="nav-link font-weight-bold cursor-pointer"
             [class.active]="onSelected"
             (click)="switchTab()"
-            ><span *ngIf="myProfile?.profile?.username !== userName"
+            ><span *ngIf="currProfile?.profile?.username !== userName"
               >Their Articles</span
-            ><span *ngIf="myProfile?.profile?.username === userName"
+            ><span *ngIf="currProfile?.profile?.username === userName"
               >My Articles</span
             ></span
           >

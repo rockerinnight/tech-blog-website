@@ -1,4 +1,4 @@
-<nav>
+<nav *ngIf="!isEmpty">
   <ul class="pagination d-flex justify-content-center">
     <li
       class="page-item bg-white shadow"
@@ -34,3 +34,9 @@
     </li>
   </ul>
 </nav>
+<div class="mt-2" *ngIf="isEmpty">
+  <span class="h6"
+    >No articles are here... yet.<br />Go to Global Feed and try to follow your
+    favorite authors to fill up your feed.</span
+  >
+</div>

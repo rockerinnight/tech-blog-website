@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ArticleService } from 'src/app/services/article.service';
-import { SingleArticle } from 'src/app/_models/single-article';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -16,12 +10,11 @@ import { AuthService } from 'src/app/_services/auth.service';
   styleUrls: ['./new-ariticle.component.scss'],
 })
 export class NewAriticleComponent implements OnInit {
-  form: FormGroup;
-  value = '';
-  isSubmitting = false;
-
+  newArticleForm: FormGroup;
   slug: string;
   tagList: string[] = [];
+  isSuccess: boolean = false;
+
   constructor(
     private authService: AuthService,
     private ariticle: ArticleService,
@@ -29,7 +22,7 @@ export class NewAriticleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.form = new FormGroup({
+    this.newArticleForm = new FormGroup({
       title: new FormControl('', [
         Validators.required,
         Validators.minLength(1),
@@ -43,19 +36,23 @@ export class NewAriticleComponent implements OnInit {
     });
   }
 
-  get(name) {
-    return this.form['controls'][name];
-  }
+  publishArticle(): void {
+    this.tagList = [...this.newArticleForm.value.tagList.trim().split(',')];
 
-  onSubmit(form) {
-    // console.log(form);
-  }
-
-  addNewArticle(): void {
-    this.ariticle.getcreateArticle(this.form.value).subscribe((res: any) => {
-      this.router.navigateByUrl(
-        `/profile/${this.authService.getUser().username}`
-      );
-    });
+    this.ariticle.publishArticle(this.newArticleForm.value).subscribe(
+      (res: any) => {
+        this.isSuccess = true;
+        setTimeout(() => {
+          this.router.navigateByUrl(
+            // `/profile/${this.authService.getUser().username}`
+            `/articles/${res.article.slug}`
+          );
+        }, 2000);
+      },
+      (err: any) => {
+        console.log(err);
+        window.location.reload();
+      }
+    );
   }
 }

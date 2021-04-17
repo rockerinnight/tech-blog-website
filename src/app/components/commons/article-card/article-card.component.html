@@ -66,19 +66,24 @@
       </span>
     </div>
   </div>
-  <h4 class="">
+  <h4>
     <a
       class="text-decoration-none text-p-dark"
       routerLink="/articles/{{ data.slug }}"
       >{{ data.title }}</a
     >
   </h4>
-  <p>{{ data.description }}</p>
-  <span *ngFor="let tag of tagLists">
-    <a
-      class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"
-      routerLink="/articles/{{ data.slug }}"
-      >#{{ tag }}</a
-    >
-  </span>
+  <p class="mb-0">{{ data.description }}</p>
+  <a routerLink="/articles/{{ data.slug }}"
+    ><em><small class="text-p-dark">Read more</small></em></a
+  >
+  <div class="mt-4">
+    <span *ngFor="let tag of tagLists">
+      <a
+        class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"
+        (click)="sendTagFromCard(tag)"
+        >#{{ tag }}</a
+      >
+    </span>
+  </div>
 </div>

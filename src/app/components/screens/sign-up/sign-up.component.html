@@ -81,10 +81,14 @@
             >
           </div>
           <div class="d-flex justify-content-center">
-            <app-button
-              [btnContent]="'Sign up'"
+            <button
+              type="submit"
+              class="btn btn-custom bg-p-dark px-3 text-white"
+              [disabled]="signupForm.invalid"
               (click)="signUp()"
-            ></app-button>
+            >
+              Sign up
+            </button>
           </div>
           <div *ngIf="isInvalidInput" class="alert alert-danger mt-3 mb-0">
             Email or Username has already been taken.
@@ -98,7 +102,10 @@
           *ngIf="authService.isAuthenticated()"
           class="h3 text-center text-p-dark"
         >
-          Your account has been registered. Redirecting to previous page...
+          <span
+            >Your account has been registered. Redirecting to previous
+            page...</span
+          >
         </div>
       </div>
     </div>

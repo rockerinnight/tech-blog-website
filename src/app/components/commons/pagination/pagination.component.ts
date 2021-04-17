@@ -14,10 +14,13 @@ export class PaginationComponent implements OnInit {
   totalPages: number = 0;
   pages: any[] = [];
   selectedPage: number = 0;
+  isEmpty: boolean = true;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isEmpty = this.totalItems ? false : true;
+  }
 
   ngOnChanges() {
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerpage);
