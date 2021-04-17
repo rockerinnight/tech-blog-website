@@ -34,6 +34,13 @@ export class PaginationComponent implements OnInit {
     }
   }
 
+  goToFirstPage() {
+    this.selectedPage = 0;
+    this.onPagesChange.emit(0);
+    this.disablePreviousButton();
+    this.pages = [0, 1, 2];
+  }
+
   goToPage(page: number): void {
     if (page === this.selectedPage) {
       return;
@@ -49,23 +56,28 @@ export class PaginationComponent implements OnInit {
   }
 
   goToLastPage() {
-    this.selectedPage = this.totalPages;
-    this.onPagesChange.emit(this.totalPages);
 
-    this.disableNextButton();
+    this.selectedPage = this.totalPages - 1;
+    this.onPagesChange.emit(this.totalPages);
+    this.disablePreviousButton();
+    this.pages = [
+      this.totalPages - 3,
+      this.totalPages - 2,
+      this.totalPages - 1,
+    ];
   }
 
   next(): void {
     if (!this.disableNextButton()) {
       this.pages = this.pages.map((page) => {
-        return page + 2;
+        return page + 1;
       });
     }
   }
 
   disableNextButton(): boolean {
     return (
-      this.pages.length === 0 ||
+      this.pages.length <= 2 ||
       this.pages[this.pages.length - 1] >= this.totalPages - 1 ||
       this.selectedPage - this.totalPages === 0
     );
@@ -74,12 +86,14 @@ export class PaginationComponent implements OnInit {
   previous(): void {
     if (this.pages[0] > 0) {
       this.pages = this.pages.map((page) => {
-        return page - 2;
+        return page - 1;
       });
     }
   }
 
   disablePreviousButton(): boolean {
-    return this.pages.length === 0 || this.pages[0] === 0;
+    return (
+      this.pages.length === 0 || this.pages[0] === 0 || this.selectedPage === 1
+    );
   }
 }
