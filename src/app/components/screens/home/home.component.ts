@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ArticleService } from './../../../services/article.service';
-import { SingleArticle } from './../../../_models/single-article';
 import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
@@ -58,5 +57,10 @@ export class HomeComponent implements OnInit {
     this.mode = 'tagMode';
     this.selectedTag = tag;
     this.openSpinner(900);
+  }
+
+  getTagFromGlobalFeed(tagName: string) {
+    console.log(tagName);
+    this.openTagFeed(tagName);
   }
 }

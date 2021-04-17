@@ -20,8 +20,10 @@ export class NavBarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let localUser = JSON.parse(localStorage.getItem('user'));
-    this.userName = localUser.username;
+    if (this.authService.isAuthenticated()) {
+      let localUser = JSON.parse(localStorage.getItem('user'));
+      this.userName = localUser.username;
+    }
   }
 
   openSpinner(timeLoad) {

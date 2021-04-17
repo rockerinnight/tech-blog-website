@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SingleArticle } from 'src/app/_models/single-article';
+import { AuthService } from 'src/app/_services/auth.service';
 import { ArticleService } from './../../../services/article.service';
 
 @Component({
@@ -21,12 +21,15 @@ export class ArticleDetailComponent implements OnInit {
   constructor(
     private router: ActivatedRoute,
     private route: Router,
-    private articleService: ArticleService
+    private articleService: ArticleService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    let localUser = JSON.parse(localStorage.getItem('user'));
-    this.userName = localUser.username;
+    if (this.authService.isAuthenticated()) {
+      let localUser = JSON.parse(localStorage.getItem('user'));
+      this.userName = localUser.username;
+    }
 
     this.router.params.subscribe((res) => {
       this.articleService.getArticleDetail(res.id).subscribe((article) => {

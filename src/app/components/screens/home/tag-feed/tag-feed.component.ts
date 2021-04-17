@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MultiArticle } from 'src/app/_models/multi-article';
 import { ArticleService } from './../../../../services/article.service';
 
@@ -16,7 +16,11 @@ export class TagFeedComponent implements OnInit {
 
   constructor(private articleService: ArticleService) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // console.log(changes);
+    // console.log(changes.selectedTag.currentValue);
     this.getTagFeed(0, this.itemsPerPage);
   }
 

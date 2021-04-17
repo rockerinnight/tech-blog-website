@@ -11,6 +11,7 @@ import { NewAriticleComponent } from './components/commons/new-ariticle/new-arit
 import { ArticleDetailComponent } from './components/screens/article-detail/article-detail.component';
 import { LoginGuard } from './_helpers/login.guard';
 import { AuthGuard } from './_helpers/auth.guard';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 
 const routes: Routes = [
   {
@@ -43,14 +44,18 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'newArticle',
+    component: NewAriticleComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'setting',
     component: SettingComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'newArticle',
-    component: NewAriticleComponent,
-    canActivate: [AuthGuard],
+    path: 'about',
+    component: AboutUsComponent,
   },
   {
     path: '**',

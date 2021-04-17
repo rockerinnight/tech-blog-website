@@ -14,7 +14,6 @@ import { SettingComponent } from './components/screens/setting/setting.component
 import { ProfileComponent } from './components/screens/profile/profile.component';
 import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
 import { LoginComponent } from './components/screens/login/login.component';
-import { ButtonComponent } from './components/commons/button/button.component';
 import { NavBarComponent } from './components/commons/nav-bar/nav-bar.component';
 import { PaginationComponent } from './components/commons/pagination/pagination.component';
 import { FooterComponent } from './components/commons/footer/footer.component';
@@ -29,6 +28,7 @@ import { TagFeedComponent } from './components/screens/home/tag-feed/tag-feed.co
 import { MyArticlesComponent } from './components/screens/profile/my-articles/my-articles.component';
 import { FavoriteArticlesComponent } from './components/screens/profile/favorite-articles/favorite-articles.component';
 import { SummaryPipe } from './services/summary.pipe';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,6 @@ import { SummaryPipe } from './services/summary.pipe';
     ProfileComponent,
     SignUpComponent,
     LoginComponent,
-    ButtonComponent,
     NavBarComponent,
     PaginationComponent,
     FooterComponent,
@@ -53,6 +52,7 @@ import { SummaryPipe } from './services/summary.pipe';
     MyArticlesComponent,
     FavoriteArticlesComponent,
     SummaryPipe,
+    AboutUsComponent,
   ],
 
   imports: [

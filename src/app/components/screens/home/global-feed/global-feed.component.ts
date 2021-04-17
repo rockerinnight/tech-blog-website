@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ArticleService } from './../../../../services/article.service';
 
 @Component({
@@ -7,6 +7,7 @@ import { ArticleService } from './../../../../services/article.service';
   styleUrls: ['./global-feed.component.scss'],
 })
 export class GlobalFeedComponent implements OnInit {
+  @Output('tagFromFeed') selectedTag = new EventEmitter();
   globalFeeds: any = [];
   totalItems: number = 0;
   itemsPerPage: number = 6;
@@ -28,5 +29,9 @@ export class GlobalFeedComponent implements OnInit {
 
   handlePageChange(page: number) {
     this.getGlobalFeed(page, this.itemsPerPage);
+  }
+
+  getTagFromCard(tagName: string) {
+    this.selectedTag.emit(tagName);
   }
 }
