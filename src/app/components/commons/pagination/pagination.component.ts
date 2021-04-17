@@ -56,6 +56,7 @@ export class PaginationComponent implements OnInit {
   }
 
   goToLastPage() {
+
     this.selectedPage = this.totalPages - 1;
     this.onPagesChange.emit(this.totalPages);
     this.disablePreviousButton();

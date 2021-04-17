@@ -26,6 +26,16 @@
     >
       <span class="page-link text-p-dark">{{ page + 1 }}</span>
     </li>
+    <li class="page-item bg-white shadow disabled">
+      <span class="page-link text-p-dark">...</span>
+    </li>
+    <li
+      class="page-item bg-white shadow"
+      [class.active]="totalPages === selectedPage"
+      (click)="goToLastPage()"
+    >
+      <span class="page-link text-p-dark">{{ totalPages }}</span>
+    </li>
     <li
       class="page-item bg-white shadow disabled"
       *ngIf="totalPages > 3 && selectedPage < totalPages - 3"
