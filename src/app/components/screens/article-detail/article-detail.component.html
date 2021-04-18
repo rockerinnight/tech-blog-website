@@ -86,55 +86,55 @@
     <div class="col-8 mx-auto bg-white border shadow pt-4 pb-2">
       <h3 class="m-0 text-p-dark pb-3 d-flex justify-content-between">
         <span>{{ articleDetail.article?.title }}</span>
-        <!-- Favorite button -->
-        <span
-          *ngIf="
-            favorite === false &&
-            articleDetail.article?.author.username !== userName
-          "
-          class="btn py-0 btn-hover btn-outline-p-dark text-p-dark float-right"
-          (click)="favoriteArticle(articleDetail.article?.slug)"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-heart-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-            />
-          </svg>
-          <span>&nbsp;{{ favoritesCount }}</span>
-        </span>
-        <!-- Unfavorite button -->
-        <span
-          *ngIf="
-            favorite === true &&
-            articleDetail.article?.author.username !== userName
-          "
-          class="btn py-0 btn-hover bg-p-dark text-white float-right"
-          (click)="unFavoriteArticle(articleDetail.article?.slug)"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-heart-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-            />
-          </svg>
-          <span>&nbsp;{{ favoritesCount }}</span>
-        </span>
         <span class="d-flex flex-column">
+          <!-- Favorite button -->
+          <span
+            *ngIf="
+              favorite === false &&
+              articleDetail.article?.author.username !== userName
+            "
+            class="btn py-0 btn-hover btn-outline-p-dark text-p-dark float-right"
+            (click)="favoriteArticle(articleDetail.article?.slug)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-heart-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+              />
+            </svg>
+            <span>&nbsp;{{ favoritesCount }}</span>
+          </span>
+          <!-- Unfavorite button -->
+          <span
+            *ngIf="
+              favorite === true &&
+              articleDetail.article?.author.username !== userName
+            "
+            class="btn py-0 btn-hover bg-p-dark text-white float-right"
+            (click)="unFavoriteArticle(articleDetail.article?.slug)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-heart-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+              />
+            </svg>
+            <span>&nbsp;{{ favoritesCount }}</span>
+          </span>
           <!-- Delete button -->
           <span
             *ngIf="articleDetail.article?.author.username === userName"
