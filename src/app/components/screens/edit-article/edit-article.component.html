@@ -2,9 +2,9 @@
   <div class="row mb-4">
     <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
       <h1 class="text-center text-p-dark my-4" *ngIf="!isSuccess">
-        New Article
+        Edit Article
       </h1>
-      <form [formGroup]="newArticleForm" *ngIf="!isSuccess">
+      <form [formGroup]="editArticleForm" *ngIf="!isSuccess">
         <div>
           <div class="form-group">
             <label for="title" class="text-p-dark font-weight-bold"
@@ -14,22 +14,22 @@
               type="text"
               class="form-control"
               id="title"
-              placeholder="Post title"
+              placeholder="Article title"
               formControlName="title"
               required
               minlength="1"
             />
             <small
               class="text-danger"
-              *ngIf="newArticleForm.controls.title.errors?.minlength"
+              *ngIf="editArticleForm.controls.title.errors?.minlength"
             >
               * Your title is too short.
             </small>
             <small
               class="text-danger"
               *ngIf="
-                newArticleForm.controls.title.errors?.required &&
-                newArticleForm.controls.title.touched
+                editArticleForm.controls.title.errors?.required &&
+                editArticleForm.controls.title.touched
               "
             >
               * Your title is required.
@@ -50,15 +50,15 @@
             />
             <small
               class="text-danger"
-              *ngIf="newArticleForm.controls.description.errors?.minlength"
+              *ngIf="editArticleForm.controls.description.errors?.minlength"
             >
               * Your description is too short.
             </small>
             <small
               class="text-danger"
               *ngIf="
-                newArticleForm.controls.description.errors?.required &&
-                newArticleForm.controls.description.touched
+                editArticleForm.controls.description.errors?.required &&
+                editArticleForm.controls.description.touched
               "
             >
               * Your description is required.
@@ -79,15 +79,15 @@
             ></textarea>
             <small
               class="text-danger"
-              *ngIf="newArticleForm.controls.body.errors?.minlength"
+              *ngIf="editArticleForm.controls.body.errors?.minlength"
             >
               * Your article body is too short.
             </small>
             <small
               class="text-danger"
               *ngIf="
-                newArticleForm.controls.body.errors?.required &&
-                newArticleForm.controls.body.touched
+                editArticleForm.controls.body.errors?.required &&
+                editArticleForm.controls.body.touched
               "
             >
               * Your article body is required.
@@ -109,10 +109,10 @@
             <button
               type="submit"
               class="btn btn-custom bg-p-dark px-3 text-white"
-              [disabled]="newArticleForm.invalid"
-              (click)="publishArticle()"
+              [disabled]="editArticleForm.invalid"
+              (click)="updateArticle()"
             >
-              Publish
+              Update
             </button>
           </div>
         </div>
@@ -121,9 +121,9 @@
         <span class="h1">Wel done!</span>
         <br />
         <span>
-          Your new article has been published!
+          Your article has been updated!
           <br />
-          Redirecting to that new article to review.
+          Redirecting to yourrefreshing article to review.
         </span>
       </div>
     </div>

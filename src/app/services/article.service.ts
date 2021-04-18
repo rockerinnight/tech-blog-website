@@ -15,6 +15,7 @@ import { MultiComment } from '../_models/multi-comment';
 export class ArticleService {
   constructor(private http: HttpClient) {}
 
+  // Home Screen
   getMyFeed(skip: number, top: number): Observable<MultiArticle> {
     return this.http.get(
       config.apiUrl + `/articles/feed?limit=${top}&offset=${skip}`
@@ -27,12 +28,38 @@ export class ArticleService {
     ) as Observable<MultiArticle>;
   }
 
-  getArticleDetail(slug: string): Observable<SingleArticle> {
+  getTag(): Observable<Tag> {
+    return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
+  }
+
+  getTagFeed(tag: string, skip: number, top: number): Observable<MultiArticle> {
+    return this.http.get(
+      config.apiUrl + '/articles?tag=' + tag + `&limit=${top}&offset=${skip}`
+    ) as Observable<MultiArticle>;
+  }
+
+  // Article Details
+  getArticleDetail(slug: string): Observable<any> {
     return this.http.get(
       config.apiUrl + `/articles/` + slug
+    ) as Observable<any>;
+  }
+
+  deteleArticle(slug): Observable<SingleArticle> {
+    return this.http.delete(
+      config.apiUrl + `/articles/${slug}`
     ) as Observable<SingleArticle>;
   }
 
+  editArticle(updatedBody: any, slug: string): Observable<any> {
+    return this.http.put(config.apiUrl + `/articles/${slug}`, {
+      article: {
+        ...updatedBody,
+      },
+    }) as Observable<any>;
+  }
+
+  // Add/Edit Article
   publishArticle(formValue: any) {
     return this.http.post(config.apiUrl + `/articles`, {
       article: {
@@ -44,35 +71,7 @@ export class ArticleService {
     });
   }
 
-  getUpdateArticle(formValue, token: string, slug: string, tagList): any {
-    return this.http.put(
-      config.apiUrl + `/articles/${slug}`,
-      {
-        article: {
-          title: formValue.title,
-          description: formValue.description,
-          body: formValue.body,
-          tagList,
-        },
-      },
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      }
-    );
-  }
-
-  getTag(): Observable<Tag> {
-    return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
-  }
-
-  getTagFeed(tag: string, skip: number, top: number): Observable<MultiArticle> {
-    return this.http.get(
-      config.apiUrl + '/articles?tag=' + tag + `&limit=${top}&offset=${skip}`
-    ) as Observable<MultiArticle>;
-  }
-
+  // Interact with users/articles
   followUser(userName): Observable<Profile> {
     return this.http.post(config.apiUrl + `/profiles/${userName}/follow`, {
       user: {},
@@ -98,21 +97,7 @@ export class ArticleService {
     ) as Observable<SingleArticle>;
   }
 
-  editArticle(updatedArticle: SingleArticle): Observable<any> {
-    const slug = updatedArticle.slug;
-    return this.http.put(config.apiUrl + `/articles/${slug}`, {
-      article: {
-        ...updatedArticle,
-      },
-    }) as Observable<any>;
-  }
-
-  deteleArticle(slug): Observable<SingleArticle> {
-    return this.http.delete(
-      config.apiUrl + `/articles/${slug}`
-    ) as Observable<SingleArticle>;
-  }
-
+  // Comments
   getComments(slug: string): Observable<MultiComment> {
     return this.http.get(
       config.apiUrl + `/articles/${slug}/comments`
@@ -132,6 +117,7 @@ export class ArticleService {
     ) as Observable<SingleComment>;
   }
 
+  // Profile Screen
   getMyArticles(
     username: string,
     skip: number,

@@ -17,18 +17,19 @@ import { LoginComponent } from './components/screens/login/login.component';
 import { NavBarComponent } from './components/commons/nav-bar/nav-bar.component';
 import { PaginationComponent } from './components/commons/pagination/pagination.component';
 import { FooterComponent } from './components/commons/footer/footer.component';
+import { NewArticleComponent } from './components/screens/new-article/new-article.component';
 import { ArticleDetailComponent } from './components/screens/article-detail/article-detail.component';
 import { MyFeedComponent } from './components/screens/home/my-feed/my-feed.component';
 import { GlobalFeedComponent } from './components/screens/home/global-feed/global-feed.component';
 import { ArticleCardComponent } from './components/commons/article-card/article-card.component';
-import { NotFoundComponent } from './components/screens/not-found/not-found.component';
-import { NewAriticleComponent } from './components/commons/new-ariticle/new-ariticle.component';
 import { ParticleComponent } from './components/commons/particle/particle.component';
 import { TagFeedComponent } from './components/screens/home/tag-feed/tag-feed.component';
 import { MyArticlesComponent } from './components/screens/profile/my-articles/my-articles.component';
 import { FavoriteArticlesComponent } from './components/screens/profile/favorite-articles/favorite-articles.component';
+import { AboutUsComponent } from './components/screens/about-us/about-us.component';
+import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 import { SummaryPipe } from './services/summary.pipe';
-import { AboutUsComponent } from './components/about-us/about-us.component';
+import { EditArticleComponent } from './components/screens/edit-article/edit-article.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
     NavBarComponent,
     PaginationComponent,
     FooterComponent,
-    NewAriticleComponent,
+    NewArticleComponent,
     NotFoundComponent,
     ArticleDetailComponent,
     MyFeedComponent,
@@ -53,6 +54,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
     FavoriteArticlesComponent,
     SummaryPipe,
     AboutUsComponent,
+    EditArticleComponent,
   ],
 
   imports: [

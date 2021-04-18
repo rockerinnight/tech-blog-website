@@ -14,13 +14,13 @@
           alt=""
         />
       </div>
-      <div class="ml-2">
+      <div class="ml-3">
         <a
           class="mb-0 font-weight-bold text-decoration-none text-p-dark"
           routerLink="/profile/{{ data.author?.username }}"
           >{{ data.author?.username }}</a
         >
-        <p class="date">{{ data.createdAt | date }}</p>
+        <p class="date" style="width: 100px">{{ data.createdAt | date }}</p>
       </div>
     </div>
     <div class="heart-button">
@@ -77,7 +77,7 @@
   <a routerLink="/articles/{{ data.slug }}"
     ><em><small class="text-p-dark">Read more</small></em></a
   >
-  <div class="mt-4">
+  <div class="mt-4" *ngIf="tagLists.length !== 0">
     <span *ngFor="let tag of tagLists">
       <a
         class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"

@@ -34,7 +34,7 @@ export class NavBarComponent implements OnInit {
   }
 
   goToNewArticle(): void {
-    this.router.navigateByUrl('/newArticle');
+    this.router.navigateByUrl('/new-article');
   }
 
   goToMyArticles(): void {
