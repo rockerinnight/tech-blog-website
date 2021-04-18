@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { ArticleService } from 'src/app/services/article.service';
+import { AuthService } from 'src/app/_services/auth.service';
 import { SingleArticle } from './../../../models/single-article';
 
 @Component({
@@ -14,7 +16,11 @@ export class ArticleCardComponent implements OnInit {
   favoritesCount: number;
   isFavorited: boolean;
 
-  constructor(private articleService: ArticleService) {}
+  constructor(
+    private articleService: ArticleService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     // console.log(this.data);
@@ -24,13 +30,18 @@ export class ArticleCardComponent implements OnInit {
   }
 
   favoriteArticle(slug) {
-    this.isFavorited = true;
-    this.favoritesCount++;
-    this.data.favorited = true;
-    this.data.favoritesCount++;
-    this.articleService.favoriteArticle(slug).subscribe((res) => {
-      // console.log(res);
-    });
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigateByUrl('/login');
+      // return;
+    } else {
+      this.isFavorited = true;
+      this.favoritesCount++;
+      this.data.favorited = true;
+      this.data.favoritesCount++;
+      this.articleService.favoriteArticle(slug).subscribe((res) => {
+        // console.log(res);
+      });
+    }
   }
 
   unFavoriteArticle(slug) {
