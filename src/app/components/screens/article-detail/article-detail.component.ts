@@ -19,8 +19,8 @@ export class ArticleDetailComponent implements OnInit {
   userName: string = '';
 
   constructor(
-    private router: ActivatedRoute,
-    private route: Router,
+    private route: ActivatedRoute,
+    private router: Router,
     private articleService: ArticleService,
     private authService: AuthService
   ) {}
@@ -31,7 +31,7 @@ export class ArticleDetailComponent implements OnInit {
       this.userName = localUser.username;
     }
 
-    this.router.params.subscribe((res) => {
+    this.route.params.subscribe((res) => {
       this.articleService.getArticleDetail(res.id).subscribe((article) => {
         this.articleDetail = article;
         this.tagLists = this.articleDetail.article.tagList;
@@ -87,7 +87,7 @@ export class ArticleDetailComponent implements OnInit {
     );
     if (confirmMessage) {
       this.articleService.deteleArticle(slug).subscribe((res) => {
-        this.route.navigate([`profile/${userName}`]);
+        this.router.navigate([`profile/${userName}`]);
       });
     } else {
       return;

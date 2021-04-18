@@ -1,0 +1,131 @@
+<div class="container pb-5">
+  <div class="row mb-4">
+    <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
+      <h1 class="text-center text-p-dark my-4" *ngIf="!isSuccess">
+        New Article
+      </h1>
+      <form [formGroup]="newArticleForm" *ngIf="!isSuccess">
+        <div>
+          <div class="form-group">
+            <label for="title" class="text-p-dark font-weight-bold"
+              >Article title:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              placeholder="Article title"
+              formControlName="title"
+              required
+              minlength="1"
+            />
+            <small
+              class="text-danger"
+              *ngIf="newArticleForm.controls.title.errors?.minlength"
+            >
+              * Your title is too short.
+            </small>
+            <small
+              class="text-danger"
+              *ngIf="
+                newArticleForm.controls.title.errors?.required &&
+                newArticleForm.controls.title.touched
+              "
+            >
+              * Your title is required.
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="description" class="text-p-dark font-weight-bold"
+              >Article description:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="description"
+              placeholder="What's this post about?"
+              formControlName="description"
+              required
+              minlength="1"
+            />
+            <small
+              class="text-danger"
+              *ngIf="newArticleForm.controls.description.errors?.minlength"
+            >
+              * Your description is too short.
+            </small>
+            <small
+              class="text-danger"
+              *ngIf="
+                newArticleForm.controls.description.errors?.required &&
+                newArticleForm.controls.description.touched
+              "
+            >
+              * Your description is required.
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="body" class="text-p-dark font-weight-bold"
+              >Article body:</label
+            >
+            <textarea
+              rows="8"
+              class="form-control"
+              id="body"
+              placeholder="Write your post (in markdown)"
+              formControlName="body"
+              required
+              minlength="1"
+            ></textarea>
+            <small
+              class="text-danger"
+              *ngIf="newArticleForm.controls.body.errors?.minlength"
+            >
+              * Your article body is too short.
+            </small>
+            <small
+              class="text-danger"
+              *ngIf="
+                newArticleForm.controls.body.errors?.required &&
+                newArticleForm.controls.body.touched
+              "
+            >
+              * Your article body is required.
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="tagList" class="text-p-dark font-weight-bold"
+              >Article tag list:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="tagList"
+              placeholder="Enter tags (seperate with comma)"
+              formControlName="tagList"
+            />
+          </div>
+          <div class="text-center">
+            <button
+              type="submit"
+              class="btn btn-custom bg-p-dark px-3 text-white"
+              [disabled]="newArticleForm.invalid"
+              (click)="publishArticle()"
+            >
+              Publish
+            </button>
+          </div>
+        </div>
+      </form>
+      <div class="text-center text-p-dark my-4" *ngIf="isSuccess">
+        <span class="h1">Wel done!</span>
+        <br />
+        <span>
+          Your new article has been published!
+          <br />
+          Redirecting to yournew article to review.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

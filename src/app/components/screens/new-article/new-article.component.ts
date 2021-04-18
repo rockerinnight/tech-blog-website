@@ -2,24 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ArticleService } from 'src/app/services/article.service';
-import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
-  selector: 'app-new-ariticle',
-  templateUrl: './new-ariticle.component.html',
-  styleUrls: ['./new-ariticle.component.scss'],
+  selector: 'app-new-article',
+  templateUrl: './new-article.component.html',
+  styleUrls: ['./new-article.component.scss'],
 })
-export class NewAriticleComponent implements OnInit {
+export class NewArticleComponent implements OnInit {
   newArticleForm: FormGroup;
   slug: string;
   tagList: string[] = [];
   isSuccess: boolean = false;
 
-  constructor(
-    private authService: AuthService,
-    private ariticle: ArticleService,
-    private router: Router
-  ) {}
+  constructor(private articleService: ArticleService, private router: Router) {}
 
   ngOnInit(): void {
     this.newArticleForm = new FormGroup({
@@ -37,9 +32,15 @@ export class NewAriticleComponent implements OnInit {
   }
 
   publishArticle(): void {
-    this.tagList = [...this.newArticleForm.value.tagList.trim().split(',')];
+    this.tagList = [...this.newArticleForm.value.tagList.split(', ')];
+    // console.log(this.tagList);
 
-    this.ariticle.publishArticle(this.newArticleForm.value).subscribe(
+    this.newArticleForm.patchValue({
+      tagList: this.tagList,
+    });
+    // console.log(this.newArticleForm.value);
+
+    this.articleService.publishArticle(this.newArticleForm.value).subscribe(
       (res: any) => {
         this.isSuccess = true;
         setTimeout(() => {

@@ -1,20 +1,25 @@
 .btn-hover:hover {
   background-color: #003c8fcc;
 }
+
 .btn-width {
   width: 115px;
 }
+
 .tag-item {
   background-color: #5d99c6e6;
   cursor: text !important;
 }
+
 .date {
   font-size: small;
   color: #0000004d;
 }
+
 .arrow-left {
   position: relative;
 }
+
 .arrow-left::before {
   content: "";
   border-width: 30px 30px;
@@ -25,14 +30,27 @@
   top: 1px;
   transform: rotate(-90deg);
 }
-.btn-delete {
+
+.btn-action {
   border-color: #5d99c6;
   color: #5d99c6;
 }
-.btn-delete:hover {
-  border-color: red;
-  color: red;
+
+.btn-action {
+  &.btn-delete {
+    &:hover {
+      border-color: red;
+      color: red;
+    }
+  }
+  &.btn-edit {
+    &:hover {
+      border-color: green;
+      color: green;
+    }
+  }
 }
+
 .icon-delete {
   position: relative;
   svg {
@@ -41,6 +59,7 @@
     left: -15px;
   }
 }
+
 .icon-d-comment {
   color: #5d99c6;
   &:hover {

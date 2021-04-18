@@ -16,11 +16,20 @@
           />
         </div>
         <div class="ml-3">
-          <div class="d-flex align-items-center">
-            <h2 class="mb-0">
-              {{ articleDetail.article?.author.username }}
+          <div class="d-flex flex-column mb-1">
+            <h2 class="mb-1">
+              <a
+                class="text-decoration-none text-p-dark"
+                routerLink="/profile/{{
+                  articleDetail.article?.author.username
+                }}"
+                >{{ articleDetail.article?.author.username }}</a
+              >
             </h2>
-            <div class="ml-3">
+            <small class="mb-1">{{
+              articleDetail.article?.createdAt | date
+            }}</small>
+            <div>
               <div
                 *ngIf="
                   follow === false &&
@@ -67,7 +76,6 @@
               </div>
             </div>
           </div>
-          <small>{{ articleDetail.article?.createdAt | date }}</small>
         </div>
       </div>
     </div>
@@ -76,7 +84,7 @@
 <div class="container py-3">
   <div class="row">
     <div class="col-8 mx-auto bg-white border shadow pt-4 pb-2">
-      <h3 class="m-0 text-p-dark pb-3">
+      <h3 class="m-0 text-p-dark pb-3 d-flex justify-content-between">
         <span>{{ articleDetail.article?.title }}</span>
         <!-- Favorite button -->
         <span
@@ -126,38 +134,68 @@
           </svg>
           <span>&nbsp;{{ favoritesCount }}</span>
         </span>
-        <!-- Delete button -->
-        <span
-          *ngIf="articleDetail.article?.author.username === userName"
-          class="btn pl-4 py-0 btn-delete float-right float-right"
-          (click)="
-            deleteArticle(
-              articleDetail.article?.slug,
-              articleDetail.article?.author.username
-            )
-          "
-        >
-          <span>
-            <span class="mr-1 icon-delete"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-trash"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                />
-                <path
-                  fill-rule="evenodd"
-                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                />
-              </svg>
+        <span class="d-flex flex-column">
+          <!-- Delete button -->
+          <span
+            *ngIf="articleDetail.article?.author.username === userName"
+            class="btn pl-4 py-0 btn-action btn-delete float-right"
+            (click)="
+              deleteArticle(
+                articleDetail.article?.slug,
+                articleDetail.article?.author.username
+              )
+            "
+          >
+            <span>
+              <span class="mr-1 icon-delete"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-trash"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                  />
+                </svg>
+              </span>
+              <span>Delete</span>
             </span>
-            <span>Delete Article</span>
           </span>
+          <!-- Edit Article Button -->
+          <a
+            *ngIf="articleDetail.article?.author.username === userName"
+            class="btn pl-4 py-0 mt-2 btn-action btn-edit float-right text-decoration-none"
+            routerLink="/edit-article/{{ articleDetail.article?.slug }}"
+          >
+            <span>
+              <span class="mr-1 icon-delete"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-pencil-square"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                  />
+                </svg>
+              </span>
+              <span>Edit</span>
+            </span>
+          </a>
         </span>
       </h3>
       <div class="bio pt-2 pb-3">
@@ -212,9 +250,11 @@
           class="bg-white shadow border px-3 py-2 flex-grow-1 text-wrap arrow-left ml-3"
         >
           <div class="d-flex">
-            <span class="mr-2 font-weight-bold text-p-dark d-inline-block">{{
-              comment.author?.username
-            }}</span>
+            <a
+              class="mr-2 font-weight-bold text-p-dark d-inline-block text-decoration-none"
+              routerLink="/profile/{{ comment.author?.username }}"
+              >{{ comment.author?.username }}</a
+            >
             <small class="date d-inline-block">{{
               comment.updatedAt | date
             }}</small>
