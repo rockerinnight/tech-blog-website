@@ -6,14 +6,13 @@
     >
       <div class="form-wrapper" *ngIf="!authService.isAuthenticated()">
         <div class="h2 mb-4 text-center text-p-dark">Sign up</div>
-        <form [formGroup]="signupForm">
+        <form [formGroup]="signupForm" autocomplete="off">
           <div class="form-group">
             <input
               type="username"
               class="form-control"
               placeholder="Your username"
               formControlName="username"
-              autocomplete="off"
               required
             />
             <small
@@ -31,7 +30,6 @@
               class="form-control"
               placeholder="Your email address"
               formControlName="email"
-              autocomplete="off"
               required
             />
             <small
@@ -50,7 +48,6 @@
               class="form-control"
               placeholder="Password"
               formControlName="password"
-              autocomplete="off"
               required
               minlength="8"
             />

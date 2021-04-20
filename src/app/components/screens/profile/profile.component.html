@@ -48,9 +48,11 @@
           </a>
           <div class="ml-3">
             <div
-              *ngIf="follow === false && currUsername !== userName"
+              *ngIf="
+                follow === false && currProfile?.profile?.username !== userName
+              "
               class="btn py-0 btn-width btn-outline-p-dark"
-              (click)="followed(currUsername)"
+              (click)="followed(currProfile?.profile?.username)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,9 +69,11 @@
               <span>&nbsp;Follow</span>
             </div>
             <div
-              *ngIf="follow === true && currUsername !== userName"
+              *ngIf="
+                follow === true && currProfile?.profile?.username !== userName
+              "
               class="btn py-0 btn-width btn-hover bg-p-dark text-white"
-              (click)="unFollowed(currUsername)"
+              (click)="unFollowed(currProfile?.profile?.username)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
