@@ -15,7 +15,6 @@ export class ProfileComponent implements OnInit {
   onSelected: boolean = this.authService.isAuthenticated() ? true : false;
   selectedUser: string = '';
   currProfile: Profile;
-  currUsername: string = '';
   totalItems: number = 0;
   itemsPerPage: number = 6;
   userName: string = '';
@@ -40,10 +39,6 @@ export class ProfileComponent implements OnInit {
     });
     this.authService.getProfile(this.selectedUser).subscribe((res: any) => {
       this.currProfile = res;
-      this.currUsername = res.profile.username;
-      this.currProfile.profile.image = this.currProfile.profile.image
-        ? this.currProfile.profile.image
-        : 'https://static.productionready.io/images/smiley-cyrus.jpg';
     });
   }
 
@@ -65,7 +60,6 @@ export class ProfileComponent implements OnInit {
 
   followed(userName) {
     this.follow = true;
-    // this.articleDetail.article.author.following = true;
     this.articleService.followUser(userName).subscribe((res) => {
       // console.log(res);
     });
@@ -73,7 +67,6 @@ export class ProfileComponent implements OnInit {
 
   unFollowed(userName) {
     this.follow = false;
-    // this.articleDetail.article.author.following = false;
     this.articleService.unFollowUser(userName).subscribe((res) => {
       // console.log(res);
     });

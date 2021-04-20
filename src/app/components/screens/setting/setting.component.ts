@@ -37,6 +37,7 @@ export class SettingComponent implements OnInit {
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
+        Validators.maxLength(150),
       ]),
       cfPassword: new FormControl('', [
         Validators.required,

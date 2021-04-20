@@ -2,7 +2,7 @@
   <div class="row mb-4">
     <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
       <h1 class="text-center text-p-dark my-4">Your Settings</h1>
-      <form [formGroup]="settingForm">
+      <form [formGroup]="settingForm" autocomplete="on">
         <div *ngIf="!changingPassword">
           <div class="form-group">
             <label for="image" class="text-p-dark font-weight-bold"
@@ -57,6 +57,7 @@
               id="bio"
               placeholder="Short bio about you"
               formControlName="bio"
+              maxlength="150"
               (input)="cfPasswordNoti()"
             ></textarea>
           </div>
