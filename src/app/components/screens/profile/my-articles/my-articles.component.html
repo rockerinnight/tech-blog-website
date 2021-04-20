@@ -1,6 +1,6 @@
 <div class="container pb-5 px-0">
-  <div *ngFor="let articles of myArticles">
-    <app-article-card [data]="articles"></app-article-card>
+  <div *ngFor="let article of myArticles">
+    <app-article-card [data]="article"></app-article-card>
   </div>
   <app-pagination
     *ngIf="loadDone"

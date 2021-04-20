@@ -122,16 +122,19 @@
           </div>
         </div>
       </form>
+      <!-- Save Draft -->
       <div class="text-center text-p-dark mt-3" *ngIf="savedDraft">
         <p class="h2 text-success">Good Job!</p>
         <p>Your article has been saved to draft.</p>
         <p>Publish it to the community at anytime.</p>
       </div>
+      <!-- Success -->
       <div class="text-center text-p-dark mt-3" *ngIf="isPublished">
         <p class="h2 text-success">Wel done!</p>
         <p>Your new article has been published!</p>
         <p>Redirecting to your new article to review.</p>
       </div>
+      <!-- Error -->
       <div class="text-center text-p-dark mt-3" *ngIf="errorOccurs">
         <p class="h2 text-danger">Somethings went wrong!</p>
         <p>Save Draft and try to publish your article later.</p>

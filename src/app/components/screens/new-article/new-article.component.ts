@@ -56,10 +56,11 @@ export class NewArticleComponent implements OnInit {
         let tagList: string[] = [
           ...this.newArticleForm.value.tagList.split(', '),
         ];
-        // console.log(this.tagList);
+        // console.log(tagList);
         this.newArticleForm.patchValue({
           tagList: tagList,
         });
+        console.log(this.newArticleForm.value);
         this.savedDraft = false;
         this.errorOccurs = false;
         this.isPublished = true;

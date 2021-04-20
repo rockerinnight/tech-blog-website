@@ -12,8 +12,10 @@ export class EditArticleComponent implements OnInit {
   editArticleForm: FormGroup;
   private slug: string = '';
   private tagList: string[] = [];
-  // private articleDetails: any = {};
-  isSuccess: boolean = false;
+  savedDraft: boolean = false;
+  isUpdated: boolean = false;
+  errorOccurs: boolean = false;
+  draftArticle: any = {};
 
   constructor(private articleService: ArticleService, private router: Router) {}
 
@@ -32,30 +34,55 @@ export class EditArticleComponent implements OnInit {
     });
 
     this.slug = this.router.url.split('edit-article/')[1];
-    this.articleService.getArticleDetail(this.slug).subscribe((res: any) => {
-      // this.articleDetails = {
-      //   ...res,
-      // };
-      // console.log(this.articleDetails);
+
+    // ** Check if there is any draft saved in LS
+    let localDraft = localStorage.getItem(`draft-${this.slug}`);
+    if (localDraft) {
+      this.draftArticle = JSON.parse(localDraft);
+
+      // ** Load content from LS
       this.editArticleForm.setValue({
-        title: res.article.title,
-        description: res.article.description,
-        body: res.article.body,
-        tagList: res.article.tagList.join(', '),
+        title: this.draftArticle.title,
+        description: this.draftArticle.description,
+        body: this.draftArticle.body,
+        tagList: this.draftArticle.tagList,
       });
-      // console.log(this.editArticleForm.value.tagList);
-    });
+    } else {
+      // ** Load content from Server
+      this.articleService.getArticleDetail(this.slug).subscribe((res: any) => {
+        this.editArticleForm.setValue({
+          title: res.article.title,
+          description: res.article.description,
+          body: res.article.body,
+          tagList: res.article.tagList.join(', '),
+        });
+      });
+    }
   }
 
   updateArticle(): void {
-    this.tagList = [...this.editArticleForm.value.tagList.split(', ')];
+    // console.log(this.editArticleForm.value);
+
     this.articleService
       .editArticle(this.editArticleForm.value, this.slug)
       .subscribe(
         (res: any) => {
-          this.isSuccess = true;
+          // ** patch value of tagList after 'arraying' it
+          let tagList: string[] = [
+            ...this.editArticleForm.value.tagList.split(', '),
+          ];
+          // console.log(tagList);
+          this.editArticleForm.patchValue({
+            tagList: tagList,
+          });
+          this.savedDraft = false;
+          this.errorOccurs = false;
+          this.isUpdated = true;
           setTimeout(() => {
+            // ** If publishing successfully, delete draft from LS
+            localStorage.removeItem(`draft-${this.slug}`);
             this.router.navigateByUrl(
+              // ! User this router if you want to navigate back to profile instead
               // `/profile/${this.authService.getUser().username}`
               `/articles/${res.article.slug}`
             );
@@ -63,8 +90,20 @@ export class EditArticleComponent implements OnInit {
         },
         (err: any) => {
           console.log(err);
-          window.location.reload();
+          this.savedDraft = false;
+          this.errorOccurs = true;
+          this.isUpdated = false;
         }
       );
+  }
+
+  saveDraftArticle() {
+    this.savedDraft = true;
+    this.errorOccurs = false;
+    this.isUpdated = false;
+    localStorage.setItem(
+      `draft-${this.slug}`,
+      JSON.stringify(this.editArticleForm.value)
+    );
   }
 }

@@ -8,7 +8,7 @@
           height="40px"
           [src]="
             data.author.image.startsWith('http')
-              ? data.author.image
+              ? data.author?.image
               : 'https://static.productionready.io/images/smiley-cyrus.jpg'
           "
           alt=""
