@@ -7,15 +7,19 @@
             class="rounded-circle"
             width="100px"
             height="100px"
-            [src]="currProfile?.profile.image"
+            [src]="
+              currProfile?.profile?.image.startsWith('http')
+                ? currProfile?.profile?.image
+                : 'https://static.productionready.io/images/smiley-cyrus.jpg'
+            "
             alt=""
           />
         </div>
         <div class="h2 mt-2 text-p-dark text-center font-weight-bold">
-          {{ currProfile?.profile.username }}
+          {{ currProfile?.profile?.username }}
         </div>
         <div class="text-p-dark text-center lead">
-          <em>{{ currProfile?.profile.bio }}</em>
+          <em>{{ currProfile?.profile?.bio }}</em>
         </div>
         <div class="d-flex justify-content-end">
           <a

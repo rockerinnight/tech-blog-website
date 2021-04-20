@@ -30,6 +30,7 @@ import { AboutUsComponent } from './components/screens/about-us/about-us.compone
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
 import { SummaryPipe } from './services/summary.pipe';
 import { EditArticleComponent } from './components/screens/edit-article/edit-article.component';
+import { ChangelogComponent } from './components/screens/changelog/changelog.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { EditArticleComponent } from './components/screens/edit-article/edit-art
     SummaryPipe,
     AboutUsComponent,
     EditArticleComponent,
+    ChangelogComponent,
   ],
 
   imports: [

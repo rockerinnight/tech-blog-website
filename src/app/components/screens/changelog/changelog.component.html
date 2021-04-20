@@ -1,0 +1,42 @@
+<div class="container pb-5">
+  <div class="row mb-4">
+    <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
+      <h1 class="text-center text-p-dark my-4">Changelogs</h1>
+      <!-- CHANGELOGS LIST -->
+      <div class="jumbotron jumbotron-fluid py-3">
+        <div class="container">
+          <p class="h5">
+            <em>{{ writeDate | date }}</em>
+          </p>
+          <p class="lead text-justify">
+            Now you can save your article to draft when you haven't finish it
+            yet. You can publish it anytime after that.<br />Save Draft also
+            prevents any errors occur when publishing your newest article. Draft
+            will be loaded right when you are back to Online and the content
+            will be loaded on "New Article" like there's nothing happened before
+            that.
+          </p>
+          <ul class="text-p-dark pl-3 m-0">
+            <li>
+              Save Draft is intergrated in "<a
+                class="text-decoration-none"
+                routerLink="/new-article"
+                >New Article</a
+              >" and "Edit Article".
+            </li>
+            <li>
+              Draft after published successful is only available to edit again
+              in "Edit Article".
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- CHANGELOGS LIST END -->
+      <div class="text-center text-p-dark mb-0 my-4">
+        <a class="h2 text-p-dark" routerLink="/new-article"
+          ><u>Try our new feature - Save Draft HERE</u></a
+        >
+      </div>
+    </div>
+  </div>
+</div>

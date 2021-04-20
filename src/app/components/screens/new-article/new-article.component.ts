@@ -11,8 +11,10 @@ import { ArticleService } from 'src/app/services/article.service';
 export class NewArticleComponent implements OnInit {
   newArticleForm: FormGroup;
   slug: string;
-  tagList: string[] = [];
-  isSuccess: boolean = false;
+  savedDraft: boolean = false;
+  isPublished: boolean = false;
+  errorOccurs: boolean = false;
+  draftArticle: any = {};
 
   constructor(private articleService: ArticleService, private router: Router) {}
 
@@ -29,31 +31,61 @@ export class NewArticleComponent implements OnInit {
       body: new FormControl('', [Validators.required, Validators.minLength(1)]),
       tagList: new FormControl(''),
     });
+
+    // ** Check if there is any draft saved in LS
+    let localDraft = localStorage.getItem('draft');
+    if (localDraft) {
+      this.draftArticle = JSON.parse(localDraft);
+
+      // ** Draft content loaded
+      this.newArticleForm.setValue({
+        title: this.draftArticle.title,
+        description: this.draftArticle.description,
+        body: this.draftArticle.body,
+        tagList: this.draftArticle.tagList,
+      });
+    }
   }
 
   publishArticle(): void {
-    this.tagList = [...this.newArticleForm.value.tagList.split(', ')];
-    // console.log(this.tagList);
-
-    this.newArticleForm.patchValue({
-      tagList: this.tagList,
-    });
     // console.log(this.newArticleForm.value);
 
     this.articleService.publishArticle(this.newArticleForm.value).subscribe(
       (res: any) => {
-        this.isSuccess = true;
+        // ** patch value of tagList after 'arraying' it
+        let tagList: string[] = [
+          ...this.newArticleForm.value.tagList.split(', '),
+        ];
+        // console.log(this.tagList);
+        this.newArticleForm.patchValue({
+          tagList: tagList,
+        });
+        this.savedDraft = false;
+        this.errorOccurs = false;
+        this.isPublished = true;
         setTimeout(() => {
+          // ** If publishing successfully, delete draft from LS
+          localStorage.removeItem('draft');
           this.router.navigateByUrl(
+            // ! User this router if you want to navigate back to profile instead
             // `/profile/${this.authService.getUser().username}`
             `/articles/${res.article.slug}`
           );
         }, 2000);
       },
       (err: any) => {
-        console.log(err);
-        window.location.reload();
+        // console.log(err);
+        this.savedDraft = false;
+        this.errorOccurs = true;
+        this.isPublished = false;
       }
     );
+  }
+
+  saveDraftArticle() {
+    this.savedDraft = true;
+    this.errorOccurs = false;
+    this.isPublished = false;
+    localStorage.setItem('draft', JSON.stringify(this.newArticleForm.value));
   }
 }

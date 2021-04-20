@@ -1,10 +1,8 @@
 <div class="container pb-5">
   <div class="row mb-4">
     <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
-      <h1 class="text-center text-p-dark my-4" *ngIf="!isSuccess">
-        New Article
-      </h1>
-      <form [formGroup]="newArticleForm" *ngIf="!isSuccess">
+      <h1 class="text-center text-p-dark my-4">New Article</h1>
+      <form [formGroup]="newArticleForm">
         <div>
           <div class="form-group">
             <label for="title" class="text-p-dark font-weight-bold"
@@ -107,6 +105,13 @@
           </div>
           <div class="text-center">
             <button
+              type="button"
+              class="btn btn-outline-p-dark text-p-dark px-3 mr-2"
+              (click)="saveDraftArticle()"
+            >
+              Save Draft
+            </button>
+            <button
               type="submit"
               class="btn btn-custom bg-p-dark px-3 text-white"
               [disabled]="newArticleForm.invalid"
@@ -117,14 +122,19 @@
           </div>
         </div>
       </form>
-      <div class="text-center text-p-dark my-4" *ngIf="isSuccess">
-        <span class="h1">Wel done!</span>
-        <br />
-        <span>
-          Your new article has been published!
-          <br />
-          Redirecting to yournew article to review.
-        </span>
+      <div class="text-center text-p-dark mt-3" *ngIf="savedDraft">
+        <p class="h2 text-success">Good Job!</p>
+        <p>Your article has been saved to draft.</p>
+        <p>Publish it to the community at anytime.</p>
+      </div>
+      <div class="text-center text-p-dark mt-3" *ngIf="isPublished">
+        <p class="h2 text-success">Wel done!</p>
+        <p>Your new article has been published!</p>
+        <p>Redirecting to your new article to review.</p>
+      </div>
+      <div class="text-center text-p-dark mt-3" *ngIf="errorOccurs">
+        <p class="h2 text-danger">Somethings went wrong!</p>
+        <p>Save Draft and try to publish your article later.</p>
       </div>
     </div>
   </div>
