@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/_services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { ArticleService } from './../../../services/article.service';
 
 @Component({
@@ -36,6 +36,8 @@ export class ArticleDetailComponent implements OnInit {
         this.articleDetail = article;
         this.tagLists = this.articleDetail.article.tagList;
         this.follow = this.articleDetail.article.author.following;
+        console.log(this.follow);
+
         this.favorite = this.articleDetail.article.favorited;
         this.favoritesCount = this.articleDetail.article.favoritesCount;
       });

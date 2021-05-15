@@ -1,13 +1,13 @@
-import { MultiArticle } from './../_models/multi-article';
+import { MultiArticle } from './../models/multi-article';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SingleArticle } from '../_models/single-article';
-import { Tag } from '../_models/tag';
-import { Profile } from '../_models/profile';
-import { SingleComment } from '../_models/single-comment';
-import { config } from '../config';
-import { MultiComment } from '../_models/multi-comment';
+import { SingleArticle } from '../models/single-article';
+import { Tag } from '../models/tag';
+import { Profile } from '../models/profile';
+import { SingleComment } from '../models/single-comment';
+import { config } from '../helpers/config';
+import { MultiComment } from '../models/multi-comment';
 
 @Injectable({
   providedIn: 'root',

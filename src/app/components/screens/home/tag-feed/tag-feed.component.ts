@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { MultiArticle } from 'src/app/_models/multi-article';
+import { MultiArticle } from 'src/app/models/multi-article';
 import { ArticleService } from './../../../../services/article.service';
 
 @Component({

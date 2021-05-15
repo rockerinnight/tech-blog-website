@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ArticleService } from 'src/app/services/article.service';
-import { MultiArticle } from 'src/app/_models/multi-article';
+import { MultiArticle } from 'src/app/models/multi-article';
 
 @Component({
   selector: 'app-my-articles',

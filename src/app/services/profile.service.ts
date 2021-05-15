@@ -1,6 +1,6 @@
-import { MultiArticle } from './../_models/multi-article';
-import { AuthService } from './../_services/auth.service';
-import { config } from './../config';
+import { MultiArticle } from './../models/multi-article';
+import { AuthService } from './../services/auth.service';
+import { config } from '../helpers/config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';

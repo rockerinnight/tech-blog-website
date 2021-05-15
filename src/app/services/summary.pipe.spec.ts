@@ -1,4 +1,4 @@
-import { SummaryPipe } from './summary.pipe';
+import { SummaryPipe } from '../helpers/summary.pipe';
 
 describe('SummaryPipe', () => {
   it('create an instance', () => {

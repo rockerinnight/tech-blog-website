@@ -28,7 +28,7 @@ import { MyArticlesComponent } from './components/screens/profile/my-articles/my
 import { FavoriteArticlesComponent } from './components/screens/profile/favorite-articles/favorite-articles.component';
 import { AboutUsComponent } from './components/screens/about-us/about-us.component';
 import { NotFoundComponent } from './components/screens/not-found/not-found.component';
-import { SummaryPipe } from './services/summary.pipe';
+import { SummaryPipe } from './helpers/summary.pipe';
 import { EditArticleComponent } from './components/screens/edit-article/edit-article.component';
 import { ChangelogComponent } from './components/screens/changelog/changelog.component';
 

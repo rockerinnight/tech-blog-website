@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs';
-import { Profile } from './../models/profile';
-import { config } from './../config';
+import { config } from '../helpers/config';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../_models/user';
+import { User } from '../models/user';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -28,10 +27,10 @@ export class AuthService {
     return this.user;
   }
 
-  getProfile(username: string): Observable<Profile> {
+  getProfile(username: string): Observable<any> {
     return this.http.get(
       config.apiUrl + `/profiles/${username}`
-    ) as Observable<Profile>;
+    ) as Observable<any>;
   }
 
   signup(user) {

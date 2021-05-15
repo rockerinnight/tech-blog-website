@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ArticleService } from 'src/app/services/article.service';
-import { AuthService } from 'src/app/_services/auth.service';
-import { SingleArticle } from './../../../models/single-article';
+import { ArticleService } from '../../../services/article.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-article-card',
@@ -10,7 +9,7 @@ import { SingleArticle } from './../../../models/single-article';
   styleUrls: ['./article-card.component.scss'],
 })
 export class ArticleCardComponent implements OnInit {
-  @Input('data') data: SingleArticle;
+  @Input('data') data: any;
   @Output('tagFromCard') selectedTag = new EventEmitter();
   tagLists: any[];
   favoritesCount: number;
@@ -32,13 +31,13 @@ export class ArticleCardComponent implements OnInit {
   favoriteArticle(slug) {
     if (!this.authService.isAuthenticated()) {
       this.router.navigateByUrl('/login');
-      // return;
     } else {
       this.isFavorited = true;
       this.favoritesCount++;
       this.data.favorited = true;
       this.data.favoritesCount++;
       this.articleService.favoriteArticle(slug).subscribe((res) => {
+        // ** It returns a Single Article
         // console.log(res);
       });
     }
@@ -50,6 +49,7 @@ export class ArticleCardComponent implements OnInit {
     this.data.favorited = false;
     this.data.favoritesCount--;
     this.articleService.unFavoriteArticle(slug).subscribe((res) => {
+      // ** It returns a Single Article
       // console.log(res);
     });
   }
