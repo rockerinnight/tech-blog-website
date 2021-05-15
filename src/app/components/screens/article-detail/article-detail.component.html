@@ -8,7 +8,7 @@
             width="100px"
             height="100px"
             [src]="
-              articleDetail?.article?.author?.image.startsWith('http')
+              articleDetail?.article?.author?.image.startsWith('https')
                 ? articleDetail?.article?.author?.image
                 : 'https://static.productionready.io/images/smiley-cyrus.jpg'
             "
@@ -199,6 +199,7 @@
         </span>
       </h3>
       <div class="bio pt-2 pb-3">
+        <h5>{{ articleDetail?.article?.description }}</h5>
         <p class="mb-4">{{ articleDetail?.article?.body }}</p>
         <span *ngFor="let tag of tagLists">
           <span class="tag-item btn text-white mr-1 py-0 rounded-pill"
@@ -243,7 +244,7 @@
             width="30px"
             height="30px"
             [src]="
-              comment?.author?.image.startsWith('http')
+              comment?.author?.image.startsWith('https')
                 ? comment?.author?.image
                 : 'https://static.productionready.io/images/smiley-cyrus.jpg'
             "

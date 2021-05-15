@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './components/screens/home/home.component';
-import { LoginGuard } from './_helpers/login.guard';
-import { AuthGuard } from './_helpers/auth.guard';
+import { LoginGuard } from './helpers/login.guard';
+import { AuthGuard } from './helpers/auth.guard';
 import { LoginComponent } from './components/screens/login/login.component';
 import { SignUpComponent } from './components/screens/sign-up/sign-up.component';
 import { SettingComponent } from './components/screens/setting/setting.component';

@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ArticleService } from 'src/app/services/article.service';
 
-import { Profile } from 'src/app/_models/profile';
-import { AuthService } from './../../../_services/auth.service';
+import { Profile } from 'src/app/models/profile';
+import { AuthService } from './../../../services/auth.service';
 
 @Component({
   selector: 'app-profile',

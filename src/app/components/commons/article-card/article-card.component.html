@@ -7,7 +7,7 @@
           width="40px"
           height="40px"
           [src]="
-            data.author.image.startsWith('http')
+            data.author.image.startsWith('https')
               ? data.author?.image
               : 'https://static.productionready.io/images/smiley-cyrus.jpg'
           "
@@ -73,11 +73,18 @@
       >{{ data.title }}</a
     >
   </h4>
-  <p class="mb-0">{{ data.description }}</p>
-  <a routerLink="/articles/{{ data.slug }}"
-    ><em><small class="text-p-dark">Read more</small></em></a
-  >
-  <div class="mt-4" *ngIf="tagLists.length !== 0">
+  <h5>{{ data.description }}</h5>
+  <h6 class="mb-0 text-black-50">
+    <i
+      ><small
+        >{{ data.body | summary: 100 }}
+        <a routerLink="/articles/{{ data.slug }}"
+          ><span class="text-p-dark">Read more</span></a
+        >
+      </small></i
+    >
+  </h6>
+  <div class="mt-3" *ngIf="tagLists.length !== 0">
     <span *ngFor="let tag of tagLists">
       <a
         class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"
