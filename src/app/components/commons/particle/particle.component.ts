@@ -8,9 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class ParticleComponent implements OnInit {
   constructor() {}
 
-  ngOnInit() {}
   width: number = 100;
   height: number = 100;
+
   myStyle: Object = {
     position: 'fixed',
     width: '100%',
@@ -21,7 +21,8 @@ export class ParticleComponent implements OnInit {
     right: 0,
     bottom: 0,
   };
-  myParams: object = {
+
+  myParams: Object = {
     particles: {
       number: {
         value: 80,
@@ -127,4 +128,6 @@ export class ParticleComponent implements OnInit {
     },
     retina_detect: true,
   };
+
+  ngOnInit() {}
 }

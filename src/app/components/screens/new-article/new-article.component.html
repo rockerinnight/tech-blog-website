@@ -1,144 +1,176 @@
 <div class="container pb-5">
   <div class="row mb-4">
     <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
-      <h1 class="text-center text-p-dark my-4">New Article</h1>
+      <h1 class="text-center text-p-dark my-4">
+        {{ onEditing ? "Edit" : "New" }} Article
+      </h1>
       <form [formGroup]="newArticleForm">
-        <div>
-          <div class="form-group">
-            <label for="title" class="text-p-dark font-weight-bold"
-              >Article title:</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="title"
-              placeholder="Article title"
-              formControlName="title"
-              required
-              minlength="1"
-            />
-            <small
-              class="text-danger"
-              *ngIf="newArticleForm.controls.title.errors?.minlength"
-            >
-              * Your title is too short.
-            </small>
-            <small
-              class="text-danger"
-              *ngIf="
-                newArticleForm.controls.title.errors?.required &&
-                newArticleForm.controls.title.touched
-              "
-            >
-              * Your title is required.
-            </small>
+        <!-- Article title -->
+        <div class="form-group">
+          <label for="title" class="text-p-dark font-weight-bold">
+            Title:
+          </label>
+          <input
+            id="title"
+            class="form-control"
+            type="text"
+            placeholder="Article title"
+            formControlName="title"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              newArticleForm.controls.title.touched &&
+              newArticleForm.controls.title.errors?.required
+            "
+          >
+            * Your title is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              newArticleForm.controls.title.touched &&
+              newArticleForm.controls.title.errors?.minlength
+            "
+          >
+            * Your title is too short.
+          </small>
+        </div>
+        <!-- Article desciption -->
+        <div class="form-group">
+          <label for="description" class="text-p-dark font-weight-bold">
+            Description:
+          </label>
+          <input
+            id="description"
+            class="form-control"
+            type="text"
+            placeholder="What's this post about?"
+            formControlName="description"
+          />
+          <small
+            class="text-danger"
+            *ngIf="
+              newArticleForm.controls.description.touched &&
+              newArticleForm.controls.description.errors?.required
+            "
+          >
+            * Your description is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              newArticleForm.controls.description.touched &&
+              newArticleForm.controls.description.errors?.minlength
+            "
+          >
+            * Your description is too short.
+          </small>
+        </div>
+        <!-- Article body -->
+        <div class="form-group">
+          <label for="body" class="text-p-dark font-weight-bold"> Body: </label>
+          <textarea
+            id="body"
+            class="form-control"
+            placeholder="Write your post (in markdown)"
+            formControlName="body"
+            rows="5"
+          ></textarea>
+          <small
+            class="text-danger"
+            *ngIf="
+              newArticleForm.controls.body.touched &&
+              newArticleForm.controls.body.errors?.required
+            "
+          >
+            * Your article body is required.
+          </small>
+          <small
+            class="text-danger"
+            *ngIf="
+              newArticleForm.controls.body.touched &&
+              newArticleForm.controls.body.errors?.minlength
+            "
+          >
+            * Your article body is too short.
+          </small>
+        </div>
+        <!-- Tag list -->
+        <div class="form-group">
+          <label for="tagList" class="text-p-dark font-weight-bold">
+            Tag list:
+          </label>
+          <input
+            id="tagList"
+            class="form-control"
+            type="text"
+            placeholder="Enter tags (Press Enter to add)"
+            (keydown.enter)="addTag($event)"
+          />
+          <div class="tag-container mt-2">
+            <ng-container *ngFor="let tag of tagListForm.value; let i = index">
+              <a
+                class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"
+                (click)="removeTag(i)"
+              >
+                #{{ tag }}
+              </a>
+            </ng-container>
           </div>
-          <div class="form-group">
-            <label for="description" class="text-p-dark font-weight-bold"
-              >Article description:</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="description"
-              placeholder="What's this post about?"
-              formControlName="description"
-              required
-              minlength="1"
-            />
-            <small
-              class="text-danger"
-              *ngIf="newArticleForm.controls.description.errors?.minlength"
-            >
-              * Your description is too short.
-            </small>
-            <small
-              class="text-danger"
-              *ngIf="
-                newArticleForm.controls.description.errors?.required &&
-                newArticleForm.controls.description.touched
-              "
-            >
-              * Your description is required.
-            </small>
-          </div>
-          <div class="form-group">
-            <label for="body" class="text-p-dark font-weight-bold"
-              >Article body:</label
-            >
-            <textarea
-              rows="8"
-              class="form-control"
-              id="body"
-              placeholder="Write your post (in markdown)"
-              formControlName="body"
-              required
-              minlength="1"
-            ></textarea>
-            <small
-              class="text-danger"
-              *ngIf="newArticleForm.controls.body.errors?.minlength"
-            >
-              * Your article body is too short.
-            </small>
-            <small
-              class="text-danger"
-              *ngIf="
-                newArticleForm.controls.body.errors?.required &&
-                newArticleForm.controls.body.touched
-              "
-            >
-              * Your article body is required.
-            </small>
-          </div>
-          <div class="form-group">
-            <label for="tagList" class="text-p-dark font-weight-bold"
-              >Article tag list:</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="tagList"
-              placeholder="Enter tags (seperate with comma)"
-              formControlName="tagList"
-            />
-          </div>
-          <div class="text-center">
-            <button
-              type="button"
-              class="btn btn-outline-p-dark text-p-dark px-3 mr-2"
-              (click)="saveDraftArticle()"
-            >
-              Save Draft
-            </button>
-            <button
-              type="submit"
-              class="btn btn-custom bg-p-dark px-3 text-white"
-              [disabled]="newArticleForm.invalid"
-              (click)="publishArticle()"
-            >
-              Publish
-            </button>
-          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="text-center">
+          <button
+            type="button"
+            class="btn btn-outline-p-dark text-p-dark px-3 mr-2"
+            (click)="saveDraftArticle()"
+            *ngIf="!onEditing"
+          >
+            Save Draft
+          </button>
+          <button
+            type="submit"
+            class="btn btn-custom bg-p-dark px-3 text-white"
+            [disabled]="newArticleForm.invalid"
+            (click)="createArticle()"
+          >
+            {{ onEditing ? "Update" : "Publish" }}
+          </button>
         </div>
       </form>
       <!-- Save Draft -->
       <div class="text-center text-p-dark mt-3" *ngIf="savedDraft">
-        <p class="h2 text-success">Good Job!</p>
-        <p>Your article has been saved to draft.</p>
-        <p>Publish it to the community at anytime.</p>
+        <p class="h2 text-success mb-0">Good Job!</p>
+        <p class="mb-0">Your article has been saved to draft.</p>
+        <p class="mb-0">Publish it to the community at anytime.</p>
       </div>
       <!-- Success -->
       <div class="text-center text-p-dark mt-3" *ngIf="isPublished">
         <p class="h2 text-success">Wel done!</p>
-        <p>Your new article has been published!</p>
-        <p>Redirecting to your new article to review.</p>
+        <p class="mb-0">Your new article has been published!</p>
+        <p class="mb-0">Redirecting to your new article to review.</p>
       </div>
       <!-- Error -->
-      <div class="text-center text-p-dark mt-3" *ngIf="errorOccurs">
-        <p class="h2 text-danger">Somethings went wrong!</p>
-        <p>Save Draft and try to publish your article later.</p>
+      <div class="text-center text-p-dark mt-3" *ngIf="errorOccurs.status">
+        <p class="h2 text-danger">
+          {{ errorOccurs.msg || "Somethings went wrong!" }}
+        </p>
+        <p class="mb-0" *ngIf="!errorOccurs.msg.length && !onEditing">
+          Save Draft and try to publish your article later.
+        </p>
       </div>
+
+      <ngx-spinner
+        bdColor="rgba(255,255,255,0.25)"
+        size="default"
+        color="#5d99c6"
+        type="ball-scale-multiple"
+        [name]="'new-articles'"
+        [fullScreen]="false"
+      >
+      </ngx-spinner>
     </div>
   </div>
 </div>

@@ -17,16 +17,16 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+    });
+
     if (this.authService.isAuthenticated()) {
-      let token = this.authService.getUser()['token'];
-      let authRequest = request.clone({
-        headers: new HttpHeaders({
-          Authorization: 'Token ' + token,
-        }),
-      });
+      const jwtToken = localStorage.getItem('ACCESS_TOKEN');
+      headers = headers.append('Authorization', `Token ${jwtToken}`);
+      const authRequest = request.clone({ headers });
       return next.handle(authRequest);
     }
-
-    return next.handle(request);
+    return next.handle(request.clone({ headers }));
   }
 }

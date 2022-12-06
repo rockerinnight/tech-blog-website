@@ -1,7 +1,13 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from './../../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+
+import { take } from 'rxjs/operators';
+
+import { AuthService } from './../../../services/auth.service';
+
+import { User } from 'src/app/models/user.model';
+import { RegistrationDto } from 'src/app/models/registration-dto.model';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,33 +16,51 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
   signupForm: FormGroup;
-  isInvalidInput: boolean = null;
+  isInvalidInput = false;
 
-  constructor(private router: Router, public authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.signupForm = new FormGroup({
-      username: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-      ]),
+    this.signupForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
   signUp(): void {
-    // const currURL = this.router.url;
+    this.signupForm.markAllAsTouched();
+    if (this.signupForm.invalid) {
+      this.isInvalidInput = true;
+      return;
+    }
+
+    this.isInvalidInput = false;
+    const signupBody: RegistrationDto = {
+      user: {
+        username: this.signupForm.controls.username.value.trim(),
+        email: this.signupForm.controls.email.value.trim(),
+        password: this.signupForm.controls.password.value.trim(),
+      },
+    };
     this.authService
-      .signup(this.signupForm.value)
-      .then(() => {
-        this.isInvalidInput = false;
-        setTimeout(() => {
-          this.router.navigate(['..']);
-        }, 2000);
-      })
-      .catch(() => {
-        this.isInvalidInput = true;
-      });
+      .register(signupBody)
+      .pipe(take(1))
+      .subscribe(
+        (res: User) => {
+          if (res?.user) {
+            localStorage.setItem('ACCESS_TOKEN', res.user.token);
+            this.router.navigateByUrl('/home');
+          }
+        },
+        (e) => {
+          this.isInvalidInput = true;
+          console.log(e);
+        }
+      );
   }
 }

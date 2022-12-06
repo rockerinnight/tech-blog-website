@@ -1,10 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { ArticleService } from 'src/app/services/article.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { Profile } from 'src/app/models/profile';
-import { AuthService } from './../../../services/auth.service';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import {
+  catchError,
+  map,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
+
+import { AuthService } from 'src/app/services/auth.service';
+import { ArticleService } from 'src/app/services/article.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { LoadingSpinnerService } from 'src/app/services/loading-spinner.service';
+
+import { User } from 'src/app/models/user.model';
+import { Author } from 'src/app/models/author.model';
+import { Profile } from 'src/app/models/profile.model';
+import { Article } from 'src/app/models/article.model';
+import { MultiArticles } from 'src/app/models/multi-articles.model';
+
+interface UserResponse {
+  email: string;
+  token: string;
+  username: string;
+  bio: string | null;
+  image: string;
+}
 
 @Component({
   selector: 'app-profile',
@@ -12,63 +36,129 @@ import { AuthService } from './../../../services/auth.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  onSelected: boolean = this.authService.isAuthenticated() ? true : false;
-  selectedUser: string = '';
-  currProfile: Profile;
-  totalItems: number = 0;
-  itemsPerPage: number = 6;
-  userName: string = '';
+  viewMode: 'user' | 'favorited' = 'user';
 
-  follow: boolean = false;
+  profile$: Observable<Author>;
+  user$: Observable<UserResponse>;
+  userArticles$: Observable<Article[]>;
+  favoritedArticles$: Observable<Article[]>;
+
+  profileUpdater = new BehaviorSubject(null);
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService,
-    private spinner: NgxSpinnerService,
-    private articleService: ArticleService
+    public authService: AuthService,
+    private profileService: ProfileService,
+    private articleService: ArticleService,
+    private loadingSpinnerService: LoadingSpinnerService
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      let localUser = JSON.parse(localStorage.getItem('user'));
-      this.userName = localUser.username;
-    }
+    this.loadingSpinnerService.showSpinner('profile-info');
+    this.loadingSpinnerService.showSpinner('profile-articles');
 
-    this.route.params.subscribe((res: any) => {
-      this.selectedUser = res.id;
-    });
-    this.authService.getProfile(this.selectedUser).subscribe((res: any) => {
-      this.currProfile = res;
-    });
+    const userName = this.route.snapshot.params?.username;
+
+    this.profile$ = this.profileUpdater.pipe(
+      switchMap(() =>
+        this.profileService.getProfile(userName).pipe(
+          catchError((err) => {
+            this.router.navigateByUrl('/404');
+            return of({});
+          })
+        )
+      ),
+      map((res: Profile) => res.profile),
+      tap(() => {
+        this.loadingSpinnerService.hideSpinner('profile-articles');
+        this.loadingSpinnerService.hideSpinner('follow');
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
+
+    this.user$ = of(this.authService.isAuthenticated())
+      .pipe(
+        switchMap((isAuth: boolean) =>
+          !isAuth
+            ? of({ user: { username: '' } })
+            : this.authService.getUser().pipe(
+                catchError((err) => {
+                  this.router.navigateByUrl('/home');
+                  return of({});
+                })
+              )
+        )
+      )
+      .pipe(
+        tap(() => {
+          this.loadingSpinnerService.hideSpinner('profile-info');
+        }),
+        map((res: User) => res?.user),
+        shareReplay({ bufferSize: 1, refCount: true })
+      );
+
+    this.userArticles$ = this.articleService
+      .getListArticles({
+        author: userName,
+      })
+      .pipe(
+        map((res: MultiArticles) => res?.articles || []),
+        tap(() => {
+          this.loadingSpinnerService.hideSpinner('profile-articles');
+        })
+      );
+
+    this.favoritedArticles$ = this.articleService
+      .getListArticles({
+        favorited: userName,
+      })
+      .pipe(
+        map((res: MultiArticles) => res?.articles || []),
+        tap(() => {
+          this.loadingSpinnerService.hideSpinner('profile-articles');
+        })
+      );
   }
 
-  openSpinner(timeLoad) {
-    this.spinner.show();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, timeLoad);
+  switchTab(mode: 'user' | 'favorited'): void {
+    this.loadingSpinnerService.showSpinner('profile-articles');
+    this.viewMode = mode;
   }
 
-  switchTab(): void {
-    this.onSelected = !this.onSelected;
-    this.openSpinner(200);
+  followUser(userName: string): void {
+    this.loadingSpinnerService.showSpinner('follow');
+    this.profileService
+      .followUser(userName)
+      .pipe(take(1))
+      .subscribe(
+        (res: Profile) => {
+          if (res) {
+            this.profileUpdater.next(null);
+          }
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner('follow');
+        }
+      );
   }
 
-  logout(): void {
-    this.authService.logout();
-  }
-
-  followed(userName) {
-    this.follow = true;
-    this.articleService.followUser(userName).subscribe((res) => {
-      // console.log(res);
-    });
-  }
-
-  unFollowed(userName) {
-    this.follow = false;
-    this.articleService.unFollowUser(userName).subscribe((res) => {
-      // console.log(res);
-    });
+  unFollowUser(userName: string): void {
+    this.loadingSpinnerService.showSpinner('follow');
+    this.profileService
+      .unFollowUser(userName)
+      .pipe(take(1))
+      .subscribe(
+        (res: Profile) => {
+          if (res) {
+            this.profileUpdater.next(null);
+          }
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner('follow');
+        }
+      );
   }
 }

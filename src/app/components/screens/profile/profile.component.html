@@ -1,139 +1,191 @@
+<!-- USER PROFILE -->
 <div class="container">
   <div class="row py-4">
     <div class="col-12">
-      <div class="bg-img pt-6 pb-3 px-3 bg-white shadow-sm">
-        <div class="text-center">
-          <img
-            class="rounded-circle"
-            width="100px"
-            height="100px"
-            [src]="
-              currProfile?.profile?.image.startsWith('https')
-                ? currProfile?.profile?.image
-                : 'https://static.productionready.io/images/smiley-cyrus.jpg'
-            "
-            alt=""
-          />
-        </div>
-        <div class="h2 mt-2 text-p-dark text-center font-weight-bold">
-          {{ currProfile?.profile?.username }}
-        </div>
-        <div class="text-p-dark text-center lead">
-          <em>{{ currProfile?.profile?.bio }}</em>
-        </div>
-        <div class="d-flex justify-content-end">
-          <a
-            routerLink="/setting"
-            class="text-decoration-none"
-            *ngIf="currProfile?.profile?.username === userName"
-          >
-            <span class="btn btn-outline-p-dark d-flex align-items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-gear"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
-                />
-                <path
-                  d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
-                />
-              </svg>
-              &nbsp;Edit Profile Settings
-            </span>
-          </a>
-          <div class="ml-3">
-            <div
-              *ngIf="
-                follow === false && currProfile?.profile?.username !== userName
+      <div class="bg-img pt-6 pb-3 px-3 bg-white shadow-sm position-relative">
+        <ng-container *ngIf="profile$ | async as profile">
+          <!-- USER AVATAR -->
+          <div class="text-center">
+            <img
+              class="rounded-circle"
+              width="100px"
+              height="100px"
+              [src]="
+                profile.image ||
+                'https://api.realworld.io/images/smiley-cyrus.jpeg'
               "
-              class="btn py-0 btn-width btn-outline-p-dark"
-              (click)="followed(currProfile?.profile?.username)"
+              [alt]="profile.username + '\'s picture'"
+            />
+          </div>
+          <!-- USER USERNAME -->
+          <div class="h2 mt-2 text-p-dark text-center font-weight-bold">
+            {{ profile.username }}
+          </div>
+          <!-- USER BIO -->
+          <div class="text-p-dark text-center lead">
+            <em>{{ profile.bio }}</em>
+          </div>
+
+          <!-- USER ACTIONS -->
+          <div class="d-flex justify-content-end">
+            <!-- USER SETTING REDIRECTION -->
+            <a
+              routerLink="/setting"
+              class="text-decoration-none"
+              *ngIf="(user$ | async)?.username"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-plus"
-                viewBox="0 0 16 16"
+              <span class="btn btn-outline-p-dark d-flex align-items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-gear"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
+                  />
+                  <path
+                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
+                  />
+                </svg>
+                &nbsp;Edit Profile Settings
+              </span>
+            </a>
+
+            <!-- USER FOLLOW -->
+            <div class="ml-3">
+              <div
+                class="btn d-flex align-items-center position-relative"
+                [ngClass]="
+                  !profile.following
+                    ? 'btn-outline-p-dark'
+                    : 'bg-p-dark btn-hover text-white'
+                "
+                (click)="
+                  !profile.following
+                    ? followUser(profile.username)
+                    : unFollowUser(profile.username)
+                "
               >
-                <path
-                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-                />
-              </svg>
-              <span>&nbsp;Follow</span>
-            </div>
-            <div
-              *ngIf="
-                follow === true && currProfile?.profile?.username !== userName
-              "
-              class="btn py-0 btn-width btn-hover bg-p-dark text-white"
-              (click)="unFollowed(currProfile?.profile?.username)"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-dash"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"
-                />
-              </svg>
-              <span>&nbsp;Unfollow</span>
+                <ngx-spinner
+                  bdColor="rgba(255,255,255,0.25)"
+                  size="default"
+                  color="#5d99c6"
+                  type="ball-scale-multiple"
+                  [name]="'follow'"
+                  [fullScreen]="false"
+                >
+                </ngx-spinner>
+                <ng-container *ngIf="!profile.following; else unFollowText">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-plus"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                    />
+                  </svg>
+                  <span>&nbsp;Follow</span>
+                </ng-container>
+                <ng-template #unFollowText>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-dash"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"
+                    />
+                  </svg>
+                  <span>&nbsp;Unfollow</span>
+                </ng-template>
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+        <ngx-spinner
+          bdColor="rgba(255,255,255,0.25)"
+          size="default"
+          color="#5d99c6"
+          type="ball-scale-multiple"
+          [name]="'profile-info'"
+          [fullScreen]="false"
+        >
+        </ngx-spinner>
       </div>
     </div>
   </div>
 </div>
+
+<!-- USER ARTICLES -->
 <div class="container">
+  <!-- NAV -->
   <div class="row">
     <div class="col">
       <ul class="nav nav-tabs text-p-dark bg-white">
-        <li class="nav-item">
-          <span
-            class="nav-link font-weight-bold cursor-pointer"
-            [class.active]="onSelected"
-            (click)="switchTab()"
-            ><span *ngIf="currProfile?.profile?.username !== userName"
-              >Their Articles</span
-            ><span *ngIf="currProfile?.profile?.username === userName"
-              >My Articles</span
-            ></span
-          >
-        </li>
-        <li class="nav-item">
-          <span
-            class="nav-link font-weight-bold cursor-pointer"
-            [class.active]="!onSelected"
-            (click)="switchTab()"
-            >Favorites Articles</span
-          >
-        </li>
+        <ng-container *ngIf="profile$ | async as profile">
+          <ng-container *ngIf="user$ | async as user">
+            <li class="nav-item">
+              <span
+                class="nav-link font-weight-bold cursor-pointer"
+                [class.active]="viewMode === 'user'"
+                (click)="switchTab('user')"
+              >
+                <ng-container
+                  *ngIf="
+                    profile.username !== user.username;
+                    else myArticleTitle
+                  "
+                  >Their Articles</ng-container
+                >
+                <ng-template #myArticleTitle>My Articles</ng-template>
+              </span>
+            </li>
+            <li class="nav-item">
+              <span
+                class="nav-link font-weight-bold cursor-pointer"
+                [class.active]="viewMode === 'favorited'"
+                (click)="switchTab('favorited')"
+                >Favorites Articles</span
+              >
+            </li>
+          </ng-container>
+        </ng-container>
       </ul>
     </div>
   </div>
+
+  <!-- CONTENTS -->
   <div class="row">
     <div class="col">
       <div class="tab-content">
         <div class="tab-pane fade show active">
           <app-my-articles
-            *ngIf="onSelected"
-            [selectedUser]="selectedUser"
+            *ngIf="viewMode === 'user'"
+            [data]="userArticles$"
           ></app-my-articles>
           <app-favorite-articles
-            *ngIf="!onSelected"
-            [selectedUser]="selectedUser"
+            *ngIf="viewMode === 'favorited'"
+            [data]="favoritedArticles$"
           ></app-favorite-articles>
+          <ngx-spinner
+            bdColor="rgba(255,255,255,0.25)"
+            size="default"
+            color="#5d99c6"
+            type="ball-scale-multiple"
+            [name]="'profile-articles'"
+            [fullScreen]="false"
+          >
+          </ngx-spinner>
         </div>
       </div>
     </div>

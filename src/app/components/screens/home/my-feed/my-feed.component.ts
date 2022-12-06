@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ArticleService } from './../../../../services/article.service';
+import { Component, Input, OnInit } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+import { Article } from 'src/app/models/article.model';
 
 @Component({
   selector: 'app-my-feed',
@@ -7,26 +10,11 @@ import { ArticleService } from './../../../../services/article.service';
   styleUrls: ['./my-feed.component.scss'],
 })
 export class MyFeedComponent implements OnInit {
-  myFeeds: any = [];
-  totalItems: number = 0;
-  itemsPerPage: number = 6;
-  loadDone: boolean = false;
+  @Input() data: Observable<Article[]>;
 
-  constructor(private articleService: ArticleService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.getMyFeed(0, this.itemsPerPage);
-  }
+  ngOnInit(): void {}
 
-  getMyFeed(skip: number, top: number) {
-    this.articleService.getMyFeed(skip, top).subscribe((res) => {
-      this.myFeeds = res.articles;
-      this.totalItems = res.articlesCount;
-      this.loadDone = true;
-    });
-  }
-
-  handlePageChange(page: number) {
-    this.getMyFeed(page, this.itemsPerPage);
-  }
+  handlePageChange(page: number) {}
 }

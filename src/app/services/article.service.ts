@@ -1,144 +1,114 @@
-import { MultiArticle } from './../models/multi-article';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { SingleArticle } from '../models/single-article';
-import { Tag } from '../models/tag';
-import { Profile } from '../models/profile';
-import { SingleComment } from '../models/single-comment';
-import { config } from '../helpers/config';
-import { MultiComment } from '../models/multi-comment';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import { URL } from '../helpers/constants';
+
+import { SingleArticle } from '../models/single-article.model';
+import { MultiArticles } from '../models/multi-articles.model';
+import { SingleArticleCreateDto } from '../models/single-article-create-dto.model';
+import { SingleArticleUpdateDto } from '../models/single-article-update-dto.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticleService {
+  pageChanged = new BehaviorSubject(null);
+
   constructor(private http: HttpClient) {}
 
-  // Home Screen
-  getMyFeed(skip: number, top: number): Observable<MultiArticle> {
-    return this.http.get(
-      config.apiUrl + `/articles/feed?limit=${top}&offset=${skip}`
-    ) as Observable<MultiArticle>;
-  }
+  /**
+   * Returns most recent articles globally by default,
+   * provide `tag`, `author` or `favorited` query parameter to filter results
+   * @param tag Filter by tag
+   * @param author Filter by author
+   * @param favorited Favorited by user
+   * @param limit Limit number of articles (default is 20)
+   * @param offset Offset/skip number of articles (default is 0)
+   */
+  getListArticles(params?: {
+    tag?: string;
+    author?: string;
+    favorited?: string;
+    limit?: number;
+    offset?: number;
+  }): Observable<MultiArticles> {
+    console.log(params);
+    let queries = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach((k) => {
+        if (params[k].toString()?.length) {
+          queries = queries.append(k, params[k]);
+        }
+      });
+    }
+    console.log(queries);
 
-  getGlobalFeed(skip: number, top: number): Observable<MultiArticle> {
-    return this.http.get(
-      config.apiUrl + `/articles?limit=${top}&offset=${skip}`
-    ) as Observable<MultiArticle>;
-  }
-
-  getTag(): Observable<Tag> {
-    return this.http.get(config.apiUrl + '/tags') as Observable<Tag>;
-  }
-
-  getTagFeed(tag: string, skip: number, top: number): Observable<MultiArticle> {
-    return this.http.get(
-      config.apiUrl + '/articles?tag=' + tag + `&limit=${top}&offset=${skip}`
-    ) as Observable<MultiArticle>;
-  }
-
-  // Article Details
-  getArticleDetail(slug: string): Observable<any> {
-    return this.http.get(
-      config.apiUrl + `/articles/` + slug
-    ) as Observable<any>;
-  }
-
-  deteleArticle(slug): Observable<SingleArticle> {
-    return this.http.delete(
-      config.apiUrl + `/articles/${slug}`
-    ) as Observable<SingleArticle>;
-  }
-
-  editArticle(updatedBody: any, slug: string): Observable<any> {
-    return this.http.put(config.apiUrl + `/articles/${slug}`, {
-      article: {
-        ...updatedBody,
-      },
-    }) as Observable<any>;
-  }
-
-  // Add/Edit Article
-  publishArticle(formValue: any) {
-    return this.http.post(config.apiUrl + `/articles`, {
-      article: {
-        title: formValue.title,
-        description: formValue.description,
-        body: formValue.body,
-        tagList: formValue?.tagList ? formValue.tagList : [],
-      },
+    return this.http.get<MultiArticles>(`${URL.API}/articles`, {
+      params: queries,
     });
   }
 
-  // Interact with users/articles
-  followUser(userName): Observable<Profile> {
-    return this.http.post(config.apiUrl + `/profiles/${userName}/follow`, {
-      user: {},
-    }) as Observable<Profile>;
+  /**
+   * Returns most recent articles created by followed users
+   * @param limit Limit number of articles (default is 20)
+   * @param offset Offset/skip number of articles (default is 0)
+   */
+  getFeedArticles(params?: {
+    limit?: number;
+    offset?: number;
+  }): Observable<MultiArticles> {
+    let queries = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach((k) => {
+        if (params[k]?.length) {
+          queries = queries.append(k, params[k]);
+        }
+      });
+    }
+
+    return this.http.get<MultiArticles>(`${URL.API}/articles/feed`, {
+      params: queries,
+    });
   }
 
-  unFollowUser(userName): Observable<Profile> {
-    return this.http.delete(
-      config.apiUrl + `/profiles/${userName}/follow`
-    ) as Observable<Profile>;
+  /**
+   * Return details of an article
+   * @param slug Id of the selected article
+   */
+  getArticle(slug: string): Observable<SingleArticle> {
+    return this.http.get<SingleArticle>(`${URL.API}/articles/${slug}`);
   }
 
-  favoriteArticle(slug): Observable<SingleArticle> {
-    return this.http.post(
-      config.apiUrl + `/articles/${slug}/favorite`,
-      ''
-    ) as Observable<SingleArticle>;
+  /**
+   * Create a new article
+   * @return Return details of the created article
+   */
+  createArticle(params: SingleArticleCreateDto): Observable<SingleArticle> {
+    return this.http.post<SingleArticle>(`${URL.API}/articles`, params);
   }
 
-  unFavoriteArticle(slug): Observable<SingleArticle> {
-    return this.http.delete(
-      config.apiUrl + `/articles/${slug}/favorite`
-    ) as Observable<SingleArticle>;
+  /**
+   * Update an existing article
+   * @return Return details of the updated article
+   * @param slug Id of the updated article
+   * *The slug also gets updated when the title is changed
+   */
+  updateArticle(
+    slug: string,
+    params: SingleArticleUpdateDto
+  ): Observable<SingleArticle> {
+    return this.http.put<SingleArticle>(`${URL.API}/articles/${slug}`, {
+      params,
+    });
   }
 
-  // Comments
-  getComments(slug: string): Observable<MultiComment> {
-    return this.http.get(
-      config.apiUrl + `/articles/${slug}/comments`
-    ) as Observable<MultiComment>;
-  }
-
-  addComments(bodyComment: any, slug: string): Observable<SingleComment> {
-    return this.http.post(
-      config.apiUrl + `/articles/${slug}/comments`,
-      bodyComment
-    ) as Observable<SingleComment>;
-  }
-
-  deteleComment(slug, id) {
-    return this.http.delete(
-      config.apiUrl + `/articles/${slug}/comments/${id}`
-    ) as Observable<SingleComment>;
-  }
-
-  // Profile Screen
-  getMyArticles(
-    username: string,
-    skip: number,
-    top: number
-  ): Observable<MultiArticle> {
-    return this.http.get(
-      config.apiUrl +
-        `/articles?author=${username}` +
-        `&limit=${top}&offset=${skip}`
-    ) as Observable<MultiArticle>;
-  }
-
-  getFavoriteArticles(
-    username: string,
-    skip: number,
-    top: number
-  ): Observable<MultiArticle> {
-    return this.http.get(
-      config.apiUrl +
-        `/articles?favorited=${username}` +
-        `&limit=${top}&offset=${skip}`
-    ) as Observable<MultiArticle>;
+  /**
+   * Delete an existing article
+   * @param slug Id of the deleted article
+   */
+  deleteArticle(slug: string): Observable<null> {
+    return this.http.delete<null>(`${URL.API}/articles/${slug}`);
   }
 }

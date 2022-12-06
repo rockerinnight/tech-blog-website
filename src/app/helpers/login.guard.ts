@@ -1,19 +1,17 @@
-import { AuthService } from '../services/auth.service';
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
-import { Location } from '@angular/common';
+import { CanActivate, Router, UrlTree } from '@angular/router';
+
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginGuard implements CanActivate {
-  constructor(private authService: AuthService, private location: Location) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate() {
-    if (this.authService.isAuthenticated()) {
-      this.location.back();
-      return;
-    }
+  canActivate(): boolean | UrlTree {
+    if (this.authService.isAuthenticated())
+      return this.router.parseUrl(`/home`);
     return true;
   }
 }

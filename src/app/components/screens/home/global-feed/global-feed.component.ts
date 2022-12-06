@@ -1,5 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ArticleService } from './../../../../services/article.service';
+import { Component, Input, OnInit } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
+import { MultiArticles } from 'src/app/models/multi-articles.model';
 
 @Component({
   selector: 'app-global-feed',
@@ -7,31 +10,9 @@ import { ArticleService } from './../../../../services/article.service';
   styleUrls: ['./global-feed.component.scss'],
 })
 export class GlobalFeedComponent implements OnInit {
-  @Output('tagFromFeed') selectedTag = new EventEmitter();
-  globalFeeds: any = [];
-  totalItems: number = 0;
-  itemsPerPage: number = 6;
-  loadDone: boolean = false;
+  @Input() data: Observable<MultiArticles>;
 
-  constructor(private articleService: ArticleService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.getGlobalFeed(0, this.itemsPerPage);
-  }
-
-  getGlobalFeed(skip: number, top: number) {
-    this.articleService.getGlobalFeed(skip, top).subscribe((res) => {
-      this.globalFeeds = res.articles;
-      this.totalItems = res.articlesCount;
-      this.loadDone = true;
-    });
-  }
-
-  handlePageChange(page: number) {
-    this.getGlobalFeed(page, this.itemsPerPage);
-  }
-
-  getTagFromCard(tagName: string) {
-    this.selectedTag.emit(tagName);
-  }
+  ngOnInit(): void {}
 }

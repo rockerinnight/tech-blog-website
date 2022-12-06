@@ -2,154 +2,132 @@
   <div class="row mb-4">
     <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
       <h1 class="text-center text-p-dark my-4">Your Settings</h1>
-      <form [formGroup]="settingForm" autocomplete="on">
-        <div *ngIf="!changingPassword">
+      <form [formGroup]="settingForm">
+        <!-- CHANGING PERSONAL -->
+        <ng-container *ngIf="!changingPassword; else changingPasswordForm">
+          <!-- Image -->
           <div class="form-group">
             <label for="image" class="text-p-dark font-weight-bold"
               >URL of your profile picture:</label
             >
             <input
-              type="url"
-              class="form-control"
               id="image"
+              class="form-control"
+              type="url"
               placeholder="URL of profile picture"
               formControlName="image"
-              (input)="cfPasswordNoti()"
             />
           </div>
+          <!-- Username -->
           <div class="form-group">
             <label for="username" class="text-p-dark font-weight-bold"
               >Your username</label
             >
             <input
-              type="text"
               class="form-control"
               id="username"
+              type="text"
               placeholder="Your username"
               formControlName="username"
-              required
-              minlength="1"
-              (input)="cfPasswordNoti()"
             />
             <small
               class="text-danger"
-              *ngIf="settingForm.controls.username.errors?.minlength"
-            >
-              * Your username is too short.
-            </small>
-            <small
-              class="text-danger"
               *ngIf="
-                settingForm.controls.username.errors?.required &&
-                settingForm.controls.username.touched
+                settingForm.controls.username.touched &&
+                settingForm.controls.username.errors?.required
               "
             >
               * Your username is required.
             </small>
           </div>
+          <!-- Bio -->
           <div class="form-group">
             <label for="bio" class="text-p-dark font-weight-bold"
               >Your bio:</label
             >
             <textarea
-              rows="8"
-              class="form-control"
               id="bio"
+              class="form-control"
               placeholder="Short bio about you"
               formControlName="bio"
               maxlength="150"
-              (input)="cfPasswordNoti()"
+              rows="5"
             ></textarea>
           </div>
+          <!-- Email -->
           <div class="form-group">
             <label for="email" class="text-p-dark font-weight-bold"
               >Your email address:</label
             >
             <input
-              type="email"
-              autocomplete="email"
-              class="form-control"
               id="email"
+              class="form-control"
+              type="email"
               placeholder="Your email address"
               formControlName="email"
-              required
-              (input)="cfPasswordNoti()"
             />
             <small
               class="text-danger"
-              *ngIf="settingForm.controls.email.errors?.invalid"
-            >
-              * Your email is invalid.
-            </small>
-            <small
-              class="text-danger"
               *ngIf="
-                settingForm.controls.email.errors?.required &&
-                settingForm.controls.email.touched
+                settingForm.controls.email.touched &&
+                settingForm.controls.email.errors?.required
               "
             >
               * Your email is required.
             </small>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="needConfirm || changingPassword">
-          <div class="form-group" *ngIf="!changingPassword">
-            <small class="text-warning">
-              * We need your password for this change.
+            <small
+              class="text-danger"
+              *ngIf="
+                settingForm.controls.email.touched &&
+                settingForm.controls.email.errors?.email
+              "
+            >
+              * Your email format is invalid.
             </small>
           </div>
+        </ng-container>
+
+        <!-- CHANGING PASSWORD -->
+        <ng-template #changingPasswordForm>
+          <!-- Password -->
           <div class="form-group">
             <label for="password" class="text-p-dark font-weight-bold"
               >Your password:</label
             >
             <input
-              type="password"
-              autocomplete="current-password"
-              class="form-control"
               id="password"
-              [placeholder]="
-                changingPassword ? 'Your password' : 'Your new password'
-              "
+              class="form-control"
+              type="password"
+              placeholder="Your new password"
               formControlName="password"
-              required
-              minlength="8"
             />
             <small
               class="text-danger"
-              *ngIf="settingForm.controls.password.errors?.minlength"
-            >
-              * Your password is too short.
-            </small>
-            <small
-              class="text-danger"
               *ngIf="
-                settingForm.controls.password.errors?.required &&
-                settingForm.controls.password.touched
+                settingForm.controls.password.touched &&
+                settingForm.controls.password.errors?.required
               "
             >
               * Your password is required.
             </small>
           </div>
+          <!-- Confirm password -->
           <div class="form-group">
             <label for="cfPassword" class="text-p-dark font-weight-bold"
               >Confirm your password:</label
             >
             <input
-              type="password"
-              autocomplete="current-password"
-              class="form-control"
               id="cfPawword"
+              class="form-control"
+              type="password"
               placeholder="Confirm your password"
               formControlName="cfPassword"
-              required
-              minlength="8"
-              (input)="isValidPassword()"
             />
             <small
               class="text-danger"
               *ngIf="
-                settingForm.controls.cfPassword.errors?.required &&
-                settingForm.controls.cfPassword.touched
+                settingForm.controls.cfPassword.touched &&
+                settingForm.controls.cfPassword.errors?.required
               "
             >
               * Your confirm-password is required.
@@ -157,34 +135,27 @@
             <small
               class="text-danger"
               *ngIf="
-                (isSamePW === false &&
-                  settingForm.controls.cfPassword.errors?.minlength) ||
-                (isSamePW === false && settingForm.controls.cfPassword.dirty)
+                !(isPwMatched | async) &&
+                settingForm.controls.cfPassword.touched
               "
             >
-              * Your confirm-password length is not matched.
+              * Your confirm-password is not matched.
             </small>
           </div>
-        </div>
-        <div class="text-right" *ngIf="!isSuccess">
+        </ng-template>
+
+        <!-- ACTION BUTTONS -->
+        <div class="text-right">
+          <!-- Switching between password/personal form -->
           <button
             type="button"
             class="btn btn-outline-p-dark text-p-dark mr-2"
-            (click)="changePassword()"
-            *ngIf="!changingPassword"
-          >
-            Change Password
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-p-dark text-p-dark mr-2"
-            (click)="backPersonal()"
-            *ngIf="changingPassword"
+            (click)="changingPassword = !changingPassword"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
+              width="24"
+              height="24"
               fill="currentColor"
               class="bi bi-box-arrow-left align-top pr-2"
               viewBox="0 0 16 16"
@@ -198,23 +169,49 @@
                 d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
               />
             </svg>
-            <span>Personal settings</span>
+            {{ !changingPassword ? "Change Password" : "Personal settings" }}
           </button>
+          <!-- Submit button -->
           <button
             type="submit"
             class="btn btn-custom bg-p-dark px-3 text-white"
-            [disabled]="settingForm.invalid"
             (click)="updateSettings()"
           >
-            Update Settings
+            {{
+              changingPassword
+                ? "Update Password"
+                : "Update Personal Information"
+            }}
           </button>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="isSuccess">
-          Your settings have been changed. Redirecting to your profile.
+
+        <!-- NOTIFICATIONS -->
+        <div
+          class="alert alert-success mb-0 mt-3"
+          role="alert"
+          *ngIf="isSuccess"
+        >
+          Your settings have been changed.
         </div>
-        <div class="alert alert-danger" role="alert" *ngIf="isTaken">
-          Your username or email address has been taken. Please try with another
-          one.
+        <div
+          class="alert alert-danger mb-0 mt-3"
+          role="alert"
+          *ngIf="isTaken.status"
+        >
+          <ng-container
+            *ngIf="
+              isTaken.key === 'username' || isTaken.key === 'email';
+              else otherErrors
+            "
+          >
+            Your
+            {{ isTaken.key === "username" ? "username" : "email address" }}
+            has been taken. Please try with another one.
+          </ng-container>
+          <ng-template #otherErrors
+            >Something went wrong. Refresh the website and try
+            again.</ng-template
+          >
         </div>
       </form>
     </div>
