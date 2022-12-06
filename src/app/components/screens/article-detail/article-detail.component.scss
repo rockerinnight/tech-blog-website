@@ -6,11 +6,6 @@
   width: 115px;
 }
 
-.tag-item {
-  background-color: #5d99c6e6;
-  cursor: text !important;
-}
-
 .date {
   font-size: small;
   color: #0000004d;
@@ -40,13 +35,15 @@
   &.btn-delete {
     &:hover {
       border-color: red;
-      color: red;
+      background-color: red;
+      color: white;
     }
   }
   &.btn-edit {
     &:hover {
       border-color: green;
-      color: green;
+      background-color: green;
+      color: white;
     }
   }
 }
@@ -65,4 +62,12 @@
   &:hover {
     color: red;
   }
+}
+
+.btn-follow {
+  width: fit-content;
+}
+
+.comment-container {
+  min-height: 100px;
 }

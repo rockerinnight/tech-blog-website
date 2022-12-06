@@ -1,33 +1,43 @@
-<div class="article-card py-3 px-3 border-bottom shadow my-3 bg-white">
+<div
+  class="article-card py-3 px-3 border-bottom shadow my-3 bg-white position-relative"
+>
   <div class="d-flex justify-content-between align-content-center">
     <div class="avatar d-flex">
       <div>
+        <!-- Author's avatar -->
         <img
           class="rounded-circle"
           width="40px"
           height="40px"
           [src]="
-            data.author.image.startsWith('https')
-              ? data.author?.image
-              : 'https://static.productionready.io/images/smiley-cyrus.jpg'
+            data.author?.image ||
+            'https://static.productionready.io/images/smiley-cyrus.jpg'
           "
-          alt=""
+          [alt]="data.author.username + '\'s picture'"
         />
       </div>
       <div class="ml-3">
+        <!-- Author's name -->
         <a
           class="mb-0 font-weight-bold text-decoration-none text-p-dark"
-          routerLink="/profile/{{ data.author?.username }}"
-          >{{ data.author?.username }}</a
+          routerLink="/profile/{{ data.author.username }}"
+          >{{ data.author.username }}</a
         >
+        <!-- Article created time -->
         <p class="date" style="width: 100px">{{ data.createdAt | date }}</p>
       </div>
     </div>
+
+    <!-- Favorite action -->
     <div class="heart-button">
       <span
         class="btn btn-outline-p-dark align-items-center py-1 px-2"
-        *ngIf="isFavorited === false"
-        (click)="favoriteArticle(data.slug)"
+        [class.active2]="data.favorited"
+        (click)="
+          !data.favorited
+            ? favoriteArticle(data.slug)
+            : unFavoriteArticle(data.slug)
+        "
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,55 +52,50 @@
             d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
           />
         </svg>
-        <span>{{ favoritesCount }}</span>
-      </span>
-      <span
-        class="btn btn-outline-p-dark d-flex align-items-center py-1 px-2 active2"
-        *ngIf="isFavorited === true"
-        (click)="unFavoriteArticle(data.slug)"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          class="bi bi-heart-fill mr-1"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-          />
-        </svg>
-        <span>{{ favoritesCount }}</span>
+        <span>{{ data.favoritesCount }}</span>
       </span>
     </div>
   </div>
+
+  <!-- Article title -->
   <h4>
     <a
       class="text-decoration-none text-p-dark"
       routerLink="/articles/{{ data.slug }}"
-      >{{ data.title }}</a
+      >{{ data.title | truncate : 50 }}</a
     >
   </h4>
-  <h5>{{ data.description }}</h5>
+  <!-- Article description -->
+  <h5>{{ data.description | truncate : 50 }}</h5>
+  <!-- Article body -->
   <h6 class="mb-0 text-black-50">
-    <i
-      ><small
-        >{{ data.body | summary: 100 }}
-        <a routerLink="/articles/{{ data.slug }}"
-          ><span class="text-p-dark">Read more</span></a
-        >
-      </small></i
-    >
+    <small>
+      <i>
+        {{ data.body | truncate }}
+        <a routerLink="/articles/{{ data.slug }}">
+          <span class="text-p-dark">Read more</span>
+        </a>
+      </i>
+    </small>
   </h6>
-  <div class="mt-3" *ngIf="tagLists.length !== 0">
-    <span *ngFor="let tag of tagLists">
+  <!-- Article tags -->
+  <div class="mt-3" *ngIf="data.tagList?.length">
+    <ng-container *ngFor="let tag of data.tagList">
       <a
         class="tag-item btn bg-p-dark text-white mr-1 py-0 rounded-pill"
-        (click)="sendTagFromCard(tag)"
-        >#{{ tag }}</a
-      >
-    </span>
+        (click)="selectTag(tag)"
+        >#{{ tag }}
+      </a>
+    </ng-container>
   </div>
+
+  <ngx-spinner
+    bdColor="rgba(255,255,255,0.25)"
+    size="default"
+    color="#5d99c6"
+    type="ball-scale-multiple"
+    [name]="'article-favorite-' + data.slug"
+    [fullScreen]="false"
+  >
+  </ngx-spinner>
 </div>

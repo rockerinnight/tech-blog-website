@@ -1,7 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import {
+  catchError,
+  map,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
+
 import { AuthService } from 'src/app/services/auth.service';
+import { CommentService } from 'src/app/services/comment.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { FavoriteService } from 'src/app/services/favorite.service';
 import { ArticleService } from './../../../services/article.service';
+import { LoadingSpinnerService } from 'src/app/services/loading-spinner.service';
+
+import { User } from 'src/app/models/user.model';
+import { Article } from 'src/app/models/article.model';
+import { Comment } from 'src/app/models/comment.model';
+import { Profile } from 'src/app/models/profile.model';
+import { MultiComments } from 'src/app/models/multi-comments.model';
+import { SingleArticle } from 'src/app/models/single-article.model';
+import { SingleComment } from 'src/app/models/single-comment.model';
+import { SingleCommentDto } from 'src/app/models/single-comment-dto.model';
+
+interface UserResponse {
+  email: string;
+  token: string;
+  username: string;
+  bio: string | null;
+  image: string;
+}
 
 @Component({
   selector: 'app-article-detail',
@@ -9,119 +40,207 @@ import { ArticleService } from './../../../services/article.service';
   styleUrls: ['./article-detail.component.scss'],
 })
 export class ArticleDetailComponent implements OnInit {
-  articleDetail: any = {};
-  tagLists: any[] = [];
-  follow: boolean;
-  favorite: boolean;
-  favoritesCount: number;
-  commentLists: any[] = [];
-  textComment: string = '';
-  userName: string = '';
+  textComment = '';
+
+  articleDetail$: Observable<Article>;
+  comment$: Observable<Comment[]>;
+  user$: Observable<UserResponse>;
+
+  articleUpdater = new BehaviorSubject(null);
+  commentUpdater = new BehaviorSubject(null);
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private commentService: CommentService,
     private articleService: ArticleService,
-    private authService: AuthService
+    private profileService: ProfileService,
+    private favoriteService: FavoriteService,
+    private loadingSpinnerService: LoadingSpinnerService
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      let localUser = JSON.parse(localStorage.getItem('user'));
-      this.userName = localUser.username;
-    }
+    this.loadingSpinnerService.showSpinner();
+    const slug = this.route.snapshot.params?.slug;
 
-    this.route.params.subscribe((res) => {
-      this.articleService.getArticleDetail(res.id).subscribe((article) => {
-        this.articleDetail = article;
-        this.tagLists = this.articleDetail.article.tagList;
-        this.follow = this.articleDetail.article.author.following;
-        console.log(this.follow);
+    this.articleDetail$ = this.articleUpdater.pipe(
+      switchMap(() =>
+        this.articleService.getArticle(slug).pipe(
+          catchError((err) => {
+            this.router.navigateByUrl('/404');
+            return of({});
+          })
+        )
+      ),
+      map((res: SingleArticle) => res.article),
+      tap(() => {
+        this.loadingSpinnerService.hideSpinner('follow');
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
 
-        this.favorite = this.articleDetail.article.favorited;
-        this.favoritesCount = this.articleDetail.article.favoritesCount;
+    this.comment$ = this.commentUpdater.pipe(
+      switchMap(() =>
+        this.commentService.getComments(slug).pipe(
+          catchError((err) => {
+            this.router.navigateByUrl('/404');
+            return of({});
+          })
+        )
+      ),
+      map((res: MultiComments) => res.comments),
+      tap(() => {
+        this.loadingSpinnerService.hideSpinner('comment-list');
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
+
+    this.user$ = this.authService.getUser().pipe(
+      catchError((err) => {
+        // this.router.navigateByUrl('/404');
+        return of({ user: { username: '' } });
+      }),
+      map((res: User) => res.user),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
+
+    combineLatest([this.articleDetail$, this.comment$, this.user$])
+      .pipe(take(1))
+      .subscribe(() => {
+        this.loadingSpinnerService.hideSpinner();
       });
-      this.articleService.getComments(res.id).subscribe((comments) => {
-        this.commentLists = comments.comments.reverse();
-      });
-    });
   }
 
-  followed(userName) {
-    this.follow = true;
-    this.articleDetail.article.author.following = true;
-    this.articleService.followUser(userName).subscribe((res) => {
-      // console.log(res);
-    });
+  followUser(userName: string): void {
+    this.loadingSpinnerService.showSpinner('follow');
+    this.profileService
+      .followUser(userName)
+      .pipe(take(1))
+      .subscribe(
+        (res: Profile) => {
+          if (res) {
+            this.articleUpdater.next(null);
+          }
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner('follow');
+        }
+      );
   }
 
-  unFollowed(userName) {
-    this.follow = false;
-    this.articleDetail.article.author.following = false;
-    this.articleService.unFollowUser(userName).subscribe((res) => {
-      // console.log(res);
-    });
+  unFollowUser(userName: string): void {
+    this.loadingSpinnerService.showSpinner('follow');
+    this.profileService
+      .unFollowUser(userName)
+      .pipe(take(1))
+      .subscribe(
+        (res: Profile) => {
+          if (res) {
+            this.articleUpdater.next(null);
+          }
+        },
+        (e) => {
+          console.log(e);
+          this.articleUpdater.next(null);
+        }
+      );
   }
 
-  favoriteArticle(slug) {
-    this.favorite = true;
-    this.favoritesCount++;
-    this.articleDetail.article.favorited = true;
-    this.articleDetail.article.favoritesCount++;
-    this.articleService.favoriteArticle(slug).subscribe((res) => {
-      // console.log(res);
-    });
+  favoriteArticle(slug: string): void {
+    this.loadingSpinnerService.showSpinner('article-favorite');
+    this.favoriteService
+      .favoriteArticle(slug)
+      .pipe(take(1))
+      .subscribe(
+        (res: SingleArticle) => {
+          if (res?.article) {
+            this.articleUpdater.next(null);
+          }
+          this.loadingSpinnerService.hideSpinner('article-favorite');
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner('article-favorite');
+        }
+      );
   }
 
-  unFavoriteArticle(slug) {
-    this.favorite = false;
-    this.favoritesCount--;
-    this.articleDetail.article.favorited = false;
-    this.articleDetail.article.favoritesCount--;
-    this.articleService.unFavoriteArticle(slug).subscribe((res) => {
-      // console.log(res);
-    });
+  unFavoriteArticle(slug: string): void {
+    this.loadingSpinnerService.showSpinner('article-favorite');
+    this.favoriteService
+      .unFavoriteArticle(slug)
+      .pipe(take(1))
+      .subscribe(
+        (res: SingleArticle) => {
+          if (res?.article) {
+            this.articleUpdater.next(null);
+          }
+          this.loadingSpinnerService.hideSpinner('article-favorite');
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner('article-favorite');
+        }
+      );
   }
 
-  deleteArticle(slug, userName) {
-    let confirmMessage = confirm(
-      'Are you sure you want to delete the article?'
+  deleteArticle(slug: string, userName: string): void {
+    const confirmMessage = confirm(
+      'Are you sure you want to delete this article?'
     );
     if (confirmMessage) {
-      this.articleService.deteleArticle(slug).subscribe((res) => {
-        this.router.navigate([`profile/${userName}`]);
-      });
-    } else {
-      return;
-    }
-  }
-
-  addComment(slug, textComment) {
-    let bodyComment = {
-      comment: {
-        body: textComment,
-      },
-    };
-    this.articleService.addComments(bodyComment, slug).subscribe((res) => {
-      this.articleService.getComments(slug).subscribe((comments) => {
-        this.commentLists = comments.comments.reverse();
-        this.textComment = '';
-      });
-    });
-  }
-
-  deleteComment(slug, id) {
-    let confirmMessage = confirm(
-      'Are you sure you want to delete the comment?'
-    );
-    if (confirmMessage) {
-      this.articleService.deteleComment(slug, id).subscribe((res) => {
-        this.articleService.getComments(slug).subscribe((comments) => {
-          this.commentLists = comments.comments.reverse();
+      this.articleService
+        .deleteArticle(slug)
+        .pipe(take(1))
+        .subscribe((res: null) => {
+          this.router.navigate([`profile/${userName}`]);
         });
-      });
-    } else {
-      return;
     }
+  }
+
+  addComment(slug: string, textComment: string): void {
+    this.loadingSpinnerService.showSpinner('comment-input');
+    this.loadingSpinnerService.showSpinner('comment-list');
+
+    const reqBody: SingleCommentDto = { comment: { body: textComment } };
+
+    this.commentService
+      .addComment(slug, reqBody)
+      .pipe(take(1))
+      .subscribe(
+        (res: SingleComment) => {
+          this.textComment = '';
+          this.commentUpdater.next(null);
+          this.loadingSpinnerService.hideSpinner('comment-input');
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner('comment-input');
+          this.loadingSpinnerService.hideSpinner('comment-list');
+        }
+      );
+  }
+
+  deleteComment(slug: string, id: number): void {
+    const confirmMessage = confirm(
+      'Are you sure you want to delete this comment?'
+    );
+
+    if (confirmMessage) {
+      this.loadingSpinnerService.showSpinner('comment-list');
+
+      this.commentService
+        .deleteComment(slug, id)
+        .pipe(take(1))
+        .subscribe((res: null) => {
+          this.commentUpdater.next(null);
+        });
+    }
+  }
+
+  selectTag(tagName: string): void {
+    this.router.navigate(['/home'], { queryParams: { tag: tagName } });
   }
 }

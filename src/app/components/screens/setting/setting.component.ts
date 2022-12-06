@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from 'src/app/services/settings.service';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { combineLatest, Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
+
+import { AuthService } from 'src/app/services/auth.service';
+import { LoadingSpinnerService } from 'src/app/services/loading-spinner.service';
+
+import { User } from 'src/app/models/user.model';
+import { UserDto } from 'src/app/models/user-dto.model';
 
 @Component({
   selector: 'app-setting',
@@ -10,96 +17,141 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class SettingComponent implements OnInit {
   settingForm: FormGroup;
-  private userName: string = '';
-  private localUser: any = {};
 
-  needConfirm: boolean = false;
-  changingPassword: boolean = false;
-  isSamePW: boolean = true;
-  isSuccess: boolean = false;
-  isTaken: boolean = false;
+  changingPassword = false;
+
+  isPwMatched: Observable<boolean>;
+
+  isSuccess = false;
+  isTaken = { status: false, key: '' };
 
   constructor(
-    private settingsService: SettingsService,
-    private router: Router
+    private fb: FormBuilder,
+    private readonly authService: AuthService,
+    private loadingSpinnerService: LoadingSpinnerService
   ) {}
 
   ngOnInit(): void {
-    this.settingForm = new FormGroup({
-      image: new FormControl(''),
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(20),
-      ]),
-      bio: new FormControl(''),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(150),
-      ]),
-      cfPassword: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-      ]),
-    });
+    this.loadingSpinnerService.showSpinner();
+    this.initForm();
 
-    this.localUser = JSON.parse(localStorage.getItem('user'));
-    this.userName = this.localUser.username;
+    this.isPwMatched = combineLatest([
+      this.settingForm.get('password')?.valueChanges.pipe(startWith('')),
+      this.settingForm.get('cfPassword')?.valueChanges.pipe(startWith('')),
+    ]).pipe(
+      map(([newPw, newCfPw]: Array<string>) => {
+        if (!newCfPw) {
+          return true;
+        }
 
-    this.settingsService.getSettings(this.userName).subscribe((res: any) => {
-      this.settingForm.setValue({
-        email: this.localUser.email,
-        password: '',
-        cfPassword: '',
-        bio: res.profile.bio,
-        image: res.profile.image,
-        username: res.profile.username,
-      });
-    });
+        return newPw?.trim() === newCfPw?.trim();
+      })
+    );
+
+    this.authService
+      .getUser()
+      .pipe(take(1))
+      .subscribe(
+        (res: User) => {
+          if (res?.user) {
+            this.settingForm.patchValue({
+              ...res.user,
+              password: '',
+              cfPassword: '',
+            });
+            this.loadingSpinnerService.hideSpinner();
+          }
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner();
+        }
+      );
   }
 
   updateSettings(): void {
-    console.log(this.settingForm);
-    this.needConfirm = true;
-    this.settingsService
-      .updateSettings(this.settingForm.value)
-      .then((res: any) => {
-        this.isSuccess = true;
-        this.isTaken = false;
-        // console.log('setting updated');
-        setTimeout(() => {
-          this.router.navigate([`/profile/${this.userName}`]);
-        }, 2000);
-      })
-      .catch((err: any) => {
-        this.isSuccess = false;
-        this.isTaken = true;
-        // console.log('setting errors');
-        console.log(err);
-      });
+    this.loadingSpinnerService.showSpinner();
+
+    if (!this.isValidForm()) {
+      this.loadingSpinnerService.hideSpinner();
+      return;
+    }
+
+    const { image, username, bio, email, password } = this.settingForm.value;
+
+    const params: UserDto = {
+      user: this.changingPassword
+        ? { password }
+        : { image, username, bio, email },
+    };
+
+    this.authService
+      .updateUser(params)
+      .pipe(take(1))
+      .subscribe(
+        (res: User) => {
+          this.isTaken.status = false;
+          this.isSuccess = true;
+
+          localStorage.setItem('ACCESS_TOKEN', res.user.token);
+          this.loadingSpinnerService.hideSpinner();
+        },
+        (e) => {
+          console.log(e);
+
+          const errorCCtrl = e.error.includes('email')
+            ? 'email'
+            : e.error.includes('username')
+            ? 'username'
+            : '';
+
+          this.isTaken = {
+            status: true,
+            key: errorCCtrl,
+          };
+          this.isSuccess = false;
+
+          this.loadingSpinnerService.hideSpinner();
+        }
+      );
   }
 
-  isValidPassword() {
-    this.isSamePW =
-      this.settingForm.value.password.length ===
-      this.settingForm.value.cfPassword.length
-        ? true
-        : false;
+  private isValidForm(): boolean {
+    if (this.changingPassword) {
+      const pwCtrl = this.settingForm.get('password');
+      const cfPwCtrl = this.settingForm.get('cfPassword');
+
+      pwCtrl.markAllAsTouched();
+      cfPwCtrl.markAllAsTouched();
+
+      const isPwMatched = pwCtrl.value.trim() === cfPwCtrl.value.trim();
+
+      return pwCtrl.valid && cfPwCtrl.valid && isPwMatched;
+    }
+
+    const imgCtrl = this.settingForm.get('image');
+    const usernameCtrl = this.settingForm.get('username');
+    const bioCtrl = this.settingForm.get('bio');
+    const emailCtrl = this.settingForm.get('email');
+
+    imgCtrl.markAllAsTouched();
+    usernameCtrl.markAllAsTouched();
+    bioCtrl.markAllAsTouched();
+    emailCtrl.markAllAsTouched();
+
+    return (
+      imgCtrl.valid && usernameCtrl.valid && bioCtrl.valid && emailCtrl.valid
+    );
   }
 
-  cfPasswordNoti() {
-    this.needConfirm = true;
-  }
-
-  changePassword() {
-    this.needConfirm = true;
-    this.changingPassword = true;
-    this.isSamePW = false;
-  }
-
-  backPersonal() {
-    this.changingPassword = false;
+  private initForm(): void {
+    this.settingForm = this.fb.group({
+      image: [''],
+      username: ['', Validators.required],
+      bio: [''],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      cfPassword: ['', Validators.required],
+    });
   }
 }

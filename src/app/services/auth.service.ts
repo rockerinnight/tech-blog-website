@@ -1,74 +1,44 @@
-import { Observable } from 'rxjs';
-import { config } from '../helpers/config';
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user';
-import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs';
+
+import { URL } from '../helpers/constants';
+
+import { User } from '../models/user.model';
+import { UserDto } from '../models/user-dto.model';
+import { LoginDto } from '../models/login-dto.model';
+import { RegistrationDto } from '../models/registration-dto.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private user: User = null;
-
   constructor(private http: HttpClient, private router: Router) {}
 
   isAuthenticated(): boolean {
-    if (this.user === null) {
-      let localUser = localStorage.getItem('user');
-      if (localUser) {
-        this.user = JSON.parse(localUser);
-      }
-    }
-    return !!this.user;
+    return !!localStorage.getItem('ACCESS_TOKEN');
   }
 
-  getUser(): User {
-    return this.user;
+  login(params: LoginDto): Observable<User> {
+    return this.http.post<User>(`${URL.API}/users/login`, params);
   }
 
-  getProfile(username: string): Observable<any> {
-    return this.http.get(
-      config.apiUrl + `/profiles/${username}`
-    ) as Observable<any>;
+  register(params: RegistrationDto): Observable<User> {
+    return this.http.post<User>(`${URL.API}/users`, params);
   }
 
-  signup(user) {
-    return new Promise<void>((resolve, reject) => {
-      this.http.post(config.apiUrl + '/users', { user: user }).subscribe(
-        (res: any) => {
-          this.logUserIn(res.user);
-          resolve();
-        },
-        (err: any) => {
-          reject(err);
-        }
-      );
-    });
+  getUser(): Observable<User> {
+    return this.http.get<User>(`${URL.API}/user`);
   }
 
-  logUserIn(user): void {
-    this.user = user;
-    localStorage.setItem('user', JSON.stringify(user));
+  updateUser(params: UserDto) {
+    return this.http.put<User>(`${URL.API}/user`, params);
   }
 
-  login(user) {
-    return new Promise<void>((resolve, reject) => {
-      this.http.post(config.apiUrl + '/users/login', { user: user }).subscribe(
-        (res: any) => {
-          this.logUserIn(res.user);
-          resolve();
-        },
-        (err: any) => {
-          reject(err);
-        }
-      );
-    });
-  }
-
-  logout() {
-    localStorage.removeItem('user');
-    window.location.reload();
-    // this.router.navigate(['..']);
+  logout(): void {
+    localStorage.removeItem('ACCESS_TOKEN');
+    this.router.navigateByUrl('/home');
   }
 }

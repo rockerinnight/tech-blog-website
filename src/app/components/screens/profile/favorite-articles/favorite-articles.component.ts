@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ArticleService } from 'src/app/services/article.service';
-import { MultiArticle } from 'src/app/models/multi-article';
+
+import { Observable } from 'rxjs';
+
+import { Article } from 'src/app/models/article.model';
 
 @Component({
   selector: 'app-favorite-articles',
@@ -8,29 +10,11 @@ import { MultiArticle } from 'src/app/models/multi-article';
   styleUrls: ['./favorite-articles.component.scss'],
 })
 export class FavoriteArticlesComponent implements OnInit {
-  @Input('selectedUser') selectedUser: string;
-  favoritedArticles: any = [];
-  totalItems: number = 0;
-  itemsPerPage: number = 6;
-  loadDone: boolean = false;
+  @Input() data: Observable<Article[]>;
 
-  constructor(private articleService: ArticleService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.getFavoriteArticles(this.selectedUser, 0, this.itemsPerPage);
-  }
+  ngOnInit(): void {}
 
-  getFavoriteArticles(username: string, skip: number, top: number) {
-    this.articleService
-      .getFavoriteArticles(username, skip, top)
-      .subscribe((res: MultiArticle) => {
-        this.favoritedArticles = res.articles;
-        this.totalItems = res.articlesCount;
-        this.loadDone = true;
-      });
-  }
-
-  handlePageChange(page: number) {
-    this.getFavoriteArticles(this.selectedUser, page, this.itemsPerPage);
-  }
+  handlePageChange(page: number) {}
 }

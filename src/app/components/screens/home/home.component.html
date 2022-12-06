@@ -5,50 +5,71 @@
         <div class="nav nav-tabs text-p-dark">
           <span
             class="nav-link font-weight-bold cursor-pointer"
-            [class.active]="mode === 'myFeedMode'"
-            (click)="myFeedMode()"
+            [class.active]="viewMode === 'global'"
+            (click)="openGlobalView()"
+            >Global Feed</span
+          >
+          <span
+            class="nav-link font-weight-bold cursor-pointer"
+            [class.active]="viewMode === 'feed'"
+            (click)="openFeedView()"
             *ngIf="authService.isAuthenticated()"
             >My Feed</span
           >
           <span
             class="nav-link font-weight-bold cursor-pointer"
-            [class.active]="mode === 'myGlobalMode'"
-            (click)="myGlobalMode()"
-            >Global Feed</span
-          >
-          <span
-            class="nav-link font-weight-bold cursor-pointer"
-            [class.active]="mode === 'tagMode'"
-            (click)="tagMode()"
-            *ngIf="selectedTag !== ''"
+            [class.active]="viewMode === 'tag'"
+            (click)="openTagView()"
+            *ngIf="viewMode == 'tag'"
             >#{{ selectedTag }}</span
           >
         </div>
       </nav>
       <div class="tab-content">
         <div class="tab-pane fade show active">
-          <app-my-feed *ngIf="mode === 'myFeedMode'"></app-my-feed>
           <app-global-feed
-            *ngIf="mode === 'myGlobalMode'"
-            (tagFromFeed)="getTagFromGlobalFeed($event)"
+            *ngIf="viewMode === 'global'"
+            [data]="globalArticles$"
           ></app-global-feed>
+          <app-my-feed
+            *ngIf="viewMode === 'feed'"
+            [data]="feedArticles$"
+          ></app-my-feed>
           <app-tag-feed
-            *ngIf="mode === 'tagMode'"
-            [selectedTag]="selectedTag"
+            *ngIf="viewMode === 'tag'"
+            [data]="tarArticles$"
           ></app-tag-feed>
+          <ngx-spinner
+            bdColor="rgba(255,255,255,0.25)"
+            size="default"
+            color="#5d99c6"
+            type="ball-scale-multiple"
+            [name]="'home-articles'"
+            [fullScreen]="false"
+          >
+          </ngx-spinner>
         </div>
       </div>
     </div>
     <div class="col-lg-3 tags-grow">
       <div class="popular-tags bg-light p-1 pb-2 shadow bg-white">
         <p class="pl-1 pt-1 pb-2 border-bottom mb-1-5">Popular Tags:</p>
-        <div class="listtags d-flex flex-wrap">
+        <div class="listtags d-flex flex-wrap position-relative">
           <a
             class="tag-item btn bg-p-dark text-white m-1 py-0 rounded-pill"
-            *ngFor="let tag of listTags"
-            (click)="openTagFeed(tag)"
+            *ngFor="let tag of tags$ | async"
+            (click)="openTagView(tag)"
             >#{{ tag }}</a
           >
+          <ngx-spinner
+            bdColor="rgba(255,255,255,0.25)"
+            size="default"
+            color="#5d99c6"
+            type="ball-scale-multiple"
+            [name]="'tag-list'"
+            [fullScreen]="false"
+          >
+          </ngx-spinner>
         </div>
       </div>
     </div>

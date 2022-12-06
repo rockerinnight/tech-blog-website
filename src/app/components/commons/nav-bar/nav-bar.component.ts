@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Component, OnInit } from '@angular/core';
+
+import { take } from 'rxjs/operators';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { LoadingSpinnerService } from 'src/app/services/loading-spinner.service';
+
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,47 +14,46 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
-  showDropdown: boolean = false;
-  userName: string = '';
+  showDropdown = false;
 
   constructor(
-    public authService: AuthService,
     private router: Router,
-    private spinner: NgxSpinnerService
+    public authService: AuthService,
+    private loadingSpinnerService: LoadingSpinnerService
   ) {}
 
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      let localUser = JSON.parse(localStorage.getItem('user'));
-      this.userName = localUser.username;
-    }
-  }
-
-  openSpinner(timeLoad) {
-    this.spinner.show();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, timeLoad);
-  }
+  ngOnInit(): void {}
 
   goToNewArticle(): void {
     this.router.navigateByUrl('/new-article');
   }
 
   goToMyArticles(): void {
-    this.router.navigateByUrl(`/profile/${this.userName}`);
+    this.loadingSpinnerService.showSpinner();
+    this.authService
+      .getUser()
+      .pipe(take(1))
+      .subscribe((res: User) => {
+        this.loadingSpinnerService.hideSpinner();
+        if (!res?.user?.username) {
+          this.router.navigateByUrl(`/home`);
+          return;
+        }
+        const userName = res.user.username;
+        this.router.navigateByUrl(`/profile/${userName}`);
+      });
   }
 
-  logout(): void {
-    this.authService.logout();
-    // this.router.navigate(['..']);
+  signUp(): void {
+    this.router.navigateByUrl('/register');
   }
 
   logIn(): void {
     this.router.navigateByUrl('/login');
   }
 
-  signUp(): void {
-    this.router.navigateByUrl('/signup');
+  logout(): void {
+    this.showDropdown = false;
+    this.authService.logout();
   }
 }

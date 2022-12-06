@@ -1,11 +1,13 @@
-<div class="container pb-5 px-0">
-  <div *ngFor="let myFeed of myFeeds">
-    <app-article-card [data]="myFeed"></app-article-card>
-  </div>
+<div class="container pb-5 px-0" *ngIf="data | async as articleList">
+  <app-article-card
+    *ngFor="let article of articleList"
+    [data]="article"
+  ></app-article-card>
+
   <app-pagination
-    *ngIf="loadDone"
-    [totalItems]="totalItems"
-    [itemPerpage]="itemsPerPage"
+    *ngIf="articleList.length"
+    [totalItems]="articleList.length"
+    [itemsPerPage]="6"
     (onPageChange)="handlePageChange($event)"
   ></app-pagination>
 </div>

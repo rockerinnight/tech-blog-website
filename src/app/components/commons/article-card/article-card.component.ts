@@ -1,7 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ArticleService } from '../../../services/article.service';
-import { AuthService } from '../../../services/auth.service';
+import { Component, Input, OnInit } from '@angular/core';
+
+import { take } from 'rxjs/operators';
+
+import { FavoriteService } from 'src/app/services/favorite.service';
+import { LoadingSpinnerService } from 'src/app/services/loading-spinner.service';
+
+import { Article } from 'src/app/models//article.model';
+import { SingleArticle } from 'src/app/models/single-article.model';
 
 @Component({
   selector: 'app-article-card',
@@ -9,52 +15,67 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./article-card.component.scss'],
 })
 export class ArticleCardComponent implements OnInit {
-  @Input('data') data: any;
-  @Output('tagFromCard') selectedTag = new EventEmitter();
-  tagLists: any[];
-  favoritesCount: number;
-  isFavorited: boolean;
+  @Input() data: Article;
 
   constructor(
-    private articleService: ArticleService,
-    private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private favoriteService: FavoriteService,
+    private loadingSpinnerService: LoadingSpinnerService
   ) {}
 
-  ngOnInit(): void {
-    // console.log(this.data);
-    this.tagLists = this.data.tagList;
-    this.isFavorited = this.data.favorited;
-    this.favoritesCount = this.data.favoritesCount;
+  ngOnInit(): void {}
+
+  favoriteArticle(slug: string): void {
+    this.loadingSpinnerService.showSpinner(
+      `article-favorite-${this.data.slug}`
+    );
+    this.favoriteService
+      .favoriteArticle(slug)
+      .pipe(take(1))
+      .subscribe(
+        (res: SingleArticle) => {
+          if (res?.article) {
+            this.data = res.article;
+          }
+          this.loadingSpinnerService.hideSpinner(
+            `article-favorite-${this.data.slug}`
+          );
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner(
+            `article-favorite-${this.data.slug}`
+          );
+        }
+      );
   }
 
-  favoriteArticle(slug) {
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigateByUrl('/login');
-    } else {
-      this.isFavorited = true;
-      this.favoritesCount++;
-      this.data.favorited = true;
-      this.data.favoritesCount++;
-      this.articleService.favoriteArticle(slug).subscribe((res) => {
-        // ** It returns a Single Article
-        // console.log(res);
-      });
-    }
+  unFavoriteArticle(slug: string): void {
+    this.loadingSpinnerService.showSpinner(
+      `article-favorite-${this.data.slug}`
+    );
+    this.favoriteService
+      .unFavoriteArticle(slug)
+      .pipe(take(1))
+      .subscribe(
+        (res: SingleArticle) => {
+          if (res?.article) {
+            this.data = res.article;
+          }
+          this.loadingSpinnerService.hideSpinner(
+            `article-favorite-${this.data.slug}`
+          );
+        },
+        (e) => {
+          console.log(e);
+          this.loadingSpinnerService.hideSpinner(
+            `article-favorite-${this.data.slug}`
+          );
+        }
+      );
   }
 
-  unFavoriteArticle(slug) {
-    this.isFavorited = false;
-    this.favoritesCount--;
-    this.data.favorited = false;
-    this.data.favoritesCount--;
-    this.articleService.unFavoriteArticle(slug).subscribe((res) => {
-      // ** It returns a Single Article
-      // console.log(res);
-    });
-  }
-
-  sendTagFromCard(tagName: string) {
-    this.selectedTag.emit(tagName);
+  selectTag(tagName: string): void {
+    this.router.navigate(['/home'], { queryParams: { tag: tagName } });
   }
 }

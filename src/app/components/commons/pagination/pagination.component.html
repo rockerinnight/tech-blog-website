@@ -1,57 +1,44 @@
-<nav *ngIf="!isEmpty">
+<nav *ngIf="!isEmpty; else emptyBlock">
   <ul class="pagination d-flex justify-content-center">
-    <li
-      class="page-item bg-white shadow"
-      [class.disabled]="disablePreviousButton()"
-      (click)="previous()"
-    >
+    <li class="page-item bg-white shadow" (click)="goToFirstPage()">
+      <span class="page-link text-p-dark">First</span>
+    </li>
+    <li class="page-item bg-white shadow" (click)="goToPreviousPage()">
       <span class="page-link text-p-dark">Previous</span>
     </li>
     <li
-      *ngIf="selectedPage > 4"
-      class="page-item bg-white shadow"
-      [class.active]="selectedPage === 0"
-      (click)="goToFirstPage()"
+      class="page-item bg-white shadow disabled"
+      *ngIf="isOverflowedPrev && totalPages > 10"
     >
-      <span class="page-link text-p-dark">1</span>
-    </li>
-    <li *ngIf="selectedPage > 4" class="page-item bg-white shadow disabled">
       <span class="page-link text-p-dark">...</span>
     </li>
     <li
       class="page-item bg-white shadow"
-      *ngFor="let page of pages"
-      [class.active]="page === selectedPage"
-      (click)="goToPage(page)"
+      [class.active]="selectedPage === i"
+      *ngFor="let page of pages; let i = index"
+      (click)="goToPage(i)"
     >
-      <span class="page-link text-p-dark">{{ page + 1 }}</span>
+      <span class="page-link text-p-dark">{{ i + 1 }}</span>
     </li>
     <li
       class="page-item bg-white shadow disabled"
-      *ngIf="totalPages > 3 && selectedPage < totalPages - 3"
+      *ngIf="isOverflowedNext && totalPages > 10"
     >
       <span class="page-link text-p-dark">...</span>
     </li>
-    <li
-      *ngIf="totalPages > 3 && selectedPage < totalPages - 3"
-      class="page-item bg-white shadow"
-      [class.active]="totalPages === selectedPage"
-      (click)="goToLastPage()"
-    >
-      <span class="page-link text-p-dark">{{ totalPages }}</span>
-    </li>
-    <li
-      class="page-item bg-white shadow"
-      [class.disabled]="disableNextButton()"
-      (click)="next()"
-    >
+    <li class="page-item bg-white shadow" (click)="goToNextPage()">
       <span class="page-link text-p-dark">Next</span>
+    </li>
+    <li class="page-item bg-white shadow" (click)="goToLastPage()">
+      <span class="page-link text-p-dark">Last</span>
     </li>
   </ul>
 </nav>
-<div class="mt-2" *ngIf="isEmpty">
-  <span class="h6"
-    >No articles are here... yet.<br />Go to Global Feed and try to follow your
-    favorite authors to fill up your feed.</span
-  >
-</div>
+<ng-template #emptyBlock>
+  <div class="h6 mt-2">
+    No articles are here... yet.
+    <br />
+    Go to Global Feed and try to follow your favorite authors to fill up your
+    feed.
+  </div>
+</ng-template>
