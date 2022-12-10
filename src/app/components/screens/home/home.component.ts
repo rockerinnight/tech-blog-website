@@ -10,7 +10,6 @@ import { ArticleService } from 'src/app/services/article.service';
 import { LoadingSpinnerService } from 'src/app/services/loading-spinner.service';
 
 import { Tags } from 'src/app/models/tag.model';
-import { Article } from 'src/app/models/article.model';
 import { MultiArticles } from 'src/app/models/multi-articles.model';
 
 @Component({
@@ -24,10 +23,12 @@ export class HomeComponent implements OnInit {
 
   tags$: Observable<String[]>;
   globalArticles$: Observable<MultiArticles>;
-  feedArticles$: Observable<Article[]>;
-  tarArticles$: Observable<Article[]>;
+  feedArticles$: Observable<MultiArticles>;
+  tarArticles$: Observable<MultiArticles>;
 
-  tagUpdater$ = new BehaviorSubject(null);
+  globalPageChanged$ = new BehaviorSubject(null);
+  feedPageChanged$ = new BehaviorSubject(null);
+  tagPageChanged$ = new BehaviorSubject(null);
 
   constructor(
     private route: ActivatedRoute,
@@ -41,19 +42,21 @@ export class HomeComponent implements OnInit {
     this.loadingSpinnerService.showSpinner('home-articles');
     this.loadingSpinnerService.showSpinner('tag-list');
 
+    this.route.queryParams.subscribe((res: any) => {
+      if (res?.tag?.length) {
+        this.openTagView(res.tag);
+      }
+    });
+
     this.tags$ = this.tagService.getTags().pipe(
       map((res: Tags) => res.tags),
       tap(() => this.loadingSpinnerService.hideSpinner('tag-list'))
     );
 
-    this.globalArticles$ = this.articleService.pageChanged.pipe(
+    this.globalArticles$ = this.globalPageChanged$.pipe(
       switchMap((pageParams: any) => {
-        console.log(pageParams);
         return pageParams
-          ? this.articleService.getListArticles({
-              limit: pageParams.limit,
-              offset: pageParams.offset,
-            })
+          ? this.articleService.getListArticles(pageParams)
           : this.articleService.getListArticles();
       }),
       catchError((err) => {
@@ -64,44 +67,87 @@ export class HomeComponent implements OnInit {
       tap(() => this.loadingSpinnerService.hideSpinner('home-articles'))
     );
 
-    this.feedArticles$ = this.articleService.getFeedArticles().pipe(
-      map((res: MultiArticles) => res.articles),
+    this.feedArticles$ = this.feedPageChanged$.pipe(
+      switchMap((pageParams: any) => {
+        return pageParams
+          ? this.articleService.getFeedArticles(pageParams)
+          : this.articleService.getFeedArticles();
+      }),
+      catchError((err) => {
+        this.loadingSpinnerService.hideSpinner('home-articles');
+        console.log(err);
+        return of({ articles: [], articlesCount: 0 });
+      }),
       tap(() => this.loadingSpinnerService.hideSpinner('home-articles'))
     );
 
-    this.tarArticles$ = this.tagUpdater$.pipe(
-      switchMap((tagName: string) =>
-        this.articleService.getListArticles({ tag: tagName })
-      ),
-      map((res: MultiArticles) => res.articles),
+    this.tarArticles$ = this.tagPageChanged$.pipe(
+      switchMap((pageParams: any) => {
+        return pageParams
+          ? this.articleService.getListArticles({
+              ...pageParams,
+              tag: this.selectedTag,
+            })
+          : this.articleService.getListArticles({ tag: this.selectedTag });
+      }),
+      catchError((err) => {
+        this.loadingSpinnerService.hideSpinner('home-articles');
+        console.log(err);
+        return of({ articles: [], articlesCount: 0 });
+      }),
       tap(() => this.loadingSpinnerService.hideSpinner('home-articles'))
     );
-
-    this.route.queryParams.subscribe((res: any) => {
-      if (res?.tag?.length) {
-        this.openTagView(res.tag);
-      }
-    });
   }
 
   openGlobalView(): void {
-    this.viewMode = 'global';
-    this.loadingSpinnerService.showSpinner('home-articles');
+    if (this.viewMode !== 'global') {
+      this.selectedTag = '';
+      this.viewMode = 'global';
+      this.globalPageChanged$.next(null);
+      this.loadingSpinnerService.showSpinner('home-articles');
+    }
   }
 
   openFeedView(): void {
-    this.viewMode = 'feed';
-    this.loadingSpinnerService.showSpinner('home-articles');
+    if (this.viewMode !== 'feed') {
+      this.selectedTag = '';
+      this.viewMode = 'feed';
+      this.feedPageChanged$.next(null);
+      this.loadingSpinnerService.showSpinner('home-articles');
+    }
   }
 
   openTagView(selectedTagName: string): void {
-    this.viewMode = 'tag';
-    this.selectedTag = selectedTagName;
-    this.tagUpdater$.next(selectedTagName);
-    this.loadingSpinnerService.showSpinner('home-articles');
+    if (
+      this.viewMode !== 'tag' ||
+      (this.viewMode === 'tag' && this.selectedTag !== selectedTagName)
+    ) {
+      this.selectedTag = selectedTagName;
+      this.tagPageChanged$.next(null);
+      this.loadingSpinnerService.showSpinner('home-articles');
+    }
+
+    if (this.viewMode !== 'tag') {
+      this.viewMode = 'tag';
+    }
   }
 
-  onPageChanged(e: any): void {
-    console.log(e);
+  getPageParams(e: any): void {
+    const { limit, offset } = e;
+    switch (e?.view) {
+      case 'global':
+        this.globalPageChanged$.next({ limit, offset });
+        break;
+      case 'feed':
+        this.feedPageChanged$.next({ limit, offset });
+        break;
+      case 'tag':
+        this.tagPageChanged$.next({ limit, offset });
+        break;
+      default:
+        break;
+    }
+
+    this.loadingSpinnerService.showSpinner('home-articles');
   }
 }

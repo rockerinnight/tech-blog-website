@@ -7,12 +7,8 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { ArticleService } from 'src/app/services/article.service';
 
-interface PagingParams {
-  limit: number;
-  offset: number;
-}
+import { Page } from 'src/app/models/page-params.model';
 
 @Component({
   selector: 'app-pagination',
@@ -20,128 +16,190 @@ interface PagingParams {
   styleUrls: ['./pagination.component.scss'],
 })
 export class PaginationComponent implements OnInit, OnChanges {
-  @Input() totalItems: number;
+  @Input() totalItems = 0;
   @Input() itemsPerPage = 10;
-  @Output() onPageChange = new EventEmitter<PagingParams>();
+  @Output() pageChanged = new EventEmitter();
 
   isEmpty = false;
-  isOverflowedPrev = false;
-  isOverflowedNext = false;
 
-  pages: Number[] = [];
+  idxToNext = 4;
+  idxToPrev = 2;
+  maxLenPages = 7;
+  selectedLabel = 1;
+
   totalPages = 0;
-  selectedPage = 0;
+  pages: Page[] = [];
 
-  constructor(private articleService: ArticleService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    //TODO if new value is changing the totalPages
     if (
       changes?.totalItems?.currentValue !== changes?.totalItems?.previousValue
     ) {
+      this.isEmpty = !changes?.totalItems?.currentValue;
+      this.totalItems = changes?.totalItems?.currentValue;
+
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
 
-      this.isEmpty = !changes?.totalItems?.currentValue;
-
-      if (!this.totalPages) {
-        this.pages = [];
-        this.isOverflowedNext = false;
-        return;
-      }
-
+      this.pages.length = 0;
       for (let i = 0; i < this.totalPages; i++) {
-        this.pages.push(i);
+        this.pages.push({ label: i + 1, idx: i });
       }
-      if (this.pages.length > 10) {
-        this.pages.length = 10;
-        this.isOverflowedNext = true;
+
+      this.pages = this.pages.filter((p) => p.label >= 1);
+
+      if (this.pages.length > this.maxLenPages) {
+        this.pages.length = this.maxLenPages;
       }
+
+      this.selectedLabel = 1;
     }
+  }
+
+  trackByLabel(index: number, item: Page): any {
+    return item.label;
   }
 
   goToFirstPage(): void {
-    if (this.selectedPage === 0) {
-      return;
+    if (this.checkResetPages('first')) {
+      this.resetPages('first');
     }
-    this.selectedPage = 0;
-    this.onPageChange.emit({ limit: this.itemsPerPage, offset: 0 });
-    this.isOverflowedPrev = false;
-    this.isOverflowedNext = true;
+    this.fetch('first');
   }
 
   goToLastPage(): void {
-    if (this.selectedPage === this.totalPages - 1) {
-      return;
+    if (this.checkResetPages('last')) {
+      this.resetPages('last');
     }
-    this.selectedPage = this.totalPages - 1;
-    this.onPageChange.emit({
-      limit: this.itemsPerPage,
-      offset: (this.totalPages - 1) * this.itemsPerPage,
-    });
-    this.isOverflowedPrev = true;
-    this.isOverflowedNext = false;
-  }
-
-  goToPage(index: number): void {
-    if (index === this.selectedPage) {
-      return;
-    }
-
-    this.selectedPage = index;
-    this.articleService.pageChanged.next({
-      limit: 1,
-      offset: index * this.itemsPerPage,
-    });
+    this.fetch('last');
   }
 
   goToNextPage(): void {
-    if (this.selectedPage + 1 >= this.totalPages) {
-      return;
+    if (this.checkResetPages('next')) {
+      this.resetPages('next');
     }
-    if (this.selectedPage + 1 === this.pages.length) {
-      this.pages.length = 0;
-      for (let i = this.selectedPage + 1; i < this.totalPages; i++) {
-        this.pages.push(i);
-      }
-      if (this.pages.length > 10) {
-        this.pages.length = 10;
-        this.isOverflowedPrev = true;
-        this.isOverflowedNext = true;
-      }
-    }
-    this.selectedPage++;
-    this.onPageChange.emit({
-      limit: this.itemsPerPage,
-      offset: this.selectedPage * this.itemsPerPage,
-    });
+    this.fetch('next');
   }
 
-  goToPreviousPage(): void {
-    if (this.selectedPage - 1 < 0) {
-      return;
+  goToPrevPage(): void {
+    if (this.checkResetPages('prev')) {
+      this.resetPages('prev');
     }
-    this.selectedPage--;
-    this.onPageChange.emit({
-      limit: this.itemsPerPage,
-      offset: this.selectedPage * this.itemsPerPage,
-    });
+    this.fetch('prev');
   }
 
-  // openOverflow(place: 'prev' | 'next'): void {
-  //   if (!this.totalPages) {
-  //     this.pages = [];
-  //     this.isOverflowed = false;
-  //     return;
-  //   }
+  goToPage(page: Page): void {
+    if (this.checkResetPages(page)) {
+      this.resetPages(page);
+    }
+    this.fetch(page);
+  }
 
-  //   for (let i = 0; i < this.totalPages; i++) {
-  //     this.pages.push(i);
-  //   }
-  //   if (this.pages.length > 10) {
-  //     this.pages.length = 10;
-  //     this.isOverflowed = true;
-  //   }
-  // }
+  private checkResetPages(action: string | Page): boolean {
+    switch (action) {
+      case 'first':
+        return this.pages[0].label > 1;
+
+      case 'last':
+        return this.pages[0].label < this.totalPages;
+
+      case 'next':
+        return (
+          this.selectedLabel ===
+            this.pages[this.pages.length - 1 - (this.idxToNext - 1)]?.label &&
+          this.pages[this.pages.length - 1].label < this.totalPages
+        );
+
+      case 'prev':
+        return (
+          this.selectedLabel === this.pages[0 + (this.idxToPrev + 1)]?.label &&
+          this.pages[0].label > 1
+        );
+
+      default:
+        if (action instanceof Object) {
+          return (
+            this.selectedLabel !== action.label &&
+            (action.label <= this.pages[this.idxToPrev]?.label ||
+              action.label >= this.pages[this.idxToNext]?.label)
+          );
+        }
+        return false;
+    }
+  }
+
+  private resetPages(action: string | Page): void {
+    let i = 0;
+    switch (action) {
+      case 'first':
+        i = 0;
+        break;
+
+      case 'last':
+        i = this.totalPages - 1 - (this.maxLenPages - 1) + 1;
+        break;
+
+      case 'next':
+        i = this.pages[this.pages.length - 1].idx - (this.maxLenPages - 1) + 1;
+        break;
+
+      case 'prev':
+        i = this.pages[0].idx - 1;
+        break;
+
+      default:
+        if (action instanceof Object) {
+          i = action.idx - 3 > 0 ? action.idx - 3 : 0;
+        }
+        break;
+    }
+
+    this.pages.length = 0;
+    for (i; i < this.totalPages; i++) {
+      this.pages.push({ label: i + 1, idx: i });
+    }
+
+    this.pages = this.pages.filter((p) => p.label >= 1);
+
+    if (this.pages.length > this.maxLenPages) {
+      this.pages.length = this.maxLenPages;
+    }
+  }
+
+  private fetch(action: string | Page): void {
+    if (this.selectedLabel > this.totalPages) {
+      return;
+    }
+
+    switch (action) {
+      case 'first':
+        this.selectedLabel = 1;
+        break;
+
+      case 'last':
+        this.selectedLabel = this.totalPages;
+        break;
+
+      case 'next':
+        this.selectedLabel++;
+        break;
+
+      case 'prev':
+        this.selectedLabel--;
+        break;
+
+      default:
+        if (action instanceof Object) {
+          this.selectedLabel = action.label;
+        }
+        break;
+    }
+
+    this.pageChanged.emit({
+      limit: this.itemsPerPage,
+      offset: (this.selectedLabel - 1) * this.itemsPerPage,
+    });
+  }
 }

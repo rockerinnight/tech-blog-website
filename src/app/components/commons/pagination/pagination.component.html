@@ -1,35 +1,60 @@
 <nav *ngIf="!isEmpty; else emptyBlock">
   <ul class="pagination d-flex justify-content-center">
-    <li class="page-item bg-white shadow" (click)="goToFirstPage()">
-      <span class="page-link text-p-dark">First</span>
-    </li>
-    <li class="page-item bg-white shadow" (click)="goToPreviousPage()">
-      <span class="page-link text-p-dark">Previous</span>
-    </li>
-    <li
-      class="page-item bg-white shadow disabled"
-      *ngIf="isOverflowedPrev && totalPages > 10"
-    >
-      <span class="page-link text-p-dark">...</span>
-    </li>
+    <!-- First button -->
     <li
       class="page-item bg-white shadow"
-      [class.active]="selectedPage === i"
-      *ngFor="let page of pages; let i = index"
-      (click)="goToPage(i)"
+      (click)="goToFirstPage()"
+      *ngIf="selectedLabel > 1"
     >
-      <span class="page-link text-p-dark">{{ i + 1 }}</span>
+      <span class="page-link text-p-dark">First</span>
     </li>
+    <!-- Previous button -->
+    <li
+      class="page-item bg-white shadow"
+      (click)="goToPrevPage()"
+      *ngIf="selectedLabel > 1"
+    >
+      <span class="page-link text-p-dark">Previous</span>
+    </li>
+    <!-- Dots previous -->
     <li
       class="page-item bg-white shadow disabled"
-      *ngIf="isOverflowedNext && totalPages > 10"
+      *ngIf="totalPages > maxLenPages && selectedLabel > 1 + (idxToPrev + 1)"
     >
       <span class="page-link text-p-dark">...</span>
     </li>
-    <li class="page-item bg-white shadow" (click)="goToNextPage()">
+    <!-- Page numbers -->
+    <li
+      class="page-item bg-white shadow"
+      [class.active]="selectedLabel === page.label"
+      *ngFor="let page of pages; trackBy: trackByLabel"
+      (click)="goToPage(page)"
+    >
+      <span class="page-link text-p-dark">{{ page.label }}</span>
+    </li>
+    <!-- Dots next -->
+    <li
+      class="page-item bg-white shadow disabled"
+      *ngIf="
+        totalPages > maxLenPages && selectedLabel < totalPages - (idxToNext - 1)
+      "
+    >
+      <span class="page-link text-p-dark">...</span>
+    </li>
+    <!-- Next button -->
+    <li
+      class="page-item bg-white shadow"
+      (click)="goToNextPage()"
+      *ngIf="selectedLabel < totalPages"
+    >
       <span class="page-link text-p-dark">Next</span>
     </li>
-    <li class="page-item bg-white shadow" (click)="goToLastPage()">
+    <!-- Last button -->
+    <li
+      class="page-item bg-white shadow"
+      (click)="goToLastPage()"
+      *ngIf="selectedLabel < totalPages"
+    >
       <span class="page-link text-p-dark">Last</span>
     </li>
   </ul>

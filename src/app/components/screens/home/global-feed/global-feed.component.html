@@ -7,5 +7,6 @@
   <app-pagination
     *ngIf="articleList.articles.length"
     [totalItems]="articleList.articlesCount"
+    (pageChanged)="handlePageChanged($event)"
   ></app-pagination>
 </div>

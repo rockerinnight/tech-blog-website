@@ -19,7 +19,6 @@ import { LoadingSpinnerService } from 'src/app/services/loading-spinner.service'
 import { User } from 'src/app/models/user.model';
 import { Author } from 'src/app/models/author.model';
 import { Profile } from 'src/app/models/profile.model';
-import { Article } from 'src/app/models/article.model';
 import { MultiArticles } from 'src/app/models/multi-articles.model';
 
 interface UserResponse {
@@ -40,10 +39,12 @@ export class ProfileComponent implements OnInit {
 
   profile$: Observable<Author>;
   user$: Observable<UserResponse>;
-  userArticles$: Observable<Article[]>;
-  favoritedArticles$: Observable<Article[]>;
+  userArticles$: Observable<MultiArticles>;
+  favoritedArticles$: Observable<MultiArticles>;
 
-  profileUpdater = new BehaviorSubject(null);
+  private profileUpdater$ = new BehaviorSubject(null);
+  private userPageChanged$ = new BehaviorSubject(null);
+  private favoritedPageChanged$ = new BehaviorSubject(null);
 
   constructor(
     private router: Router,
@@ -60,7 +61,7 @@ export class ProfileComponent implements OnInit {
 
     const userName = this.route.snapshot.params?.username;
 
-    this.profile$ = this.profileUpdater.pipe(
+    this.profile$ = this.profileUpdater$.pipe(
       switchMap(() =>
         this.profileService.getProfile(userName).pipe(
           catchError((err) => {
@@ -98,32 +99,50 @@ export class ProfileComponent implements OnInit {
         shareReplay({ bufferSize: 1, refCount: true })
       );
 
-    this.userArticles$ = this.articleService
-      .getListArticles({
-        author: userName,
-      })
-      .pipe(
-        map((res: MultiArticles) => res?.articles || []),
-        tap(() => {
-          this.loadingSpinnerService.hideSpinner('profile-articles');
-        })
-      );
+    this.userArticles$ = this.userPageChanged$.pipe(
+      switchMap((pageParams: any) => {
+        return pageParams
+          ? this.articleService.getListArticles({
+              ...pageParams,
+              author: userName,
+            })
+          : this.articleService.getListArticles({
+              author: userName,
+            });
+      }),
+      catchError((err) => {
+        this.loadingSpinnerService.hideSpinner('profile-articles');
+        console.log(err);
+        return of({ articles: [], articlesCount: 0 });
+      }),
+      tap(() => this.loadingSpinnerService.hideSpinner('profile-articles'))
+    );
 
-    this.favoritedArticles$ = this.articleService
-      .getListArticles({
-        favorited: userName,
-      })
-      .pipe(
-        map((res: MultiArticles) => res?.articles || []),
-        tap(() => {
-          this.loadingSpinnerService.hideSpinner('profile-articles');
-        })
-      );
+    this.favoritedArticles$ = this.favoritedPageChanged$.pipe(
+      switchMap((pageParams: any) => {
+        return pageParams
+          ? this.articleService.getListArticles({
+              ...pageParams,
+              favorited: userName,
+            })
+          : this.articleService.getListArticles({
+              favorited: userName,
+            });
+      }),
+      catchError((err) => {
+        this.loadingSpinnerService.hideSpinner('profile-articles');
+        console.log(err);
+        return of({ articles: [], articlesCount: 0 });
+      }),
+      tap(() => this.loadingSpinnerService.hideSpinner('profile-articles'))
+    );
   }
 
   switchTab(mode: 'user' | 'favorited'): void {
-    this.loadingSpinnerService.showSpinner('profile-articles');
-    this.viewMode = mode;
+    if (this.viewMode !== mode) {
+      this.viewMode = mode;
+      this.loadingSpinnerService.showSpinner('profile-articles');
+    }
   }
 
   followUser(userName: string): void {
@@ -134,7 +153,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         (res: Profile) => {
           if (res) {
-            this.profileUpdater.next(null);
+            this.profileUpdater$.next(null);
           }
         },
         (e) => {
@@ -152,7 +171,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         (res: Profile) => {
           if (res) {
-            this.profileUpdater.next(null);
+            this.profileUpdater$.next(null);
           }
         },
         (e) => {
@@ -160,5 +179,21 @@ export class ProfileComponent implements OnInit {
           this.loadingSpinnerService.hideSpinner('follow');
         }
       );
+  }
+
+  getPageParams(e: any): void {
+    const { limit, offset } = e;
+    switch (e?.view) {
+      case 'user':
+        this.userPageChanged$.next({ limit, offset });
+        break;
+      case 'favorited':
+        this.favoritedPageChanged$.next({ limit, offset });
+        break;
+      default:
+        break;
+    }
+
+    this.loadingSpinnerService.showSpinner('profile-articles');
   }
 }
