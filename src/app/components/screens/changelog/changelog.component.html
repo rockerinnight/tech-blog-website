@@ -2,40 +2,29 @@
   <div class="row mb-4">
     <div class="col-8 mt-4 mx-auto bg-white shadow pb-3">
       <h1 class="text-center text-p-dark my-4">Changelogs</h1>
-      <!-- CHANGELOGS LIST -->
-      <div class="jumbotron jumbotron-fluid py-3">
+      <div
+        class="jumbotron jumbotron-fluid py-3"
+        *ngFor="let changelog of data"
+      >
         <div class="container">
           <p class="h5">
-            <em>Apr 20, 2021</em>
+            <em>{{ changelog.date | date }}</em>
           </p>
-          <p class="lead text-justify">
-            Now you can save your article to draft when you haven't finish it
-            yet. You can publish it anytime after that.<br />Save Draft also
-            prevents any errors occur when publishing your newest article. Draft
-            will be loaded right when you are back to Online and the content
-            will be loaded on "New Article" like there's nothing happened before
-            that.
-          </p>
+          <p class="lead text-justify">{{ changelog.body }}</p>
           <ul class="text-p-dark pl-3 m-0">
-            <li>
-              Save Draft is intergrated in "<a
-                class="text-p-dark"
-                routerLink="/new-article"
-                ><u>New Article</u></a
-              >" and "Edit Article".
-            </li>
-            <li>
-              Draft after published successful is only available to edit again
-              in "Edit Article".
-            </li>
+            <li *ngFor="let feature of changelog.list">{{ feature }}</li>
           </ul>
         </div>
-      </div>
-      <!-- CHANGELOGS LIST END -->
-      <div class="text-center text-p-dark mb-0 my-4">
-        <a class="h2 text-p-dark" routerLink="/new-article"
-          ><u>Try our new feature - Save Draft HERE</u></a
+        <div
+          class="text-center text-p-dark mb-0 mt-4 mb-2"
+          *ngIf="changelog.links.length"
         >
+          <ng-container *ngFor="let link of changelog.links">
+            <a class="h2 text-p-dark" [routerLink]="link.path">
+              <u>{{ link.label }}</u>
+            </a>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>

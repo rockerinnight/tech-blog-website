@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import changeLogs from 'src/assets/changelogs.json';
 
 @Component({
   selector: 'app-changelog',
@@ -6,15 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./changelog.component.scss'],
 })
 export class ChangelogComponent implements OnInit {
-  currDate: Date = new Date();
-  writeDate: string = '';
+  data = null;
   constructor() {}
 
   ngOnInit(): void {
-    this.writeDate = this.currDate.toString();
-  }
-
-  getCurrDate() {
-    return this.writeDate;
+    this.data = changeLogs.data;
   }
 }
