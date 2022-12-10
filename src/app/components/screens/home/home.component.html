@@ -30,14 +30,17 @@
           <app-global-feed
             *ngIf="viewMode === 'global'"
             [data]="globalArticles$"
+            (pageParamsEmitter)="getPageParams($event)"
           ></app-global-feed>
           <app-my-feed
             *ngIf="viewMode === 'feed'"
             [data]="feedArticles$"
+            (pageParamsEmitter)="getPageParams($event)"
           ></app-my-feed>
           <app-tag-feed
             *ngIf="viewMode === 'tag'"
             [data]="tarArticles$"
+            (pageParamsEmitter)="getPageParams($event)"
           ></app-tag-feed>
           <ngx-spinner
             bdColor="rgba(255,255,255,0.25)"

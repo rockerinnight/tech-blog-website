@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { Page } from 'src/app/models/page-params.model';
 import { MultiArticles } from 'src/app/models/multi-articles.model';
 
 @Component({
@@ -11,8 +12,13 @@ import { MultiArticles } from 'src/app/models/multi-articles.model';
 })
 export class GlobalFeedComponent implements OnInit {
   @Input() data: Observable<MultiArticles>;
+  @Output() pageParamsEmitter = new EventEmitter();
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  handlePageChanged(pageParams: Page) {
+    this.pageParamsEmitter.emit({ ...pageParams, view: 'global' });
+  }
 }

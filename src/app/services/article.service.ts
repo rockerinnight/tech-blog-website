@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { URL } from '../helpers/constants';
 
@@ -14,8 +14,6 @@ import { SingleArticleUpdateDto } from '../models/single-article-update-dto.mode
   providedIn: 'root',
 })
 export class ArticleService {
-  pageChanged = new BehaviorSubject(null);
-
   constructor(private http: HttpClient) {}
 
   /**
@@ -34,16 +32,14 @@ export class ArticleService {
     limit?: number;
     offset?: number;
   }): Observable<MultiArticles> {
-    console.log(params);
     let queries = new HttpParams();
     if (params) {
       Object.keys(params).forEach((k) => {
-        if (params[k].toString()?.length) {
+        if (params[k]?.toString()?.length) {
           queries = queries.append(k, params[k]);
         }
       });
     }
-    console.log(queries);
 
     return this.http.get<MultiArticles>(`${URL.API}/articles`, {
       params: queries,
@@ -62,7 +58,7 @@ export class ArticleService {
     let queries = new HttpParams();
     if (params) {
       Object.keys(params).forEach((k) => {
-        if (params[k]?.length) {
+        if (params[k]?.toString()?.length) {
           queries = queries.append(k, params[k]);
         }
       });
