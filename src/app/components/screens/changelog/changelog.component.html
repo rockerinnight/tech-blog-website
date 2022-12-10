@@ -10,7 +10,7 @@
           <p class="h5">
             <em>{{ changelog.date | date }}</em>
           </p>
-          <p class="lead text-justify">{{ changelog.body }}</p>
+          <p class="lead text-justify" [innerHTML]="changelog.body"></p>
           <ul class="text-p-dark pl-3 m-0">
             <li *ngFor="let feature of changelog.list">{{ feature }}</li>
           </ul>

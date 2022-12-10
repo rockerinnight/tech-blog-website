@@ -2,7 +2,7 @@
   "data": [
     {
       "date": 1668124800000,
-      "body": "Same look, different experiences!\nWe have updated the whole website under the hood.\nBy using RxJS in the app, everything will be up-to-date with your actions.",
+      "body": "Same look, different experiences!<br>We have updated the whole website under the hood.<br>By using RxJS in the app, everything will be up-to-date with your actions.",
       "list": [
         "New effect: Add loading spinners in views and action buttons",
         "Fix bug: Reload on Logging out",
@@ -16,7 +16,7 @@
     },
     {
       "date": 1618876800000,
-      "body": "Now you can save your article to draft when you haven't finish it yet. You can publish it anytime after that.\nSave Draft also prevents any errors occur when publishing your newest article. Draft will be loaded right when you are back to Online and the content will be loaded on <span class=\"text-p-dark\">New Article</span> like there's nothing happened before that.",
+      "body": "Now you can save your article to draft when you haven't finish it yet. You can publish it anytime after that.<br>Save Draft also prevents any errors occur when publishing your newest article. Draft will be loaded right when you are back to Online and the content will be loaded on <span class=\"text-p-dark\">New Article</span> like there's nothing happened before that.",
       "list": [
         "Save Draft is intergrated in \"New Article\" and \"Edit Article\"",
         "Draft after published successful is only available to edit again in \"Edit Article\""

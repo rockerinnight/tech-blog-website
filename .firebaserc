@@ -7,5 +7,8 @@
         ]
       }
     }
+  },
+  "projects": {
+    "default": "pad-02-group-03-tech-blog"
   }
 }
